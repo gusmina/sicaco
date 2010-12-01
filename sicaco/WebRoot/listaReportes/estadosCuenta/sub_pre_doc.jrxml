@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="sub_pre_doc"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="552"
+		 pageHeight="842"
+		 columnWidth="552"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="ascId" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="fecha1" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="fecha2" isForPrompting="true" class="java.util.Date"/>
+	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT 
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA, 
+	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans, 
+    	cta_tpr_tipo_prestamo.`TPR_NOMBRE` AS CUENTA_NOMBRE,
+     	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS DESCUENTO, 
+	cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`  as INTERES,
+	cta_mxp_movimiento_prestamo.`mxp_interes_pendiente` as INTERES_PENDIENTE,  
+	cta_mxp_movimiento_prestamo.`mxp_saldo_actual` AS SALDO, 
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`, 
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15), 
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION, 
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO, 
+	3 AS NUMERO 
+FROM 
+    	`cta_asc_asociado` cta_asc_asociado 
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID` 
+     	INNER JOIN `cta_pre_prestamo` cta_pre_prestamo 
+	ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID` 
+     	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado 
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA` 
+     	INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo 
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID` 
+     	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion 
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID` 
+     	LEFT OUTER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo 
+	ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+WHERE 
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId} 
+ 	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)>=$P{fecha1} 
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<=$P{fecha2}
+ORDER BY NUMERO,CUENTA_NOMBRE,FECHA,id_trans]]></queryString>
+
+	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="id_trans" class="java.math.BigInteger"/>
+	<field name="CUENTA_NOMBRE" class="java.lang.String"/>
+	<field name="DESCUENTO" class="java.math.BigDecimal"/>
+	<field name="INTERES" class="java.math.BigDecimal"/>
+	<field name="INTERES_PENDIENTE" class="java.math.BigDecimal"/>
+	<field name="SALDO" class="java.math.BigDecimal"/>
+	<field name="DESCRIPCION" class="java.lang.String"/>
+	<field name="TTR_USO" class="java.lang.String"/>
+	<field name="NUMERO" class="java.lang.Long"/>
+
+
+		<group  name="CUENTA_NOMBRE" >
+			<groupExpression><![CDATA[$F{CUENTA_NOMBRE}]]></groupExpression>
+			<groupHeader>
+			<band height="34"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="23"
+						width="50"
+						height="11"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Fecha Trans.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="52"
+						y="23"
+						width="210"
+						height="10"
+						key="staticText-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Descripcion]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="264"
+						y="23"
+						width="48"
+						height="11"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="314"
+						y="23"
+						width="48"
+						height="11"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Abono]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="439"
+						y="23"
+						width="60"
+						height="11"
+						key="staticText-5"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Total Descuento
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="495"
+						y="23"
+						width="55"
+						height="11"
+						key="staticText-6"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Saldo]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="51"
+						y="23"
+						width="0"
+						height="11"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="263"
+						y="23"
+						width="0"
+						height="11"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="313"
+						y="23"
+						width="0"
+						height="11"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="23"
+						width="0"
+						height="11"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="496"
+						y="23"
+						width="0"
+						height="11"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="23"
+						width="0"
+						height="11"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="551"
+						y="23"
+						width="0"
+						height="11"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="22"
+						width="552"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="11"
+						width="0"
+						height="11"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="33"
+						width="552"
+						height="0"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="10"
+						width="552"
+						height="0"
+						forecolor="#D0E4F8"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="10"
+						width="552"
+						height="13"
+						forecolor="#0F0B0B"
+						backcolor="#C8BEBE"
+						key="textField-1"
+						isPrintWhenDetailOverflows="true"/>
+					<box leftPadding="2" rightPadding="2" topPadding="2" bottomPadding="2">					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="5" isBold="true" isUnderline="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CUENTA_NOMBRE}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="551"
+						y="11"
+						width="0"
+						height="13"
+						key="line-12"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="363"
+						y="23"
+						width="35"
+						height="11"
+						key="staticText-7"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Int. Dev.]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="363"
+						y="23"
+						width="0"
+						height="11"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="441"
+						y="23"
+						width="0"
+						height="11"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="401"
+						y="23"
+						width="40"
+						height="11"
+						key="staticText-8"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+				<text><![CDATA[Int. Pendi.]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="20"  isSplitAllowed="true" >
+				<rectangle radius="3" >
+					<reportElement
+						x="0"
+						y="4"
+						width="551"
+						height="14"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<rectangle>
+					<reportElement
+						x="0"
+						y="1"
+						width="551"
+						height="9"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+</graphicElement>
+				</rectangle>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="-3"
+						width="0"
+						height="19"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="551"
+						y="-3"
+						width="0"
+						height="19"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="51"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="263"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="313"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="496"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-30"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="363"
+						y="-1"
+						width="0"
+						height="19"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="441"
+						y="0"
+						width="0"
+						height="19"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="11"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="52"
+						y="0"
+						width="210"
+						height="11"
+						key="textField-2"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="0"
+						width="50"
+						height="10"
+						key="textField-3"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.sql.Timestamp"><![CDATA[$F{FECHA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="1"
+						width="48"
+						height="9"
+						key="textField-4">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{TTR_USO}.equals( "C" ))]]></printWhenExpression>
+						</reportElement>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="315"
+						y="1"
+						width="48"
+						height="9"
+						key="textField-5">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{TTR_USO}.equals( "A" ))]]></printWhenExpression>
+						</reportElement>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="441"
+						y="1"
+						width="53"
+						height="9"
+						key="textField-6"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="495"
+						y="1"
+						width="55"
+						height="9"
+						key="textField-7"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{SALDO}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="313"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="263"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="400"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="496"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="551"
+						y="-3"
+						width="0"
+						height="13"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="51"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="-3"
+						width="0"
+						height="13"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="363"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="364"
+						y="0"
+						width="35"
+						height="9"
+						key="textField-8"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{INTERES}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="441"
+						y="-2"
+						width="0"
+						height="13"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="true" pattern="$##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="401"
+						y="0"
+						width="39"
+						height="9"
+						key="textField-9"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{INTERES_PENDIENTE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="11"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="1"
+						width="550"
+						height="10"
+						key="subreport-1"/>
+					<subreportParameter  name="ascId">
+						<subreportParameterExpression><![CDATA[$P{ascId}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fecha1">
+						<subreportParameterExpression><![CDATA[$P{fecha1}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="fecha2">
+						<subreportParameterExpression><![CDATA[$P{fecha2}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sub_seg_doc.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</summary>
+</jasperReport>

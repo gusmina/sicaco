@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AfiliadosMesExcel" pageWidth="1224" pageHeight="792" orientation="Landscape" columnWidth="1224" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(6)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ano" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2010)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="gerente" class="java.lang.String"/>
+	<parameter name="promotora" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     cta_asc_asociado.`ASC_CODIGO` AS cta_asc_asociado_ASC_CODIGO,
+     CONCAT_WS(' ',sec_per_persona.`per_primer_nombre`,sec_per_persona.`per_segundo_nombre`,sec_per_persona.`per_primer_apellido`,sec_per_persona.`per_segundo_apellido`)AS cta_asc_asociado_ASC_NOMBRE_NIT,
+     cta_ina_ingresosxasociado.`INA_FECHA_INGRESO` AS cta_ina_ingresosxasociado_INA_FECHA_INGRESO,
+     cta_cah_cuenta_ahorro.`cah_cuota` AS cta_cah_cuenta_ahorro_cah_cuota,
+     cta_cah_cuenta_ahorro.`cah_id` AS cta_cah_cuenta_ahorro_cah_id,
+     cta_cas_cuenta_asociado.`cah_id` AS cta_cas_cuenta_asociado_cah_id,
+     IFNULL(cta_dpt_departamento_trabajo.`DPT_NOMBRE`,'---')AS cta_dpt_departamento_trabajo_DPT_NOMBRE,
+     cta_asc_asociado.`ASC_ID` AS cta_asc_asociado_ASC_ID,
+     ctr_est_estado.`EST_NOMBRE` AS estado,
+	      (CASE $P{mes}
+	WHEN 1 THEN 'ENERO'
+	WHEN 2 THEN 'FEBRERO'
+	WHEN 3 THEN 'MARZO'
+	WHEN 4 THEN 'ABRIL'
+	WHEN 5 THEN 'MAYO'
+	WHEN 6 THEN 'JUNIO'
+	WHEN 7 THEN 'JULIO'
+	WHEN 8 THEN 'AGOSTO'
+	WHEN 9 THEN 'SEPTIEMBRE'
+	WHEN 10 THEN 'OCTUBRE'
+	WHEN 11 THEN 'NOVIEMBRE'
+	WHEN 12 THEN 'DICIEMBRE'
+     END) as nombre_mes,
+     cta_etr_empresa_trabajo.`ETR_NOMBRE` AS cta_etr_empresa_trabajo_ETR_NOMBRE
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_ina_ingresosxasociado` cta_ina_ingresosxasociado ON cta_asc_asociado.`ASC_ID` = cta_ina_ingresosxasociado.`ASC_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     LEFT OUTER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `sec_per_persona` sec_per_persona ON cta_asc_asociado.`per_id` = sec_per_persona.`per_id`
+     INNER JOIN `ctr_est_estado` ctr_est_estado ON cta_asc_asociado.`est_id_2` = ctr_est_estado.`est_id`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+WHERE
+     cta_cas_cuenta_asociado.`cah_id` LIKE 'A%'
+     and cta_cah_cuenta_ahorro.`cah_id` LIKE 'A%'
+     and month(cta_ina_ingresosxasociado.`INA_FECHA_INGRESO`) = $P{mes}
+     and year(cta_ina_ingresosxasociado.`INA_FECHA_INGRESO`) = $P{ano}
+ORDER BY
+     cta_ina_ingresosxasociado_INA_FECHA_INGRESO ASC,
+     cta_asc_asociado_ASC_CODIGO ASC]]>
+	</queryString>
+	<field name="cta_asc_asociado_ASC_CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_asc_asociado_ASC_NOMBRE_NIT" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_ina_ingresosxasociado_INA_FECHA_INGRESO" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_cah_cuenta_ahorro_cah_cuota" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_cah_cuenta_ahorro_cah_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_cas_cuenta_asociado_cah_id" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_dpt_departamento_trabajo_DPT_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_asc_asociado_ASC_ID" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_mes" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_etr_empresa_trabajo_ETR_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="64" height="20"/>
+				<textElement/>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="0" width="299" height="20"/>
+				<textElement/>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="363" y="0" width="73" height="20"/>
+				<textElement/>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="0" width="73" height="20"/>
+				<textElement/>
+				<text><![CDATA[APORTACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="509" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="609" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[MES DE INGRESO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="709" y="0" width="274" height="20"/>
+				<textElement/>
+				<text><![CDATA[DEPARTAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="983" y="0" width="241" height="20"/>
+				<textElement/>
+				<text><![CDATA[EMPRESA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="64" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}+"*"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="64" y="0" width="299" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_NOMBRE_NIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="509" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="609" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_mes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="363" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{cta_ina_ingresosxasociado_INA_FECHA_INGRESO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="436" y="0" width="73" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cta_cah_cuenta_ahorro_cah_cuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="709" y="0" width="274" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_dpt_departamento_trabajo_DPT_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="983" y="0" width="241" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_etr_empresa_trabajo_ETR_NOMBRE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

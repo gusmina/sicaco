@@ -1,0 +1,23 @@
+#
+#Mon Sep 06 00:06:53 CST 2010
+genBasicCompId=false
+sessionFactoryName=
+profile=
+daoSFId=
+version=3.0
+jndiPath=
+detectM2M=false
+reStrategyClass=
+springDaoFile=
+useJavaTypes=true
+keyGenerator=
+libInstallFolder=WebRoot/WEB-INF/lib
+addLibs2Project=true
+genVersionTag=false
+sessionFactoryId=
+basePersistenceClass=
+reSettingsFile=/sicaco/hibernate.reveng.xml
+configFile=/sicaco/src/com/cetia/sicaco/hibernate/hibernate.cfg.xml
+createConfigFile=true
+addLibs2Classpath=true
+baseDaoClass=com.cetia.sicaco.hibernate.BaseHibernateDAO

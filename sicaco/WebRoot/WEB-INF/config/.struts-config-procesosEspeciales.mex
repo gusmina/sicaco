@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/planilla.do" location="50,50" dimension="206,104" />
+  <StrutsActivity path="/cambioCodEmpleado.do" location="525,60" dimension="241,104" />
+  <StrutsActivity path="/cargaAutomaticaPrestamo.do" location="950,150" dimension="221,104" />
+  <StrutsActivity path="/cargoFiadores.do" location="50,550" dimension="191,104" />
+  <StrutsActivity path="/cargaAutomaticaSeguros.do" location="650,550" dimension="236,104" />
+  <StrutsActivity path="/pagaNetBanking.do" location="950,550" dimension="321,96" />
+  <StrutsActivity path="/liquidacionAsociado.do" location="1455,720" dimension="150,100" />
+  <StrutsActivity path="/capitalizacionAhorroIni.do" location="45,825" dimension="150,61" />
+  <StrutsActivity path="/capitalizacionAhorro.do" location="375,930" dimension="196,61" />
+  <StrutsActivity path="/distribucionDividendos.do" location="50,1050" dimension="206,76" />
+  <StrutsActivity path="/correccionCapital.do" location="950,1050" dimension="431,96" />
+  <StrutsActivity path="/listaDistribuidos.do" location="810,15" dimension="150,100" />
+  <StrutsActivity path="/envioCorreoRetiroAhorro.do" location="-60,-60" dimension="150,100" />
+  <StrutsActivity path="/transaccionFecha.do" location="50,1450" dimension="236,104" />
+  <StrutsActivity path="pagina-dml.procesosEspeciales.planilla" location="345,135" dimension="151,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.planilla" location="345,60" dimension="151,61" />
+  <StrutsActivity path="redirectInvalidData" location="50,250" dimension="154,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.cambioCodEmpleado" location="350,350" dimension="251,87" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.cargaAutomaticaPrestamo" location="950,350" dimension="221,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.cargaAutoSinExcel" location="780,420" dimension="211,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.cargoFiadores" location="300,555" dimension="181,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.lfiadores" location="300,630" dimension="181,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.cargaAutomaticaSeguros" location="645,690" dimension="241,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.pagaNetBanking" location="50,750" dimension="286,51" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.liquidacionAsociados" location="950,750" dimension="339,50" />
+  <StrutsActivity path="pagina.dml.procesosEspeciales.liquidarAsociado" location="1005,825" dimension="321,78" />
+  <StrutsActivity path="pagina.dml.procesosEspeciales.forwardToProyeccionLiquidacion" location="1250,450" dimension="398,49" />
+  <StrutsActivity path="pagina.dml.procesosEspeciales.capitalizacionAhorro" location="300,825" dimension="331,49" />
+  <StrutsActivity path="pagina.dml.procesosEspeciales.distribucionDividendos" location="405,1035" dimension="346,49" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.correccionCapital" location="950,1250" dimension="291,51" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.listaDistribuidos" location="1170,45" dimension="313,50" />
+  <StrutsActivity path="pagina.dml.procesosEspeciales.EnvioCorreoRetiroAhorro" location="50,1350" dimension="358,49" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.transaccionFecha" location="650,1450" dimension="352,53" />
+  <StrutsActivity path="pagina-lista.procesosEspeciales.correcionCapital" location="350,1150" dimension="285,51" />
+  <StrutsActivity path="/hola" location="650,1350" dimension="61,49" />
+  <StrutsTransition id="/listaDistribuidos.do,lista,pagina-lista.procesosEspeciales.listaDistribuidos,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="960,65" />
+      <AbsolutePoint location="1170,65" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/correccionCapital.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="187,303" />
+      <AbsolutePoint location="187,318" />
+      <AbsolutePoint location="1341,318" />
+      <AbsolutePoint location="1341,1050" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina.dml.procesosEspeciales.distribucionDividendos,null,/distribucionDividendos.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="405,1065" />
+      <AbsolutePoint location="256,1065" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/pagaNetBanking.do,lista,pagina-lista.procesosEspeciales.pagaNetBanking,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="950,598" />
+      <AbsolutePoint location="915,598" />
+      <AbsolutePoint location="915,775" />
+      <AbsolutePoint location="336,775" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cambioCodEmpleado.do,lista,pagina-lista.procesosEspeciales.cambioCodEmpleado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="586,164" />
+      <AbsolutePoint location="586,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionFecha.do,lista,pagina-lista.procesosEspeciales.transaccionFecha,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="286,1488" />
+      <AbsolutePoint location="650,1488" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cargaAutomaticaPrestamo.do,lista,pagina-lista.procesosEspeciales.cargaAutomaticaPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1060,254" />
+      <AbsolutePoint location="1060,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cargaAutomaticaPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="127,250" />
+      <AbsolutePoint location="127,203" />
+      <AbsolutePoint location="950,203" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/liquidacionAsociado.do,lista,pagina-lista.procesosEspeciales.liquidacionAsociados,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1455,770" />
+      <AbsolutePoint location="1289,770" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/transaccionFecha.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="67,303" />
+      <AbsolutePoint location="67,395" />
+      <AbsolutePoint location="-135,395" />
+      <AbsolutePoint location="-135,1502" />
+      <AbsolutePoint location="50,1502" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/capitalizacionAhorroIni.do,null,pagina.dml.procesosEspeciales.capitalizacionAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="195,855" />
+      <AbsolutePoint location="300,855" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/planilla.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="97,250" />
+      <AbsolutePoint location="97,154" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/pagaNetBanking.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="157,303" />
+      <AbsolutePoint location="157,488" />
+      <AbsolutePoint location="1110,488" />
+      <AbsolutePoint location="1110,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cargoFiadores.do,lfiadores,pagina-lista.procesosEspeciales.lfiadores,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="241,645" />
+      <AbsolutePoint location="300,645" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/distribucionDividendos.do,lista,pagina.dml.procesosEspeciales.distribucionDividendos,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,1099" />
+      <AbsolutePoint location="578,1099" />
+      <AbsolutePoint location="578,1084" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cargaAutomaticaSeguros.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="127,303" />
+      <AbsolutePoint location="127,518" />
+      <AbsolutePoint location="751,518" />
+      <AbsolutePoint location="751,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cargoFiadores.do,lista,pagina-lista.procesosEspeciales.cargoFiadores,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="241,593" />
+      <AbsolutePoint location="300,593" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correccionCapital.do,lista,pagina-lista.procesosEspeciales.correccionCapital,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1165,1146" />
+      <AbsolutePoint location="1165,1250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/planilla.do,lista,pagina-lista.procesosEspeciales.planilla,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="153,50" />
+      <AbsolutePoint location="153,-75" />
+      <AbsolutePoint location="483,-75" />
+      <AbsolutePoint location="483,60" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina.dml.procesosEspeciales.capitalizacionAhorro,null,/capitalizacionAhorro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="465,874" />
+      <AbsolutePoint location="465,930" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/liquidacionAsociado.do,forwardToProyeccionLiquidacion,pagina.dml.procesosEspeciales.forwardToProyeccionLiquidacion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1530,720" />
+      <AbsolutePoint location="1530,499" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cambioCodEmpleado.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="204,276" />
+      <AbsolutePoint location="645,276" />
+      <AbsolutePoint location="645,164" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/planilla.do,verificar,pagina-dml.procesosEspeciales.planilla,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,150" />
+      <AbsolutePoint location="345,150" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/envioCorreoRetiroAhorro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,276" />
+      <AbsolutePoint location="15,276" />
+      <AbsolutePoint location="15,40" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cargaAutomaticaPrestamo.do,sinxls,pagina-lista.procesosEspeciales.cargaAutoSinExcel,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="950,173" />
+      <AbsolutePoint location="885,173" />
+      <AbsolutePoint location="885,420" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/envioCorreoRetiroAhorro.do,lista,pagina.dml.procesosEspeciales.EnvioCorreoRetiroAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="15,-10" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cargoFiadores.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="97,303" />
+      <AbsolutePoint location="97,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/liquidacionAsociado.do,forwardToLiquidacion,pagina.dml.procesosEspeciales.liquidarAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1530,820" />
+      <AbsolutePoint location="1530,864" />
+      <AbsolutePoint location="1326,864" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/capitalizacionAhorro.do,lista,pagina.dml.procesosEspeciales.capitalizacionAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="435,930" />
+      <AbsolutePoint location="435,874" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cargaAutomaticaSeguros.do,lista,pagina-lista.procesosEspeciales.cargaAutomaticaSeguros,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="768,654" />
+      <AbsolutePoint location="768,690" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

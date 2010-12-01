@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LibroDeCompra" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="570" leftMargin="28" rightMargin="14" topMargin="28" bottomMargin="31">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="sencillo" isDefault="false" forecolor="#000000" vAlign="Middle" fontSize="11"/>
+	<style name="Titulo" isDefault="true" mode="Transparent" forecolor="#000000" hAlign="Center" vAlign="Middle" fontSize="14" isBold="true"/>
+	<parameter name="MES" class="java.lang.String">
+		<property name="VALOR" value="&quot;February&quot;"/>
+	</parameter>
+	<parameter name="ANIO" class="java.lang.String"/>
+	<parameter name="FECHA_DE_PRESENTACION" class="java.util.Date"/>
+	<parameter name="NOMBRE_MES" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     fac_fen_factura_encabezado.`FEN_FECHA_FACTURA` AS FECHA_FACTURA,
+     fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA` AS NUMERO_COMPROBANTE,
+     inv_pro_proveedor.`PRO_REGISTRO` AS NUM_REGISTRO,
+     inv_pro_proveedor.`PRO_NOMBRE` AS PRO_NOMBRE,
+     IF (fac_fen_factura_encabezado.`FUS_ID`=1  AND fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS` IS NOT NULL,ROUND(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`,2),0.00) AS COMPRAS_EXENTAS_INTERNAS,
+     IF (fac_fen_factura_encabezado.`FUS_ID`=3 AND fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS` IS NOT NULL,ROUND(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`,2),0.00) AS COMPRAS_EXENTAS_IMPORTAC,
+     IF (fac_fen_factura_encabezado.`FUS_ID`=1 AND fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` <> 0.00,ROUND(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`
+                               -fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`
+                               -fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`,2),0.00) AS COMPRAS_GRAVADAS_INTERNAS,
+     IF (fac_fen_factura_encabezado.`FUS_ID`=3 AND fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` <> 0.00,ROUND(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`
+                               -fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`
+                               -fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`,2),0.00) AS COMPRAS_GRAVADAS_IMPORTAC,
+     IF(fac_fen_factura_encabezado.`FEN_IVA_RETENIDO` IS NOT NULL,ROUND(fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`,2),0.00) AS IVA_RETENIDO,
+     IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` = 0.00,
+        fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`+
+         fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`,
+        fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`) AS SUMATORIA_TOTAL
+FROM
+     `inv_pro_proveedor` inv_pro_proveedor INNER JOIN `fac_fen_factura_encabezado` fac_fen_factura_encabezado ON inv_pro_proveedor.`PRO_ID` = fac_fen_factura_encabezado.`PRO_ID`
+
+WHERE  MONTH(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CAST($P{MES} AS UNSIGNED)
+       AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA` )= CAST($P{ANIO} AS UNSIGNED)
+ORDER BY FECHA_FACTURA,NUMERO_COMPROBANTE,NUM_REGISTRO]]>
+	</queryString>
+	<field name="FECHA_FACTURA" class="java.sql.Timestamp"/>
+	<field name="NUMERO_COMPROBANTE" class="java.lang.String"/>
+	<field name="NUM_REGISTRO" class="java.lang.String"/>
+	<field name="PRO_NOMBRE" class="java.lang.String"/>
+	<field name="COMPRAS_EXENTAS_INTERNAS" class="java.math.BigDecimal"/>
+	<field name="COMPRAS_EXENTAS_IMPORTAC" class="java.math.BigDecimal"/>
+	<field name="COMPRAS_GRAVADAS_INTERNAS" class="java.math.BigDecimal"/>
+	<field name="COMPRAS_GRAVADAS_IMPORTAC" class="java.math.BigDecimal"/>
+	<field name="IVA_RETENIDO" class="java.math.BigDecimal"/>
+	<field name="SUMATORIA_TOTAL" class="java.math.BigDecimal"/>
+	<variable name="SUM_COMPRAS_EXENTAS_INTERNAS_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPRAS_EXENTAS_INTERNAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COMPRAS_EXENTAS_IMPORTAC_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPRAS_EXENTAS_IMPORTAC}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COMPRAS_GRAVADAS_INTERNAS_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPRAS_GRAVADAS_INTERNAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COMPRAS_GRAVADAS_IMPORTAC_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{COMPRAS_GRAVADAS_IMPORTAC}]]></variableExpression>
+	</variable>
+	<variable name="SUM_IVA_RETENIDO_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{IVA_RETENIDO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUMATORIA_TOTAL_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{SUMATORIA_TOTAL}]]></variableExpression>
+	</variable>
+	<variable name="contar_correlativo_columna" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($V{contar_correlativo_columna}.doubleValue()+ $V{variable_fija}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="variable_fija" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double(1)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(1)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="108" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="53" width="570" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false" isItalic="false" isUnderline="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[VALORES EXPRESADOS EN DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="-1" y="93" width="570" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-4" x="0" y="79" width="24" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="false" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Mes:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="150" y="79" width="24" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="false" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Año:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="175" y="79" width="100" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{ANIO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="24" y="79" width="119" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{NOMBRE_MES}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="18" width="570" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="570" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="19" width="570" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Cooperativa de empleados de TACA y AEROMAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" style="Titulo" mode="Opaque" x="1" y="32" width="570" height="25"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ Libro de Compras  ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-17" mode="Opaque" x="374" y="13" width="46" height="14" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[INTERNAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" mode="Opaque" x="21" y="2" width="40" height="25" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" mode="Opaque" x="63" y="1" width="62" height="26" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nº Comprobante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" mode="Opaque" x="178" y="1" width="105" height="26" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre del Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" mode="Opaque" x="127" y="1" width="50" height="26" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nº de
+Registro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" mode="Opaque" x="284" y="2" width="88" height="12" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Compras Exentas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" mode="Opaque" x="284" y="13" width="45" height="14" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[INTERNAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" mode="Opaque" x="467" y="13" width="31" height="14" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" mode="Opaque" x="330" y="13" width="43" height="14" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IMPORT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" mode="Opaque" x="498" y="4" width="43" height="23" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TOTAL
+COMPRAS]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" x="1" y="1" width="568" height="1" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-18" mode="Opaque" x="422" y="13" width="44" height="14" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IMPORT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" mode="Opaque" x="1" y="2" width="19" height="24" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nº]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-4" x="0" y="26" width="569" height="1" backcolor="#666666"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-16" mode="Opaque" x="374" y="2" width="123" height="11" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Compras Gravadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" mode="Opaque" x="541" y="4" width="29" height="22" forecolor="#000000" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Ret. a
+tercero]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-41" x="20" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-42" x="0" y="1" width="1" height="26"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-43" x="62" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-44" x="126" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-45" x="177" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-46" x="283" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-47" x="373" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-48" x="497" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-50" x="540" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-51" x="569" y="2" width="1" height="25"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-52" x="329" y="13" width="1" height="14"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-53" x="421" y="13" width="1" height="14"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-54" x="284" y="13" width="214" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-71" x="466" y="13" width="1" height="14"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="542" y="0" width="26" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(0.00)]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="127" y="0" width="51" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUM_REGISTRO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="179" y="0" width="103" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PRO_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-19" x="62" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-20" x="126" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-21" x="177" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-22" x="283" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-23" x="329" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-24" x="373" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-25" x="421" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-26" x="466" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-27" x="497" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-28" x="540" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-40" x="20" y="0" width="1" height="12"/>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" x="19" y="0" width="42" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA_FACTURA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="284" y="0" width="42" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPRAS_EXENTAS_INTERNAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="330" y="0" width="39" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPRAS_EXENTAS_IMPORTAC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="374" y="1" width="45" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPRAS_GRAVADAS_INTERNAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="422" y="0" width="43" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COMPRAS_GRAVADAS_IMPORTAC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="467" y="0" width="29" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{IVA_RETENIDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="498" y="0" width="41" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SUMATORIA_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="63" y="0" width="62" height="10" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUMERO_COMPROBANTE}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-55" x="0" y="11" width="569" height="1" backcolor="#666666"/>
+			</line>
+			<line>
+				<reportElement key="line-56" x="0" y="0" width="1" height="12"/>
+			</line>
+			<line>
+				<reportElement key="line-57" x="569" y="0" width="1" height="12"/>
+			</line>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField" x="1" y="1" width="18" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{contar_correlativo_columna}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="69" splitType="Stretch">
+			<line>
+				<reportElement key="line-59" x="329" y="1" width="1" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-60" x="373" y="1" width="1" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-62" x="421" y="1" width="1" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-66" x="569" y="1" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="284" y="1" width="43" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COMPRAS_EXENTAS_INTERNAS_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="330" y="1" width="39" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COMPRAS_EXENTAS_IMPORTAC_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="374" y="1" width="46" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COMPRAS_GRAVADAS_INTERNAS_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="423" y="1" width="42" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COMPRAS_GRAVADAS_IMPORTAC_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-6" x="467" y="1" width="29" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_IVA_RETENIDO_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-7" x="498" y="1" width="41" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUMATORIA_TOTAL_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-8" x="542" y="1" width="26" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[new BigDecimal(0.00)]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-67" x="0" y="14" width="569" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" backcolor="#666666"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-21" style="sencillo" positionType="Float" mode="Transparent" x="7" y="54" width="129" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="9" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[FECHA DE PRESENTACIÓN:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-69" x="134" y="68" width="141" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-22" style="sencillo" positionType="Float" mode="Transparent" x="328" y="54" width="87" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="9" isItalic="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[ELABORADO POR:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-70" x="413" y="67" width="141" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<textField pattern="dd-MMM-yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-9" x="136" y="54" width="89" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_DE_PRESENTACION}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-58" x="1" y="1" width="569" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" backcolor="#666666"/>
+			</line>
+			<line>
+				<reportElement key="line-61" x="466" y="0" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-63" x="283" y="0" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-64" x="497" y="0" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-65" x="540" y="0" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-68" x="0" y="0" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-20" x="1" y="1" width="65" height="13" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

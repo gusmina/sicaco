@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+			<put name="titulo" value="SICACO" />
+			<put name="nombre-pantalla" value="Nombre"/>
+			<put name="descripcion-pagina"
+				value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+			<put name="scripts" value="" type="string" />
+			<put name="estilos" value="" type="string" />
+			<put name="sub-encabezado"
+				value="/plantilla/sub-encabezado.jsp" />
+			<put name="menu" value="/plantilla/menu.jsp" />
+			<put name="contenido" value="" type="string" />
+			<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+			<put name="accion" value="" type="string" />
+		</definition>
+		
+		<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+			<put name="titulo" value="SICACO" />
+			<put name="nombre-pantalla" value="Nombre"/>
+			<put name="accion" value="" type="string" />
+			<put name="descripcion-pagina"
+				value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+			<put name="scripts" value="" type="string" />
+			<put name="estilos" value="" type="string" />
+			<put name="sub-encabezado"
+				value="/plantilla/sub-encabezado.jsp" />
+			<put name="menu" value="/plantilla/menu.jsp" />
+			<put name="contenido" value="" type="string" />
+			<put name="factura-bottom" value="" type="string" />
+			<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+			<put name="accion" value="" type="string" />
+		</definition>
+		
+		<definition name="pagina-dml.reportes" extends="plantilla-lista">
+			<put name="nombre-pantalla" value="Generacion de Reportes"/>
+			<put name="descripcion-pagina"
+				value="Seleccion de Reporte a Generar" type="string" />
+			<put name="accion" value="/reporte/reporte.do?accion=lista" type="string" />
+			<put name="contenido" value="/reporte/generarReportesDML.jsp" />
+		</definition>
+		
+		<definition name="pagina-dml.reportesOrden" extends="plantilla">
+			<put name="nombre-pantalla" value="Generacion de Reportes de Orden de Compra"/>
+			<put name="descripcion-pagina"
+				value="Seleccion de Reporte a Generar" type="string" />
+			<put name="contenido" value="/reporte/generarReportesOrdenDML.jsp" />
+		</definition>
+		
+		<definition name="pagina-dml.reportesGene" extends="plantilla">
+			<put name="nombre-pantalla" value="Reportes Genericos"/>
+			<put name="descripcion-pagina"
+				value="Pagina de todos los reportes" type="string" />
+			<put name="contenido" value="/reporte/reportes.jsp" />
+		</definition>
+	
+</tiles-definitions>

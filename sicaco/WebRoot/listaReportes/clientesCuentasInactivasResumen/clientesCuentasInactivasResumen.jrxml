@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clientesCuentasInactivasResumen" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * 
+FROM (
+
+SELECT cta_etr_empresa_trabajo.`ETR_NOMBRE` AS NOMBRE_EMPRESA,
+cta_cas_cuenta_asociado.`EST_ID` AS es,
+  IF(cta_cah_cuenta_ahorro.`tah_id` IS NULL,'APORTACIONES',cta_tah_tipo_ahorro.`TAH_NOMBRE`)AS CUENTA_NOMBRE,
+cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS MONTO,
+cta_cah_cuenta_ahorro.cah_cuota AS CUOTA,
+  cta_cah_cuenta_ahorro.`CAH_saldo_ACTUAL` AS SALDO,
+cta_cah_cuenta_ahorro.cah_interes_acumulado AS INTERES_ACUMULADO_A_FECHA,
+0 AS ABONO_CAPITAL
+
+FROM
+     `cta_asc_asociado` cta_asc_asociado
+INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     INNER JOIN `cta_mxa_movimiento_ahorro` cta_mxa_movimiento_ahorro ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxa_movimiento_ahorro.`txa_id`
+     LEFT OUTER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     AND cta_cah_cuenta_ahorro.`cah_id` = cta_mxa_movimiento_ahorro.`cah_id`
+     LEFT OUTER JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`
+WHERE
+cta_asc_asociado.`EST_ID_2` = 6 and
+cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`<=$P{fecha} and
+cta_cas_cuenta_asociado.`EST_ID`=9
+GROUP BY
+cta_tah_tipo_ahorro.`TAH_NOMBRE`
+
+UNION
+
+SELECT cta_etr_empresa_trabajo.`ETR_NOMBRE` AS NOMBRE_EMPRESA,
+cta_cas_cuenta_asociado.`EST_ID` AS es,
+    IF(cta_pre_prestamo.`TPR_ID` IS NULL, 'CREDITO',
+	cta_tpr_tipo_prestamo.`TPR_NOMBRE`) AS CUENTA_NOMBRE,
+cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS MONTO,
+cta_pre_prestamo.pre_cuota AS CUOTA,
+  cta_pre_prestamo.`pre_saldo_actual_t` AS SALDO,
+  cta_pre_prestamo.pre_interes_acumulado AS INTERES_ACUMULADO_A_FECHA,
+(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`- cta_mxp_movimiento_prestamo.`MXP_INTERES_PENDIENTE` - cta_mxp_movimiento_prestamo.`MXP_MORA` - cta_mxp_movimiento_prestamo.`MXP_INTERES_ACUMULADO`) AS ABONO_CAPITAL
+
+FROM
+    `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_pre_prestamo` cta_pre_prestamo ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     AND cta_pre_prestamo.`PRE_ID` = cta_mxp_movimiento_prestamo.`PRE_ID`
+     LEFT OUTER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+WHERE
+cta_asc_asociado.`EST_ID_2` = 6 and
+cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`<=$P{fecha} and
+cta_cas_cuenta_asociado.`EST_ID`=13
+GROUP BY
+ cta_tpr_tipo_prestamo.`TPR_NOMBRE`
+
+UNION
+
+SELECT cta_etr_empresa_trabajo.`ETR_NOMBRE` AS NOMBRE_EMPRESA,
+cta_cas_cuenta_asociado.`EST_ID` AS es,
+     cta_tis_tipo_seguro.`TIS_NOMBRE` AS CUENTA_NOMBRE,
+cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS MONTO,
+cta_seg_seguros.seg_cuota AS CUOTA,
+cta_seg_seguros.`seg_saldo_actual` AS SALDO,
+0 AS INTERES_ACUMULADO_A_FECHA,
+0 AS ABONO_CAPITAL
+
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_seg_seguros` cta_seg_seguros ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+     INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`
+ INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+ INNER JOIN `cta_mxs_movimiento_seguros` cta_mxs_movimiento_seguros ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxs_movimiento_seguros.`TXA_ID`
+ INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+
+WHERE
+cta_asc_asociado.`EST_ID_2` = 6 and
+DATE(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<=DATE($P{fecha}) and
+cta_cas_cuenta_asociado.`EST_ID`=11
+GROUP BY
+ cta_tis_tipo_seguro.`TIS_NOMBRE`
+
+) AS HOLA
+ORDER BY NOMBRE_EMPRESA,es]]>
+	</queryString>
+	<field name="NOMBRE_EMPRESA" class="java.lang.String"/>
+	<field name="es" class="java.lang.Integer"/>
+	<field name="CUENTA_NOMBRE" class="java.lang.String"/>
+	<field name="MONTO" class="java.math.BigDecimal"/>
+	<field name="CUOTA" class="java.math.BigDecimal"/>
+	<field name="SALDO" class="java.math.BigDecimal"/>
+	<field name="INTERES_ACUMULADO_A_FECHA" class="java.lang.Double"/>
+	<field name="ABONO_CAPITAL" class="java.lang.Double"/>
+	<variable name="SUM_MONTO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{MONTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CUOTA_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{CUOTA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SALDO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="grupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_ABONO_CAPITAL_1" class="java.lang.Double" resetType="Group" resetGroup="grupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{ABONO_CAPITAL}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_MONTO_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{MONTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CUOTA_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CUOTA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_SALDO_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_INTERES_ACUMULADO_A_FECHA_1_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{INTERES_ACUMULADO_A_FECHA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_ABONO_CAPITAL_1_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ABONO_CAPITAL}]]></variableExpression>
+	</variable>
+	<variable name="SUM_INTERES_ACUMULADO_A_FECHA_1" class="java.lang.Double" resetType="Group" resetGroup="grupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{INTERES_ACUMULADO_A_FECHA}]]></variableExpression>
+	</variable>
+	<group name="grupoEmpresa">
+		<groupExpression><![CDATA[$F{NOMBRE_EMPRESA}]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="44" y="2" width="100" height="17"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_EMPRESA}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-2" x="3" y="2" width="40" height="17"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Empresa:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-8" x="3" y="1" width="49" height="17"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Sub - Total]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-1" x="52" y="1" width="100" height="17"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_EMPRESA}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="grupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="156" y="1" width="50" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_MONTO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="225" y="1" width="61" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CUOTA_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="308" y="1" width="62" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SALDO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="391" y="1" width="61" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_INTERES_ACUMULADO_A_FECHA_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="473" y="1" width="59" height="17"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_ABONO_CAPITAL_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-3" x="156" y="1" width="64" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-4" x="225" y="1" width="74" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-5" x="308" y="1" width="77" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-6" x="390" y="1" width="77" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-7" x="473" y="1" width="79" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="16" width="552" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE CUENTAS POR CLIENTE CUADRO RESUMEN]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="33" width="552" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="0" width="552" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="3" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" x="156" y="0" width="64" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MONTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="225" y="0" width="75" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CUOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="308" y="0" width="77" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SALDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="391" y="0" width="76" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[INTERESES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="473" y="0" width="79" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ABONO A CAPITAL]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="0" width="552" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="26" width="552" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="44" y="0" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CUENTA_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="156" y="0" width="50" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="225" y="0" width="61" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CUOTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="308" y="0" width="62" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="391" y="0" width="61" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{INTERES_ACUMULADO_A_FECHA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="473" y="0" width="59" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{ABONO_CAPITAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="1" splitType="Stretch"/>
+	</lastPageFooter>
+	<summary>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-9" x="52" y="4" width="100" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TOTALES:]]></text>
+			</staticText>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="156" y="4" width="50" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_MONTO_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="225" y="4" width="61" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CUOTA_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="308" y="4" width="62" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_SALDO_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="473" y="4" width="59" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_SUM_ABONO_CAPITAL_1_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-8" x="156" y="3" width="63" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-9" x="225" y="3" width="69" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-10" x="308" y="3" width="77" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-11" x="391" y="3" width="76" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-12" x="473" y="3" width="79" height="1"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Double"/>
+				</graphicElement>
+			</line>
+			<textField pattern="#0.00">
+				<reportElement x="391" y="4" width="61" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_SUM_INTERES_ACUMULADO_A_FECHA_1_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

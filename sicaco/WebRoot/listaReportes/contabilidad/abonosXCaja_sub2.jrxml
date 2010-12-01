@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="abonosXCaja_sub2.jasper" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="c1" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="c2" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(9999)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2010-05-17"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2010-05-17"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="solicita" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Solicita"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="autoriza" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Autoriza"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="suc_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS comprobante,
+     SUM(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS monto,
+     'APORTACIONES' as linea,
+     ' 'as tipo,
+     0 AS InteresA,
+     0 AS InteresP
+FROM
+     `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+WHERE
+     cta_cah_cuenta_ahorro.`tah_id` IS null
+     and cta_ttr_tipo_transaccion.`TTR_USO` = 'A'
+     and cta_ttr_tipo_transaccion.`TTR_ID` in (3,19,33,41,13)
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` IS NOT Null
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` > $P{c1}
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` < $P{c2}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)  between $P{f1} and $P{f2}
+and cta_txa_transaccionxcuenta_asociado.`AUD_USUARIO_CREACION` IN 
+	 (
+		 SELECT
+	  ISE_NOMBRE_USUARIO
+	FROM
+	  sec_ise_inicio_sesion ise,
+	  sec_per_persona per
+
+	WHERE
+	  ise.per_id = per.per_id
+	  and per.suc_id = $P{suc_id}
+	 )
+GROUP BY tipo
+UNION
+
+SELECT
+     cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS comprobante,
+     SUM(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS monto,
+     cta_tah_tipo_ahorro.`TAH_NOMBRE` AS tipo,
+     cta_lah_linea_ahorro.`lah_nombre` AS linea,
+     0 AS InteresA,
+     0 AS InteresP
+FROM
+     `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     INNER JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`
+     INNER JOIN `cta_lah_linea_ahorro` cta_lah_linea_ahorro ON cta_tah_tipo_ahorro.`LAH_ID` = cta_lah_linea_ahorro.`lah_id`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+WHERE
+     cta_ttr_tipo_transaccion.`TTR_USO` = 'A'
+     and cta_ttr_tipo_transaccion.`TTR_ID` in (3,19,33,41,13)
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` IS NOT Null
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` > $P{c1}
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` < $P{c2}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)  between $P{f1} and $P{f2}
+and cta_txa_transaccionxcuenta_asociado.`AUD_USUARIO_CREACION` IN 
+	 (
+		 SELECT
+	  ISE_NOMBRE_USUARIO
+	FROM
+	  sec_ise_inicio_sesion ise,
+	  sec_per_persona per
+
+	WHERE
+	  ise.per_id = per.per_id
+	  and per.suc_id = $P{suc_id}
+	 )
+ GROUP BY tipo
+UNION
+SELECT
+     cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS comprobante,
+     SUM(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS monto,
+     cta_tpr_tipo_prestamo.`TPR_NOMBRE` AS tipo,
+     cta_lpr_linea_prestamo.`LPR_NOMBRE` AS linea,
+     SUM(IFNULL(cta_mxp_movimiento_prestamo.`MXP_INTERES_ACUMULADO`,0)) AS InteresA,
+     SUM(IFNULL(cta_mxp_movimiento_prestamo.`MXP_INTERES_PENDIENTE`,0)) AS InteresP
+FROM
+     `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_pre_prestamo` cta_pre_prestamo ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID`
+     INNER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+     INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo ON cta_pre_prestamo.`PRE_ID` = cta_mxp_movimiento_prestamo.`PRE_ID`
+     AND cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     INNER JOIN `cta_lpr_linea_prestamo` cta_lpr_linea_prestamo ON cta_tpr_tipo_prestamo.`LPR_ID` = cta_lpr_linea_prestamo.`LPR_ID`
+WHERE
+
+      cta_ttr_tipo_transaccion.`TTR_USO` = 'A'
+     and cta_ttr_tipo_transaccion.`TTR_ID` in (3,19,33,41,13)
+	and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` IS NOT Null
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` > $P{c1}
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` < $P{c2}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)  between $P{f1} and $P{f2}
+	 
+and cta_txa_transaccionxcuenta_asociado.`AUD_USUARIO_CREACION` IN 
+	 (
+		 SELECT
+	  ISE_NOMBRE_USUARIO
+	FROM
+	  sec_ise_inicio_sesion ise,
+	  sec_per_persona per
+
+	WHERE
+	  ise.per_id = per.per_id
+	  and per.suc_id = $P{suc_id}
+	 )
+GROUP BY tipo
+UNION
+SELECT
+     cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS comprobante,
+     SUM(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS monto,
+     ' 'as tipo,
+     cta_tis_tipo_seguro.`TIS_NOMBRE` AS linea,
+     0 AS InteresA,
+     0 AS InteresP
+FROM
+     `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_seg_seguros` cta_seg_seguros ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+     INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+WHERE
+cta_ttr_tipo_transaccion.`TTR_USO` = 'A'
+     and cta_ttr_tipo_transaccion.`TTR_ID` in (3,19,33,41,13)
+and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` IS NOT Null
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` > $P{c1}
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` < $P{c2}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)  between $P{f1} and $P{f2}
+     
+and cta_txa_transaccionxcuenta_asociado.`AUD_USUARIO_CREACION` IN 
+	 (
+		 SELECT
+	  ISE_NOMBRE_USUARIO
+	FROM
+	  sec_ise_inicio_sesion ise,
+	  sec_per_persona per
+
+	WHERE
+	  ise.per_id = per.per_id
+	  and per.suc_id = $P{suc_id}
+	 )
+GROUP BY tipo
+UNION
+SELECT
+
+Concat(f.fen_serie_factura, '-', f.fen_numero_factura) as  comprobante,
+sum(f.fen_total_venta) as monto,
+'VENTAS' as linea,
+'VENTAS A CONSUMIDOR FINAL ' as tipo,
+0 AS InteresA,
+0 AS InteresP
+
+FROM fac_fen_factura_encabezado f,
+cta_asc_asociado aso,
+sec_per_persona per
+
+where f.pro_id is null
+and f.suc_id = $P{suc_id}
+and (f.fen_tipo_factura = 'CO' or f.fen_tipo_factura = 'VC')
+and f.fen_cancelada = 'E'
+and f.est_id = 1
+and  aso.asc_id = f.asc_id
+and aso.per_id = per.per_id
+and date(f.aud_fecha_creacion) between  $P{f1} and $P{f2}
+GROUP BY tipo
+
+UNION
+
+SELECT
+concat(f.fen_serie_factura, '-', f.fen_numero_factura) as  comprobante,
+sum(f.fen_total_venta) as monto,
+'VENTAS' as linea,
+'VENTAS A CONTRIBUYENTES ' as tipo,
+0 AS InteresA,
+0 AS InteresP
+
+FROM fac_fen_factura_encabezado f,
+fac_cli_cliente cli
+where f.pro_id is null
+and f.suc_id = $P{suc_id}
+and (f.fen_tipo_factura = 'CO' or f.fen_tipo_factura = 'VC')
+and f.fen_cancelada = 'E'
+and f.est_id = 1
+and cli.cli_codigo = f.cli_codigo
+and date(f.aud_fecha_creacion) between  $P{f1} and $P{f2}
+GROUP BY tipo
+UNION 
+SELECT
+not_id as cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE,
+format(sum(not_nota),2) as monto,
+'CUOTAS INGRESO' as linea,  
+'PAGO CUOTAS INGRESO' as tipo,
+0 AS InteresA,
+0 AS InteresP
+From
+cta_not_notas c
+where date(not_fecha) between $P{f1} and $P{f2}
+and not_campo like concat("%;",$P{suc_id})
+GROUP BY tipo]]>
+	</queryString>
+	<field name="comprobante" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InteresA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="InteresP" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<sortField name="tipo"/>
+	<variable name="monto_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="20">
+			<textField>
+				<reportElement x="456" y="1" width="86" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["VALOR"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="0" width="224" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["LINEA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="-1" width="141" height="19"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["  TIPO"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="20" y="18" width="522" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="254" y="1" width="202" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="456" y="0" width="76" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{monto}.subtract($F{InteresP}.add($F{InteresA}))]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="254" y="17" width="202" height="15" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean (($F{InteresP}.add($F{InteresA})).doubleValue() > 0)]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["INTERESES SOBRE "+$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="456" y="17" width="76" height="15" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean (($F{InteresP}.add($F{InteresA})).doubleValue() > 0)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{InteresP}.add($F{InteresA})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="1" width="214" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="128" splitType="Stretch">
+			<line>
+				<reportElement x="20" y="0" width="522" height="1"/>
+			</line>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="456" y="1" width="76" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{monto_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="89" y="76" width="147" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{solicita}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="362" y="76" width="147" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{autoriza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="61" width="75" height="20"/>
+				<textElement/>
+				<text><![CDATA[Elaborado por: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="362" y="70" width="147" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="287" y="61" width="75" height="20"/>
+				<textElement/>
+				<text><![CDATA[Autorizado por: ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="89" y="71" width="147" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="89" y="96" width="147" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Cajero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="96" width="147" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Gerente Administrativo ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="1" width="202" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Total Remesado:  ...........................................]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InteresExcel" pageWidth="1256" pageHeight="720000" orientation="Landscape" columnWidth="1256" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="tipoAhorroId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lineaAhorroId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ascId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ver_interes" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="etrId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(-1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  etr.etr_nombre Empresa,
+  lah.lah_nombre linea,
+  tah.tah_nombre tipo,
+  aso.asc_codigo codigo,
+  aso.asc_nombre_nit nombre,
+  (round(mxa.mxa_saldo,2)- round(txa.txa_monto,2)) saldoAnt,
+  round(txa.txa_monto,2) interes,
+  round(mxa.mxa_saldo,2) saldo
+FROM
+  cta_mxa_movimiento_ahorro mxa,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_cah_cuenta_ahorro cah,
+  cta_tah_tipo_ahorro tah,
+  cta_dpt_departamento_trabajo dpt,
+  cta_etr_empresa_trabajo etr,
+  cta_lah_linea_ahorro lah
+WHERE
+  mxa.txa_id = txa.txa_id and
+  cas.cah_id = mxa.cah_id and
+  cah.cah_id = mxa.cah_id and
+  tah.tah_id = cah.tah_id and
+  dpt.dpt_id = aso.dpt_id and
+  dpt.etr_id = etr.etr_id and
+  tah.lah_id = lah.lah_id and
+  txa.ttr_id = 16 and
+  cas.asc_id = aso.asc_id and
+  date(txa.txa_fecha) = $P{fecha} and
+  round(txa.txa_monto,2) > 0 
+  and if($P{etrId} <> -1,etr.etr_id = $P{etrId},1)
+  and aso.asc_id like $P{ascId}
+  AND if($P{tipoAhorroId} <> -1, tah.`tah_id` = $P{tipoAhorroId},1)
+  AND if($P{lineaAhorroId} <> -1, lah.lah_id = $P{lineaAhorroId},1)
+
+order by empresa, tipo, codigo, nombre, saldo
+;]]>
+	</queryString>
+	<field name="Empresa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="interes" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="225" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["EMPRESA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="225" y="0" width="179" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["LINEA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="0" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["TIPO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="585" y="0" width="100" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CODIGO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="685" y="0" width="269" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMBRE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="954" y="0" width="100" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALDO ANT."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1054" y="0" width="100" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["INTERES DEV."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1154" y="0" width="100" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALDO"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="225" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="225" y="0" width="179" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="0" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="585" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="685" y="0" width="269" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="954" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldoAnt}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1054" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{interes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1154" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

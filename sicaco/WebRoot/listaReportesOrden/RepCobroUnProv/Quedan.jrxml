@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="430" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="proNombre" class="java.lang.String"/>
+	<parameter name="opId" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     ord_opa_orden_de_pago.`OPA_CODIGO` AS ord_opa_orden_de_pago_OPA_CODIGO,
+     ord_opa_orden_de_pago.`OPA_FECHA_PAGO` AS ord_opa_orden_de_pago_OPA_FECHA_PAGO,
+     (ord_opa_orden_de_pago.`OPA_TOTAL` - 
+(ord_opa_orden_de_pago.`OPA_TOTAL` * (ord_opa_orden_de_pago.`OPA_DESCUENTO`/100))) AS ord_opa_orden_de_pago_OPA_TOTAL
+FROM
+     `ord_opa_orden_de_pago` ord_opa_orden_de_pago
+WHERE
+     ord_opa_orden_de_pago.`OPA_ID` = $P{opId}]]>
+	</queryString>
+	<field name="ord_opa_orden_de_pago_OPA_CODIGO" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ord_opa_orden_de_pago_OPA_FECHA_PAGO" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ord_opa_orden_de_pago_OPA_TOTAL" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="341" splitType="Stretch">
+			<textField>
+				<reportElement x="284" y="124" width="220" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ord_opa_orden_de_pago_OPA_CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy">
+				<reportElement x="346" y="184" width="158" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{ord_opa_orden_de_pago_OPA_FECHA_PAGO}]]></textFieldExpression>
+			</textField>
+			<textField pattern=" #,##0.00">
+				<reportElement x="224" y="164" width="210" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{ord_opa_orden_de_pago_OPA_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="144" width="344" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{proNombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd &apos;de&apos; MMMMM &apos;de&apos; yyyy">
+				<reportElement x="151" y="242" width="238" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="219" y="14" width="138" height="28"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[CETYA de R.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="42" width="555" height="21"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[COOPERATIVA DE EMPLEADOS DE TACA Y AEROMAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="256" y="94" width="73" height="20"/>
+				<textElement>
+					<font size="15" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[QUEDAN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="124" width="203" height="20"/>
+				<textElement/>
+				<text><![CDATA[EN NUESTRO PODER FACTURA(S) No. (S)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="144" width="74" height="20"/>
+				<textElement/>
+				<text><![CDATA[A NOMBRE DE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="164" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[POR VALOR DE US $]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="164" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[DOLARES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="184" width="265" height="20"/>
+				<textElement/>
+				<text><![CDATA[PARA SU REVISIÓN LA CUAL SE CANCELARA(N) EL DÍA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="209" width="423" height="20"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[EL PAGO DE LA(S) FACTURA(S) MENCIONADA(S) SE HARA(N) UNICAMENTE CONTRA LA ENTREGA DE ESTE COMPROBANTE]]></text>
+			</staticText>
+			<line>
+				<reportElement x="279" y="136" width="220" height="1"/>
+			</line>
+			<line>
+				<reportElement x="151" y="155" width="348" height="1"/>
+			</line>
+			<line>
+				<reportElement x="181" y="177" width="273" height="1"/>
+			</line>
+			<line>
+				<reportElement x="342" y="196" width="157" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="81" y="242" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[San Salvador,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="292" width="117" height="20"/>
+				<textElement/>
+				<text><![CDATA[F:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="234" y="305" width="108" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="242" y="308" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Por CETYA DE R.L.]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

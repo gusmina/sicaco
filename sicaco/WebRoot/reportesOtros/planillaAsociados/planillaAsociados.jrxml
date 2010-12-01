@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="planillaAsociados" pageWidth="936" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="936" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Titulo" isDefault="false" forecolor="#333333" hAlign="Center" vAlign="Middle" fontSize="14" isBold="true"/>
+	<parameter name="EMPRESA" class="java.lang.Integer"/>
+	<parameter name="DIVISOR" class="java.math.BigDecimal"/>
+	<parameter name="VALOR_INSCRIPCION" class="java.lang.Double"/>
+	<queryString>
+		<![CDATA[CALL `sicacodb`.`SP_PLANILLA_E`($P{DIVISOR},$P{VALOR_INSCRIPCION},$P{EMPRESA})]]>
+	</queryString>
+	<field name="ASC_CODIGO" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="VALOR_INSCRIPCION" class="java.math.BigDecimal"/>
+	<field name="TOTAL_APORTACION" class="java.math.BigDecimal"/>
+	<field name="TOTAL_AHORRO" class="java.math.BigDecimal"/>
+	<field name="TOTAL_PRESTAMO" class="java.math.BigDecimal"/>
+	<field name="TOTAL_SEGURO" class="java.math.BigDecimal"/>
+	<variable name="SUM_TOTAL_APORTACION_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_APORTACION}]]></variableExpression>
+	</variable>
+	<variable name="SUMA" class="java.math.BigDecimal" incrementType="Column">
+		<variableExpression><![CDATA[$F{TOTAL_AHORRO}.add($F{TOTAL_APORTACION}
+.add($F{TOTAL_PRESTAMO}.add($F{TOTAL_SEGURO}).add($F{VALOR_INSCRIPCION})))]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CODIGO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CUOTA INGR"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="0" width="82" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["APORT."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="593" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["AHORROS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="676" y="0" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["PRESTAMOS"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="761" y="0" width="89" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["SEGURO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="850" y="0" width="90" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["SUMA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="71" y="0" width="357" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["NOMBRE ASOCIADO"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="71" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ASC_CODIGO}+"'"]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="511" y="0" width="82" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_APORTACION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="593" y="0" width="83" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_AHORRO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="676" y="0" width="85" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_PRESTAMO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="761" y="0" width="89" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_SEGURO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="850" y="0" width="90" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUMA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="428" y="0" width="83" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR_INSCRIPCION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="71" y="0" width="357" height="18" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($V{SUMA}.doubleValue()> 0.00)]]></printWhenExpression>
+				</reportElement>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

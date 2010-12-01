@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MovimientoPrestamosDelDia" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="Dia" class="java.util.Date"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreEmpresa" class="java.lang.String"/>
+	<parameter name="ttrId" class="java.lang.Integer"/>
+	<parameter name="lprId" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     ifnull(tpr.`tpr_id`,-1) AS TipoPrestamoID,
+     IF(pre.`TPR_ID` IS NULL, 'CREDITO',tpr.`TPR_NOMBRE`) AS TipoPrestamo,
+     ttr.`ttr_nombre` AS TipoTransaccion,
+     if(aso.`dpt_id` is null, '----',etr.`etr_nombre`) AS nombreEmpresa,
+     aso.`asc_codigo_asociado` AS asc_codigo_asociado,
+     CONCAT_WS(' ',per.`PER_PRIMER_NOMBRE`,per.`PER_SEGUNDO_NOMBRE`,
+		per.`PER_TERCER_NOMBRE`,per.`PER_PRIMER_APELLIDO`,
+		per.`PER_SEGUNDO_APELLIDO`,per.`PER_APELLIDO_CASADA`) as nombreCompleto,
+    ifnull(if(txa.`txa_comprobante` < 0,(txa.`txa_comprobante`*-1),txa.`txa_comprobante`),-1) AS comprobante,
+     
+     txa.`txa_monto` AS movimiento,
+    IF(ttr.`ttr_uso`='A', txa.`txa_monto` - mxp.`mxp_interes_pendiente` - mxp.`mxp_interes_acumulado`,0) AS MontoAbonoPrestamo,
+     IF(ttr.`ttr_uso`='C',txa.`txa_monto`,0) AS MontoCargoPrestamo,
+     
+     ifnull(mxp.`mxp_interes_pendiente`,0) AS Vencido,
+     IF(ttr.`ttr_uso`='A',ifnull(mxp.`mxp_interes_acumulado`,0),0) AS AbonoIntPrestamo,
+     IF(ttr.`ttr_uso`='C', ifnull(mxp.`mxp_interes_acumulado`,0),0) AS CargoIntPrestamo,
+     ifnull(mxp.`mxp_mora`,0) AS mora,    
+     (txa.`txa_monto`) - (mxp.`mxp_interes_pendiente`) - 
+     (mxp.`mxp_interes_acumulado`) - ifnull((mxp.`mxp_mora`),0.0) AS cargo       
+
+FROM
+     	`cta_pre_prestamo` pre 
+	INNER JOIN `cta_mxp_movimiento_prestamo` mxp ON pre.`PRE_ID` = mxp.`PRE_ID`
+     	LEFT OUTER JOIN `cta_tpr_tipo_prestamo` tpr ON pre.`TPR_ID` = tpr.`TPR_ID`
+     	INNER JOIN `cta_cas_cuenta_asociado` cas ON pre.`PRE_ID` = cas.`pre_id`
+     	inner JOIN `cta_asc_asociado` aso ON cas.`ASC_ID` = aso.`ASC_ID` 
+     	INNER JOIN `cta_txa_transaccionxcuenta_asociado` txa ON cas.`CAS_CUENTA` = txa.`CAS_CUENTA`
+     	AND txa.`TXA_ID` = mxp.`TXA_ID`
+     	INNER JOIN `cta_ttr_tipo_transaccion` ttr ON txa.`TTR_ID` = ttr.`TTR_ID`
+     	INNER JOIN `sec_per_persona` per ON aso.`PER_ID` = per.`PER_ID`
+     	LEFT OUTER JOIN `cta_dpt_departamento_trabajo` dpt ON aso.`DPT_ID` = dpt.`DPT_ID`
+     	INNER JOIN `cta_etr_empresa_trabajo` etr ON dpt.`ETR_ID` = etr.`ETR_ID`
+    	
+WHERE 
+	date(mxp.`mxp_fecha`) = date($P{Dia})
+	and if($P{lprId}=-1,1,tpr.`LPR_ID`=$P{lprId})
+	and if($P{nombreEmpresa}='',1,etr.`ETR_NOMBRE`=$P{nombreEmpresa}) AND
+	IF($P{ttrId}=-1,1,txa.`TTR_ID`=$P{ttrId})
+UNION
+
+SELECT
+     ifnull(tpr.`tpr_id`,-1) AS TipoPrestamoID,
+     IF(pre.`TPR_ID` IS NULL, 'CREDITO',tpr.`TPR_NOMBRE`) AS TipoPrestamo,
+     ttr.`ttr_nombre` AS TipoTransaccion,
+     if(pxt.`PXT_TRABAJO` is null, '----',pxt.`PXT_TRABAJO`) AS nombreEmpresa,
+     '----' AS asc_codigo_asociado,
+     CONCAT_WS(' ',pxt.`PXT_NOMBRES`,pxt.`PXT_PRIMER_APELLIDO`,pxt.`PXT_SEGUNDO_APELLIDO`) as nombreCompleto,
+    ifnull(if(txa.`txa_comprobante` < 0,(txa.`txa_comprobante`*-1),txa.`txa_comprobante`),-1) AS comprobante,
+     
+     txa.`txa_monto` AS movimiento,
+    IF(ttr.`ttr_uso`='A', txa.`txa_monto` - mxp.`mxp_interes_pendiente` - mxp.`mxp_interes_acumulado`,0) AS MontoAbonoPrestamo,
+     IF(ttr.`ttr_uso`='C',txa.`txa_monto`,0) AS MontoCargoPrestamo,
+     
+     ifnull(mxp.`mxp_interes_pendiente`,0) AS Vencido,
+     IF(ttr.`ttr_uso`='A',ifnull(mxp.`mxp_interes_acumulado`,0),0) AS AbonoIntPrestamo,
+     IF(ttr.`ttr_uso`='C', ifnull(mxp.`mxp_interes_acumulado`,0),0) AS CargoIntPrestamo,
+     ifnull(mxp.`mxp_mora`,0) AS mora,    
+     (txa.`txa_monto`) - (mxp.`mxp_interes_pendiente`) - 
+     (mxp.`mxp_interes_acumulado`) - ifnull((mxp.`mxp_mora`),0.0) AS cargo       
+
+FROM
+     	`cta_pre_prestamo` pre 
+	INNER JOIN `cta_mxp_movimiento_prestamo` mxp ON pre.`PRE_ID` = mxp.`PRE_ID`
+     	LEFT OUTER JOIN `cta_tpr_tipo_prestamo` tpr ON pre.`TPR_ID` = tpr.`TPR_ID`
+     	INNER JOIN `cta_cas_cuenta_asociado` cas ON pre.`PRE_ID` = cas.`pre_id`
+     	INNER JOIN `cta_pxt_persona_externa` pxt ON pxt.`PXT_ID`=cas.`PXT_ID`
+	INNER JOIN `cta_txa_transaccionxcuenta_asociado` txa ON cas.`CAS_CUENTA` = txa.`CAS_CUENTA`
+     	AND txa.`TXA_ID` = mxp.`TXA_ID`
+     	INNER JOIN `cta_ttr_tipo_transaccion` ttr ON txa.`TTR_ID` = ttr.`TTR_ID`
+     	
+WHERE 
+	date(mxp.`mxp_fecha`) = date($P{Dia})
+	and if($P{lprId}=-1,1,tpr.`LPR_ID`=$P{lprId})
+	and if($P{nombreEmpresa}='',1,pxt.`PXT_TRABAJO`=$P{nombreEmpresa})
+	and IF($P{ttrId}=-1,1,txa.`TTR_ID`=$P{ttrId})
+
+order by TipoPrestamoID,nombreEmpresa,TipoTransaccion]]>
+	</queryString>
+	<field name="TipoPrestamoID" class="java.lang.Long"/>
+	<field name="TipoPrestamo" class="java.lang.String"/>
+	<field name="TipoTransaccion" class="java.lang.String"/>
+	<field name="nombreEmpresa" class="java.lang.String"/>
+	<field name="asc_codigo_asociado" class="java.lang.String"/>
+	<field name="nombreCompleto" class="java.lang.String"/>
+	<field name="comprobante" class="java.lang.Long"/>
+	<field name="movimiento" class="java.math.BigDecimal"/>
+	<field name="MontoAbonoPrestamo" class="java.math.BigDecimal"/>
+	<field name="MontoCargoPrestamo" class="java.math.BigDecimal"/>
+	<field name="Vencido" class="java.math.BigDecimal"/>
+	<field name="AbonoIntPrestamo" class="java.math.BigDecimal"/>
+	<field name="CargoIntPrestamo" class="java.math.BigDecimal"/>
+	<field name="mora" class="java.math.BigDecimal"/>
+	<field name="cargo" class="java.math.BigDecimal"/>
+	<variable name="SUM_movimiento_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{movimiento}]]></variableExpression>
+	</variable>
+	<variable name="SUM_MontoCargoPrestamo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{MontoCargoPrestamo}]]></variableExpression>
+	</variable>
+	<variable name="SUM_MontoAbonoPrestamo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{MontoAbonoPrestamo}]]></variableExpression>
+	</variable>
+	<variable name="SUM_Vencido_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GpoTipoPrestamo" calculation="Sum">
+		<variableExpression><![CDATA[$F{Vencido}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CargoIntPrestamo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GpoTipoPrestamo" calculation="Sum">
+		<variableExpression><![CDATA[$F{CargoIntPrestamo}]]></variableExpression>
+	</variable>
+	<variable name="SUM_AbonoIntPrestamo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{AbonoIntPrestamo}]]></variableExpression>
+	</variable>
+	<variable name="SUM_mora_1" class="java.math.BigDecimal" resetType="Group" resetGroup="GrupoEmpresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{mora}]]></variableExpression>
+	</variable>
+	<group name="GpoTipoPrestamo">
+		<groupExpression><![CDATA[$F{TipoPrestamoID}]]></groupExpression>
+		<groupHeader>
+			<band height="14" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="2" y="1" width="248" height="13"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TipoPrestamo}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="GrupoEmpresa">
+		<groupExpression><![CDATA[$F{nombreEmpresa}]]></groupExpression>
+		<groupHeader>
+			<band height="14" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="2" y="1" width="248" height="13"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-13" x="69" y="4" width="40" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SUBTOTAL]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="110" y="4" width="110" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="222" y="4" width="56" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_movimiento_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="280" y="4" width="50" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_MontoCargoPrestamo_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="333" y="3" width="48" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_MontoAbonoPrestamo_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="385" y="3" width="39" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_Vencido_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="426" y="3" width="35" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CargoIntPrestamo_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="462" y="3" width="35" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_AbonoIntPrestamo_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="GrupoEmpresa" pattern="##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="498" y="3" width="35" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_mora_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-15" x="0" y="2" width="1" height="14"/>
+				</line>
+				<line>
+					<reportElement key="line-16" x="0" y="1" width="535" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-17" x="220" y="2" width="1" height="14"/>
+				</line>
+				<line>
+					<reportElement key="line-18" x="279" y="2" width="1" height="14"/>
+				</line>
+				<line>
+					<reportElement key="line-19" x="383" y="2" width="1" height="14"/>
+				</line>
+				<line>
+					<reportElement key="line-20" x="534" y="2" width="1" height="14"/>
+				</line>
+				<line>
+					<reportElement key="line-21" x="0" y="16" width="535" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="130" y="14" width="166" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Reporte de Movimientos de Préstamos del ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="26" width="535" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[VALORES EXPRESADOS EN DÓLARES DE LOS ESTADOS UNIDOS DE AMÉRICA]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" x="298" y="14" width="120" height="11"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{Dia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-11" x="1" y="38" width="65" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA EMISIÓN]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="66" y="38" width="80" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-14" x="484" y="40" width="25" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="509" y="40" width="25" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="3" width="535" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-4" mode="Opaque" x="2" y="4" width="57" height="25" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" mode="Opaque" x="60" y="4" width="111" height="25" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" mode="Opaque" x="172" y="4" width="48" height="25" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Cmbnte.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" mode="Opaque" x="221" y="4" width="57" height="25" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor mov.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" mode="Opaque" x="279" y="18" width="104" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[  Cargo      Abono     vencido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" mode="Opaque" x="279" y="4" width="104" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CAPITAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" mode="Opaque" x="384" y="18" width="149" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Vencido  Cargo     Abono     Mora]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="30" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="1" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="535" y="1" width="1" height="30"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="-1" y="1" width="1" height="30"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-15" mode="Opaque" x="384" y="4" width="149" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INTERESES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<line>
+				<reportElement key="line-6" x="0" y="1" width="535" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-7" x="0" y="2" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="534" y="2" width="1" height="15"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="2" y="5" width="56" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{asc_codigo_asociado}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-10" x="57" y="2" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="172" y="2" width="1" height="15"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="174" y="5" width="46" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Number"><![CDATA[$F{comprobante}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-12" x="220" y="2" width="1" height="15"/>
+			</line>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="222" y="5" width="56" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{movimiento}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-13" x="278" y="2" width="1" height="15"/>
+			</line>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="462" y="5" width="35" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{AbonoIntPrestamo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="426" y="5" width="35" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CargoIntPrestamo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="498" y="5" width="35" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{mora}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="385" y="5" width="39" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{Vencido}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-14" x="383" y="2" width="1" height="15"/>
+			</line>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="333" y="5" width="48" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MontoAbonoPrestamo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="280" y="5" width="50" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MontoCargoPrestamo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="59" y="5" width="112" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement key="line-22" x="0" y="0" width="535" height="1"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement key="subreport-1" x="0" y="1" width="266" height="20"/>
+				<subreportParameter name="Dia">
+					<subreportParameterExpression><![CDATA[$P{Dia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "SubreporteMovPrestamosDelDia.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

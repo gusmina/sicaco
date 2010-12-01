@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="flujoEventosAgricolaTXT" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="banId" class="java.lang.Long"/>
+	<parameter name="rubro" class="java.lang.String"/>
+	<parameter name="sysDel" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select @rownum:=@rownum+1 correlativo, lpad(stb.pcb_numero_cuenta,11,'0') cbaCuenta, stb.STB_MONTO stbMonto, stb.STB_NOMBRE_ASOCIADO stbNombreAsociado, 
+' ' vacio, stb.STB_RAZON stbRazon, stb.STB_ESTADO stbEstado,
+stb.STB_TIPO_AHORRO tipo
+from 	cta_stb_sol_trans_banc stb,
+	(SELECT @rownum:=0) r
+where 
+	stb.ban_id = $P{banId}  
+	and stb.STB_ESTADO = 'N'
+	and stb.STB_RAZON like ($P{rubro})
+union
+select @rownum:=@rownum+1 correlativo, lpad(cba.CBA_CUENTA,15,'0') cbaCuenta, stb.STB_MONTO stbMonto, stb.STB_NOMBRE_ASOCIADO stbNombreAsociado, 
+' ' vacio, stb.STB_RAZON stbRazon, stb.STB_ESTADO stbEstado,
+stb.STB_TIPO_AHORRO tipo
+from cta_cba_cuenta_bancaria cba , cta_stb_sol_trans_banc stb,(SELECT @rownum:=0) r
+where cba.ban_id = $P{banId}  
+	and stb.cba_id = cba.cba_id 
+	and stb.STB_ESTADO = 'N'
+	and stb.STB_RAZON like ($P{rubro})]]>
+	</queryString>
+	<field name="correlativo" class="java.lang.Long"/>
+	<field name="cbaCuenta" class="java.lang.String"/>
+	<field name="stbMonto" class="java.math.BigDecimal"/>
+	<field name="stbNombreAsociado" class="java.lang.String"/>
+	<field name="vacio" class="java.lang.String"/>
+	<field name="stbRazon" class="java.lang.String"/>
+	<field name="stbEstado" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<variable name="conca" class="java.lang.String">
+		<variableExpression><![CDATA[$F{tipo}+";"+$F{cbaCuenta}+";"+$F{stbMonto}+";"+$F{stbNombreAsociado}+";"+
+$F{stbRazon}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="612" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{conca}+$P{sysDel}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

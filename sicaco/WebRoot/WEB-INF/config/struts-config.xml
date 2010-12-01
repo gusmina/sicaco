@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans />
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="default" path="/default2.do" module="/seguridad" />
+
+
+	</global-forwards>
+
+	<action-mappings>
+		<action forward="/seguridad/autenticacion.do?accion=cargar"
+			path="/default2" />
+
+
+	</action-mappings>
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+
+	<plug-in className="com.mad.utilidades.HibernatePlugIn">
+		<!-- 'path-to-config-file' is relative to the root of the class
+			path.  It MUST start with a '/'. The default is
+			"/hibernate.cfg.xml" -->
+		<set-property property="configFilePath"
+			value="/com/cetia/sicaco/hibernate/hibernate.cfg.xml" />
+		<set-property property="storeInServletContext"
+			value="true" />
+	</plug-in>
+</struts-config>
+

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="planMesForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.PlanMesForm" />
+		<form-bean name="tasaInteresForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TasaInteresForm" />
+		<form-bean name="lineaAhorroForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.LineaAhorroForm" />
+		<form-bean name="tipoAhorroForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoAhorroForm" />
+		<form-bean name="cuentaAhorroForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.CuentaAhorroForm" />
+		<form-bean name="tipoCuentaBancariaForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoCuentaBancariaForm" />
+		<form-bean name="cuentaAsociadoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.CuentaAsociadoForm" />
+		<form-bean name="tipoFiadorForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoFiadorForm" />
+		<form-bean name="tipoGarantiaForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoGarantiaForm" />
+		<form-bean name="tipoPrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoPrestamoForm" />
+		<form-bean name="beneficiariosForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.BeneficiariosForm" />
+		<form-bean name="descuentosExternosForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.DescuentosExternosForm" />
+		<form-bean name="lineaPrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.LineaPrestamoForm" />
+		<form-bean name="tipoNotaForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoNotaForm" />
+		<form-bean name="asociadoForm"
+			type="com.cetia.sicaco.asociados.struts.form.AsociadoForm" />
+		<form-bean name="prestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.PrestamoForm" />
+		<form-bean name="fiadorForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.FiadorPrestamoForm" />
+		<form-bean name="tipoSeguroForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.TipoSeguroForm" />
+		<form-bean name="segurosForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.SegurosForm" />
+		<form-bean name="chequePrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.ChequePrestamoForm" />
+		<form-bean name="referenciaPersonalForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.ReferenciaPersonalForm" />
+		<form-bean name="referenciaComercialForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.ReferenciaComercialForm" />
+		<form-bean name="garantiaPrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.GarantiaPrestamoForm" />
+		<form-bean name="movXPrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.MovXPrestamoForm" />
+		<form-bean name="desembolsoPrestamoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.DesembolsoPrestamoForm" />
+		<form-bean name="parentescoForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.ParentescoForm" />
+		<form-bean name="notaSeguroForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.NotaSeguroForm" />
+		<form-bean name="notaGenericForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.NotaGenericForm" />
+		<form-bean name="descuentosCooperativa"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.DescuentosCooperativaForm" />
+		<form-bean name="agregaBenForm"
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.AgregaBenForm" />
+			
+		<form-bean name="preCuentaBancariaForm" 
+			type="com.cetia.sicaco.cuentaCorriente.struts.form.PreCuentaBancariaForm" />
+    	<form-bean name="aplicarDescuentosForm" 
+    		type="com.cetia.sicaco.cuentaCorriente.struts.form.AplicarDescuentosPrestamoForm" />
+    	<form-bean name="retencionForm" 
+    		type="com.cetia.sicaco.cuentaCorriente.struts.form.RetencionForm" />
+	</form-beans>
+
+	<global-exceptions>
+
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="/forwardErrorPage.do" type="java.lang.Exception" />
+
+	</global-exceptions>
+
+
+	<global-forwards>
+		<forward name="toAsociados" path="/asociado.do?accion=lista"
+			module="/asociados" />
+
+		<forward name="toAsociadosB"
+			path="/buscarAsociado.do?accion=lista" module="cuentaCorriente" />
+		<forward name="forwardToPrestamo"
+			path="/prestamo.do?accion=cargarSolicitud" module="/cuentaCorriente" />
+		<forward name="toPrestamosList" path="/prestamo.do?accion=lista"
+			module="/cuentaCorriente" />
+	</global-forwards>
+
+	<action-mappings>
+		<action attribute="planMesForm" input="redirectInvalidData"
+			name="planMesForm" parameter="accion" path="/planMes" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.PlanMesAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.planMes" />
+			<forward name="redirectInvalidData"
+				path="/planMes.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="parentescoForm" input="redirectInvalidData"
+			name="parentescoForm" parameter="accion" path="/parentesco"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.ParentescoAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.parentesco" />
+			<forward name="redirectInvalidData"
+				path="/parentesco.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="tasaInteresForm" input="redirectInvalidData"
+			name="tasaInteresForm" parameter="accion" path="/tasaInteres"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TasaInteresAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tasaInteres" />
+			<forward name="redirectInvalidData"
+				path="/tasaInteres.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="lineaAhorroForm" input="redirectInvalidData"
+			name="lineaAhorroForm" parameter="accion" path="/lineaAhorro"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.LineaAhorroAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.lineaAhorro" />
+			<forward name="redirectInvalidData"
+				path="/lineaAhorro.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="tipoAhorroForm" input="redirectInvalidData"
+			name="tipoAhorroForm" parameter="accion" path="/tipoAhorro"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoAhorroAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tipoAhorro" />
+			<forward name="redirectInvalidData"
+				path="/tipoAhorro.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="cuentaAhorroForm" input="redirectInvalidData"
+			name="cuentaAhorroForm" parameter="accion" path="/cuentaAhorro"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.CuentaAhorroAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.cuentaAhorro" />
+			<forward name="cierreDeCuentas"
+				path="pagina-dml.cuentaCorriente.cierreCuenta" />
+			<forward name="regresar"
+				path="/cuentaAsociado.do?accion=lista" />
+			<forward name="beneficiariosLista"
+				path="/beneficiarios.do?accion=lista" />
+			<forward name="redirectInvalidData"
+				path="/cuentaAhorro.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="addBeneAport"
+				path="/agregaBen.do?accion=lista" />
+		</action>
+
+		<action attribute="cuentaAhorroForm" input="redirectInvalidData"
+			name="cuentaAhorroForm" parameter="accion" path="/cuentaAportacion"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.CuentaAportacionAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.cuentaAportacion" />
+			<forward name="addBeneAport"
+				path="/agregaBen.do?accion=lista" />
+			<forward name="redirectInvalidData"
+				path="/cuentaAportacion.do?accion=redirectInvalidData"
+				redirect="true" />
+			<forward name="beneficiariosLista"
+				path="/beneficiarios.do?accion=lista" />
+			<forward name="regresar"
+				path="/cuentaAsociado.do?accion=lista" />
+		</action>
+
+		<action attribute="tipoCuentaBancariaForm"
+			input="redirectInvalidData" name="tipoCuentaBancariaForm"
+			parameter="accion" path="/tipoCuentaBancaria" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoCuentaBancariaAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tipoCuentaBancaria" />
+			<forward name="redirectInvalidData"
+				path="/tipoCuentaBancaria.do?accion=redirectInvalidData"
+				redirect="true" />
+		</action>
+
+		<action attribute="cuentaAsociadoForm"
+			input="redirectInvalidData" name="cuentaAsociadoForm"
+			parameter="accion" path="/cuentaAsociado" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.CuentaAsociadoAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.cuentaAsociado" />
+			<forward name="redirectInvalidData"
+				path="/cuentaAsociado.do?accion=redirectInvalidData"
+				redirect="true" />
+			<forward name="busquedaAsociados"
+				path="/buscarAsociado.do?accion=lista" />
+			<forward name="nuevaAportacion"
+				path="/cuentaAportacion.do?accion=lista" />
+			<forward name="nuevoSeguro" path="/seguros.do?accion=lista" />
+			<forward name="nuevoAhorro"
+				path="/cuentaAhorro.do?accion=lista" />
+			<forward name="nuevoPrestamo" path="/prestamo.do" />
+			<forward name="agregaBen" path="/agregaBen.do?accion=lista" />
+		</action>
+
+		<action attribute="beneficiariosForm"
+			input="redirectInvalidData" name="beneficiariosForm"
+			parameter="accion" path="/beneficiarios" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.BeneficiariosAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.beneficiarios" />
+			<forward name="regresar"
+				path="/cuentaAsociado.do?accion=lista" />
+			<forward name="regresarA" path="/asociado.do?accion=lista"
+				module="/asociados" />
+			<forward name="redirectInvalidData"
+				path="/beneficiarios.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+
+		<action attribute="tipoPrestamoForm" input="redirectInvalidData"
+			name="tipoPrestamoForm" parameter="accion" path="/tipoPrestamo"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoPrestamoAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tipoPrestamo" />
+			<forward name="redirectInvalidData"
+				path="/tipoPrestamo.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+
+		<action attribute="tipoFiadorForm" input="redirectInvalidData"
+			name="tipoFiadorForm" parameter="accion" path="/tipoFiador"
+			validate="true" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoFiadorAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tipoFiador" />
+			<!-- <forward name="dml" path="pagina-dml.cuentaCorriente.tipoFiador" /> -->
+			<forward name="redirectInvalidData"
+				path="/tipoFiador.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+
+
+
+		<action attribute="tipoGarantiaForm" input="redirectInvalidData"
+			name="tipoGarantiaForm" parameter="accion" path="/tipoGarantiaAction"
+			validate="true" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoGarantiaAction">
+			<forward name="lista" path="pagina-lista.tgar.tipogarantia" />
+			<forward name="redirectInvalidData"
+				path="/tipoGarantiaAction.do?accion=redirectInvalidData"
+				redirect="true" />
+
+		</action>
+
+
+
+		<action attribute="descuentosExternosForm"
+			input="redirectInvalidData" name="descuentosExternosForm"
+			parameter="accion" path="/descuentosExternos" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.DescuentosExternosAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.descuentosExternos" />
+			<forward name="redirectInvalidData"
+				path="/invalidDescuentosExternos.do?accion=redirectInvalidData" />
+			<forward name="forwardToCuentas"
+				path="/cuentaAsociado.do?accion=lista" />
+		</action>
+		<action attribute="lineaPrestamoForm"
+			input="redirectInvalidData" name="lineaPrestamoForm"
+			parameter="accion" path="/lineaPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.LineaPrestamoAction">
+			<forward name="verLista"
+				path="pagina-lista.cuentaCorriente.lineaPrestamo" />
+			<forward name="redirectInvalidData"
+				path="/invalidLineaPrestamo.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="tipoNotaForm" name="tipoNotaForm"
+			parameter="accion" path="/tipoNota" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoNotaAction">
+			<forward name="verLista"
+				path="pagina-lista.cuentaCorriente.tipoNota" />
+		</action>
+		<action attribute="tipoNotaForm" name="tipoNotaForm"
+			parameter="accion" path="/verTipoNota" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoNotaAction"
+			validate="true">
+			<forward name="verLista"
+				path="pagina-lista.cuentaCorriente.tipoNota" />
+		</action>
+		<action forward="pagina.error" path="/forwardErrorPage" />
+		<action attribute="asociadoForm" name="asociadoForm"
+			parameter="accion" path="/buscarAsociado" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.BuscarAsociado"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.buscarAsociado" />
+		</action>
+		<action attribute="prestamoForm" name="prestamoForm"
+			parameter="accion" path="/prestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.PrestamoAction"
+			validate="false">
+			<forward name="nuevaSolicitudCredito"
+				path="pagina-dml.cuentaCorriente.ingresoSolicitudPrestamo" />
+			<forward name="verSolicitud"
+				path="pagina-dml.cuentaCorriente.visualizacionSolicitud" />
+			<forward name="forwardToCalculadora"
+				path="pagina.dml.calculadoraCuotas" />
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.buscarPrestamoAsociado" />
+			<forward name="aCheques"
+				path="/chequePrestamo.do?accion=lista" />
+			<forward name="respuesta"
+				path="pagina-lista.cuentaCorriente.respuestaPrestamos" />
+			<forward name="creditoExistente"
+				path="pagina-dml.cuentaCorriente.creditoExistente" />
+			<forward name="forwardToDxp"
+				path="/descuentosExternos.do?accion=lista" />
+			<forward name="forwardToRpe"
+				path="/referenciaPersonal.do?accion=lista" />
+			<forward name="forwardToGxp"
+				path="/garantiaPrestamo.do?accion=lista" />
+			<forward name="forwardToVerificacion"
+				path="pagina-dml.cuentaCorriente.comprobacionPrestamoAutomatico" />
+			<forward name="forwardToRco"
+				path="/referenciaComercial.do?accion=lista" />
+			<forward name="forwardToNxp" path="/nota.do?accion=lista" />
+			<forward name="forwardToFxp"
+				path="/fiadorPrestamo.do?accion=lista" />
+		</action>
+		<action attribute="fiadorForm" input="redirectInvalidData"
+			name="fiadorForm" parameter="accion" path="/fiadorPrestamo"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.FiadorAction">
+			<forward name="dml"
+				path="pagina-lista.cuentaCorriente.listaDeudores" />
+			<forward name="forwardToBusqueda"
+				path="pagina-lista.cuentaCorriente.busquedaFiador" />
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.fiadorPrestamo" />
+			<forward name="redirectInvalidData"
+				path="/fiadorPrestamoInvalido.do?accion=redirectInvalidData"
+				module="/cuentaCorriente" />
+		</action>
+		<action attribute="tipoSeguroForm" input="redirectInvalidData"
+			name="tipoSeguroForm" parameter="accion" path="/tipoSeguro"
+			scope="request" validate="true"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.TipoSeguroAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.tipoSeguro" />
+			<forward name="redirectInvalidData"
+				path="/tipoSeguro.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="segurosForm" input="redirectInvalidData"
+			name="segurosForm" parameter="accion" path="/seguros" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.SegurosAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.seguros" />
+			<forward name="redirectInvalidData"
+				path="/seguros.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="regresar"
+				path="/cuentaAsociado.do?accion=lista" />
+			<forward name="notas" path="/notaSeguro.do?accion=lista" />
+		</action>
+		<action attribute="chequePrestamoForm"
+			input="redirectInvalidData" name="chequePrestamoForm"
+			parameter="accion" path="/chequePrestamo" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.ChequePrestamoAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.chequePrestamo" />
+			<forward name="redirectInvalidData"
+				path="/chequePrestamo.do?accion=redirectInvalidData"
+				redirect="true" />
+		</action>
+		<action attribute="referenciaPersonalForm"
+			name="referenciaPersonalForm" parameter="accion"
+			path="/referenciaPersonal" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.ReferenciaPersonalAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaPersonal" />
+		</action>
+		<action attribute="referenciaComercialForm"
+			name="referenciaComercialForm" parameter="accion"
+			path="/referenciaComercial" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.ReferenciaComercialAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaComercial" />
+		</action>
+		<action attribute="movXPrestamoForm" input="redirectInvalidData"
+			name="movXPrestamoForm" parameter="accion" path="/movXPrestamo"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.MovXPrestamoAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.movXPrestamo" />
+		</action>
+		<action attribute="garantiaPrestamoForm"
+			input="redirectInvalidData" name="garantiaPrestamoForm"
+			parameter="accion" path="/garantiaPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.GarantiaPrestamoAction">
+			<forward name="forwardToDescuentosExternos"
+				path="/descuentosExternos.do?accion=lista" />
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.garantiaDML" />
+			<forward name="redirectInvalidData"
+				path="/invalidGarantiaPrestamo.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="desembolsoPrestamoForm"
+			input="redirectInvalidData" name="desembolsoPrestamoForm"
+			parameter="accion" path="/desembolsoPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.DesembolsoPrestamoAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.desembolsoPrestamo" />
+			<forward name="liqPre"
+				path="pagina-dml.cuentaCorriente.descargarRepLiqPrestamo" />				
+		</action>
+		<action attribute="notaSeguroForm" input="redirectInvalidData"
+			name="notaSeguroForm" parameter="accion" path="/notaSeguro"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.NotaSeguroAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.notaSeguro" />
+			<forward name="regresar" path="/seguros.do?accion=regreso" />
+			<forward name="redirectInvalidData"
+				path="/notaSeguro.do?accion=redirectInvalidData" redirect="true" />
+		</action>
+		<action attribute="fiadorForm" name="fiadorForm"
+			parameter="accion" path="/fiadorPrestamoInvalido" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.FiadorAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.fiadorPrestamo" />
+		</action>
+		<action attribute="garantiaPrestamoForm"
+			name="garantiaPrestamoForm" parameter="accion"
+			path="/invalidGarantiaPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.GarantiaPrestamoAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.garantiaDML" />
+		</action>
+		<action attribute="descuentosExternosForm"
+			name="descuentosExternosForm" parameter="accion"
+			path="/invalidDescuentosExternos" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.DescuentosExternosAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.descuentosExternos" />
+		</action>
+		<action attribute="notaGenericForm" input="redirectInvalidData"
+			name="notaGenericForm" parameter="accion" path="/nota"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.NotaAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.notasPrestamo" />
+			<forward name="redirectInvalidData"
+				path="/invalidNotaPrestamo.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="lineaPrestamoForm" name="lineaPrestamoForm"
+			parameter="accion" path="/invalidLineaPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.LineaPrestamoAction"
+			validate="false">
+			<forward name="verLista"
+				path="pagina-lista.cuentaCorriente.lineaPrestamo" />
+		</action>
+		<action attribute="notaGenericForm" name="notaGenericForm"
+			parameter="accion" path="/invalidNotaPrestamo" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.NotaAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.notasPrestamo" />
+		</action>
+		<action attribute="prestamoForm" name="prestamoForm"
+			parameter="accion" path="/descuentosCooperativa" scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.DescuentosCooperativaAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.descuentosCooperativa" />
+		</action>
+		<action attribute="agregaBenForm" input="redirectInvalidData"
+			name="agregaBenForm" parameter="accion" path="/agregaBen"
+			scope="request"
+			type="com.cetia.sicaco.cuentaCorriente.struts.action.AgregaBenAction">
+			<forward name="lista"
+				path="pagina-lista.cuentaCorriente.agregaBen" />
+			<forward name="regresar"
+				path="/cuentaAsociado.do?accion=lista" />
+		</action>
+
+	    <action
+	      attribute="preCuentaBancariaForm"
+	      input="redirectInvalidData"
+	      name="preCuentaBancariaForm"	    
+	      parameter="accion"
+	      path="/preCuentaBancaria"
+	      scope="request"
+	      type="com.cetia.sicaco.cuentaCorriente.struts.action.PreCuentaBancariaAction"
+	      validate="false">
+	      <forward name="lista" path="pagina-lista.cuentaCorriente.cuentasBancarias" />
+	      <forward name="toPrestamosAprobados" path="/prestamo.do?accion=listaAux" />	      
+	    </action>
+
+	    <action
+	      attribute="aplicarDescuentosForm"
+		  name="aplicarDescuentosForm"	    
+		  parameter="accion"
+		  path="/aplicarDescuentos"
+		  scope="request"
+	  	  type="com.cetia.sicaco.cuentaCorriente.struts.action.AplicarDescuentosPrestamoAction"
+  		  validate="false">
+  		  <forward name="lista" path="pagina-dml.cuentaCorriente.aplicarDescuentosPrestamo" />	      
+  		  <forward name="cancelar" path="/prestamo.do?accion=listaAux" />
+	    </action>
+	    
+	    <action
+	      attribute="retencionForm"
+	      name="retencionForm"
+	      parameter="accion"
+	      path="/retencion"
+	      scope="request"
+	      type="com.cetia.sicaco.cuentaCorriente.struts.action.RetencionAction"
+	      validate="false">
+	      <forward name="lista" path="pagina-dml.cuentaCorriente.aplicarDescuentosPrestamo" />
+	     </action>
+
+	</action-mappings>
+
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+    <message-resources
+    	parameter="com.cetia.sicaco.struts.ApplicationResourcesAux" key="aux"/>
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-cuentaCorriente.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+
+
+</struts-config>

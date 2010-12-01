@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+  	<form-bean name="cueCuentaForm" type="com.cetia.sicaco.contabilidad.struts.form.CueCuentaForm" />
+  	<form-bean name="partidaContableForm" type="com.cetia.sicaco.contabilidad.struts.form.PartidaContableForm" />
+  	<form-bean name="tipoCuentaContableForm" type="com.cetia.sicaco.contabilidad.struts.form.TipoCuentaContableForm" />
+  		<form-bean name="conceptoPartidaForm"  type="com.cetia.sicaco.contabilidad.struts.form.ConceptoPartidaForm" />
+  		<form-bean name="relacionModuloContaForm"  type="com.cetia.sicaco.contabilidad.struts.form.RelacionModuloContaForm" />
+  		<form-bean name="cierreMensualForm"  type="com.cetia.sicaco.contabilidad.struts.form.CierreMensualForm" />  
+  		<form-bean name="configuracionEstadoFinancieroForm"  type="com.cetia.sicaco.contabilidad.struts.form.ConfiguracionEstadoFinancieroForm" />
+  		<form-bean name="configuracionCuentasEspecialesForm"  type="com.cetia.sicaco.contabilidad.struts.form.CuentasEspecialesForm" />
+  		<form-bean name="cierreAnualForm"  type="com.cetia.sicaco.contabilidad.struts.form.CierreAnualForm" />
+  		<form-bean name="fondosOficinaForm"  type="com.cetia.sicaco.contabilidad.struts.form.FondosOficinaForm" />
+  		<form-bean name="desembolsoDeFondosForm"  type="com.cetia.sicaco.contabilidad.struts.form.DesembolsoDeFondosForm" />
+    <form-bean name="impresionChequesForm" type="com.cetia.sicaco.contabilidad.struts.form.ImpresionChequesForm" />
+  		</form-beans>
+  <global-exceptions />
+  
+  <global-forwards />
+  
+  <action-mappings >
+    <action
+      attribute="cueCuentaForm"
+      input="redirectInvalidData"
+      name="cueCuentaForm"
+      parameter="accion"
+      path="/cueCuenta"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.CueCuentaAction">
+      <forward name="lista" path="pagina-lista.contabilidad.cueCuenta" />
+      <forward name="redirectInvalidData" path="/invalidCueCuenta.do" />
+    </action>
+    <action
+      attribute="cueCuentaForm"
+      name="cueCuentaForm"
+      parameter="accion"
+      path="/invalidCueCuenta"
+      scope="request"
+      validate="false"
+      type="com.cetia.sicaco.contabilidad.struts.action.CueCuentaAction">
+      <forward name="lista" path="pagina-lista.contabilidad.cueCuenta" />
+    </action>
+    <action
+      attribute="partidaContableForm"
+      name="partidaContableForm"
+      parameter="accion"
+      path="/partidaContable"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.PartidaContableAction">
+      <forward name="lista" path="pagina-lista.contabilidad.partidaContableDML" />
+      <forward name="redirectInvalidData" path="/invalidPartidaContable.do?accion=redirectInvalidData" />
+      <forward name="regreso" path="/busquedaPartida.do?accion=lista" />
+    </action>
+    <action
+      attribute="partidaContableForm"
+      input="redirectInvalidData"
+      name="partidaContableForm"
+      parameter="accion"
+      path="/invalidPartidaContable"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.PartidaContableAction">
+      <forward name="lista" path="pagina-lista.contabilidad.partidaContableDML" />
+    </action>
+    <action
+      attribute="tipoCuentaContableForm"
+      input="redirectInvalidData"
+      name="tipoCuentaContableForm"
+      parameter="accion"
+      path="/tipoCuentaContable"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.TipoCuentaContableAction">
+      <forward name="lista" path="pagina-lista.contabilidad.tipoCuentaContable" />
+      <forward name="redirectInvalidData" path="/invalidTipoCuentaContable.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="tipoCuentaContableForm"
+      name="tipoCuentaContableForm"
+      parameter="accion"
+      path="/invalidTipoCuentaContable"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.TipoCuentaContableAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.tipoCuentaContable" />
+    </action>
+    <action
+      attribute="conceptoPartidaForm"
+      input="redirectInvalidData"
+      name="conceptoPartidaForm"
+      parameter="accion"
+      path="/conceptoPartida"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.ConceptoPartidaAction">
+      <forward name="lista" path="pagina-lista.contabilidad.conceptoPartida" />
+      <forward name="redirectInvalidData" path="/invalidConceptoPartida.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="conceptoPartidaForm"
+      name="conceptoPartidaForm"
+      parameter="accion"
+      path="/invalidConceptoPartida"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.ConceptoPartidaAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.conceptoPartida" />
+    </action>
+    <action
+      attribute="relacionModuloContaForm"
+      name="relacionModuloContaForm"
+      parameter="accion"
+      path="/relacionCuentaCorriente"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.RelacionCuentaCorrienteAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.unionCuentaCorriente" />
+    </action>
+    <action
+      attribute="partidaContableForm"
+      name="partidaContableForm"
+      parameter="accion"
+      path="/busquedaPartida"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.BusquedaPartidaContableAction"
+      validate="false">
+      <forward name="nuevaPartida" path="/partidaContable.do?accion=lista" />
+      <forward name="lista" path="pagina-lista.contabilidad.listaPartidas" />
+    </action>
+    <action
+      attribute="relacionModuloContaForm"
+      name="relacionModuloContaForm"
+      parameter="accion"
+      path="/relacionInventario"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.RelacionInventarioAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.unionInventario" />
+    </action>
+    <action
+      attribute="relacionModuloContaForm"
+      name="relacionModuloContaForm"
+      parameter="accion"
+      path="/relacionOrdenPago"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.RelacionOrdenPagoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.unionOrdenPago" />
+    </action>
+    <action
+      attribute="relacionModuloContaForm"
+      name="relacionModuloContaForm"
+      parameter="accion"
+      path="/relacionOrdenCompra"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.RelacionOrdenCompraAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.unionOrdenCompra" />
+    </action>
+    <action
+      attribute="cierreMensualForm"
+      name="cierreMensualForm"
+      parameter="accion"
+      path="/cierreMensual"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.CierreMensualAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.contabilidad.cierreMensual" />
+    </action>
+    <action
+      attribute="configuracionEstadoFinancieroForm"
+      name="configuracionEstadoFinancieroForm"
+      parameter="accion"
+      path="/configuracionEstadoFinanciero"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.ConfiguracionEstadoFinancieroAction"
+      validate="false">
+      <forward name="balance" path="pagina-dml.contabilidad.configBalance" />
+      <forward name="estado" path="pagina-dml.contabilidad.configEstado" />
+    </action>
+    <action
+      attribute="configuracionCuentasEspecialesForm"
+      name="configuracionCuentasEspecialesForm"
+      parameter="accion"
+      path="/cuentasEspeciales"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.CuentasEspecialesAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.contabilidad.configCuentas" />
+    </action>
+    <action
+      attribute="fondosOficinaForm"
+      name="fondosOficinaForm"
+      parameter="accion"
+      path="/fondosOficina"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.FondosOficinaAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.contabilidad.fondosOficina" />
+    </action>
+    <action
+      attribute="desembolsoDeFondosForm"
+      name="desembolsoDeFondosForm"
+      parameter="accion"
+      path="/desembolsoDeFondos"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.DesembolsoDeFondosAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.contabilidad.desembolsoDeFondos" />
+    </action>
+    
+    <action
+      attribute="cierreAnualForm"
+      name="cierreAnualForm"
+      parameter="accion"
+      path="/cierreAnual"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.CierreAnualAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.contabilidad.cierreAnual" />
+    </action>
+    
+    
+    <action
+      attribute="impresionChequesForm"
+      input="pagina-dml.contabilidad.impresionCheque"
+      name="impresionChequesForm"
+      parameter="accion"
+      path="/impresionCheques"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.ImpresionChequesAction" >
+      <forward name="lista" path="pagina-dml.contabilidad.impresionCheque" />
+      <forward name="noChequeSelec" path="/impresionCheques.do?accion=lista" />
+    </action>
+    <action
+      attribute="relacionModuloContaForm"
+      name="relacionModuloContaForm"
+      parameter="accion"
+      path="/relacionProcesosEspeciales"
+      scope="request"
+      type="com.cetia.sicaco.contabilidad.struts.action.RelacionProcesosEspecialesAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.contabilidad.unionProcesosEspeciales" />
+    </action>
+ 
+  </action-mappings>
+
+  <controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-contabilidad.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+</struts-config>
+

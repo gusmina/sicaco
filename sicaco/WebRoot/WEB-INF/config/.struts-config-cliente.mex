@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/iniciocliente.do" location="165,15" dimension="97,62" />
+  <StrutsActivity path="/comentarios.do" location="45,120" dimension="151,100" />
+  <StrutsActivity path="/ingresarComentarios.do" location="330,210" dimension="150,52" />
+  <StrutsActivity path="homeCliente;6" location="345,15" dimension="150,61" />
+  <StrutsActivity path="plantilla" location="30,15" dimension="65,49" />
+  <StrutsActivity path="pagina.comentarios" location="345,135" dimension="123,49" />
+  <StrutsActivity path="verLista" location="60,270" dimension="68,49" />
+  <StrutsActivity path="/reporteCliente.do" location="571,136" dimension="150,100" />
+  <StrutsActivity path="pagina.estadoCuenta" location="870,165" dimension="154,50" />
+  <StrutsTransition id="/comentarios.do,verLista,pagina.comentarios,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="196,169" />
+      <AbsolutePoint location="345,169" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/reporteCliente.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="489,375" />
+      <AbsolutePoint location="616,375" />
+      <AbsolutePoint location="616,236" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/iniciocliente.do,null,plantilla,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="165,46" />
+      <AbsolutePoint location="95,46" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/reporteCliente.do,dml,pagina.estadoCuenta,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="721,186" />
+      <AbsolutePoint location="870,186" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="verLista,null,/comentarios.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="94,270" />
+      <AbsolutePoint location="94,220" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="homeCliente;6,null,/iniciocliente.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="345,45" />
+      <AbsolutePoint location="262,45" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ingresarComentarios.do,null,pagina.comentarios,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="405,210" />
+      <AbsolutePoint location="405,184" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/reporteCliente.do,redirectInvalidData,/invalidReporteCliente.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="646,236" />
+      <AbsolutePoint location="646,335" />
+      <AbsolutePoint location="855,335" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

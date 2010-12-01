@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_BeneficiariosXAsociados" printOrder="Horizontal" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="codEmpresa" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer (-1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ascId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rubro" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cta_etr_empresa_trabajo.`etr_nombre` as empresa,
+	 aso.`asc_codigo` AS codigoAsociado,
+     CONCAT_WS(' ',per.`PER_PRIMER_NOMBRE`,per.`PER_SEGUNDO_NOMBRE`,
+		per.`PER_TERCER_NOMBRE`,per.`PER_PRIMER_APELLIDO`,
+		per.`PER_SEGUNDO_APELLIDO`,per.`PER_APELLIDO_CASADA`) as nombreCompletoAsociado,
+     CONCAT_WS(' ',ben.`BEN_PRIMER_NOMBRE`, ben.`BEN_SEGUNDO_NOMBRE`,
+		ben.`BEN_PRIMER_APELLIDO`, ben.`BEN_SEGUNDO_APELLIDO`, 	
+		ben.`BEN_APELLIDO_CASADA`) as nombreCompletoBeneficiario,
+     (EXTRACT(YEAR FROM CURDATE()) - EXTRACT(YEAR FROM ben.`BEN_FECHA_NACIMIENTO`)) AS edad,
+     ben.`BEN_SEXO` AS cta_ben_beneficiarios_BEN_SEXO,
+     IF(cta_cas_cuenta_asociado.`CAH_ID` IS NOT NULL,
+	(SELECT  IFNULL(tah.`TAH_NOMBRE`,'APORTACIONES')
+		FROM
+     	`cta_cah_cuenta_ahorro` ah INNER JOIN `cta_cas_cuenta_asociado` cas ON ah.`cah_id` = cas.`cah_id`
+     	LEFT JOIN `cta_tah_tipo_ahorro` tah ON ah.`tah_id` = tah.`TAH_ID`
+	WHERE  cas.cas_cuenta=bxc.`cas_cuenta`),
+	(SELECT    tis.`TIS_NOMBRE`
+	FROM 	`cta_seg_seguros` seg INNER JOIN `cta_cas_cuenta_asociado` cta_cas 
+		ON seg.`SEG_ID` = cta_cas.`seg_id`
+     		INNER JOIN `cta_tis_tipo_seguro` tis ON seg.`TIS_ID` = tis.`TIS_ID`
+	WHERE cta_cas.cas_cuenta=bxc.`cas_cuenta`))  	    as nombreCuenta,
+     bxc.`bxc_porcentaje` AS cta_bxc_beneficiarios_bxc_porcentaje
+FROM
+     `cta_asc_asociado` aso INNER JOIN `sec_per_persona` per ON aso.`PER_ID` = per.`PER_ID`
+     INNER JOIN `cta_ben_beneficiarios` ben ON aso.`ASC_ID` = ben.`ASC_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo 
+	ON aso.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+	ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+     INNER JOIN `cta_bxc_beneficiarios_cuenta` bxc ON ben.`BEN_ID` = bxc.`ben_id`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON 	
+	bxc.`cas_cuenta`=cta_cas_cuenta_asociado.`CAS_CUENTA`
+WHERE
+     	per.`PER_ID` = aso.`PER_ID`
+	 AND if ($P{codEmpresa}<>-1, cta_etr_empresa_trabajo.`etr_id`=$P{codEmpresa},1)
+	 AND (     IF(cta_cas_cuenta_asociado.`CAH_ID` IS NOT NULL,
+	(SELECT  IFNULL(tah.`TAH_NOMBRE`,'APORTACIONES')
+		FROM
+     	`cta_cah_cuenta_ahorro` ah INNER JOIN `cta_cas_cuenta_asociado` cas ON ah.`cah_id` = cas.`cah_id`
+     	LEFT JOIN `cta_tah_tipo_ahorro` tah ON ah.`tah_id` = tah.`TAH_ID`
+	WHERE  cas.cas_cuenta=bxc.`cas_cuenta`),
+	(SELECT    tis.`TIS_NOMBRE`
+	FROM 	`cta_seg_seguros` seg INNER JOIN `cta_cas_cuenta_asociado` cta_cas 
+		ON seg.`SEG_ID` = cta_cas.`seg_id`
+     		INNER JOIN `cta_tis_tipo_seguro` tis ON seg.`TIS_ID` = tis.`TIS_ID`
+	WHERE cta_cas.cas_cuenta=bxc.`cas_cuenta`))  ) like $P{rubro}
+AND aso.`asc_id` like $P{ascId}
+ORDER BY      cta_etr_empresa_trabajo.`etr_nombre`,codigoAsociado, nombreCuenta]]>
+	</queryString>
+	<field name="empresa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigoAsociado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreCompletoAsociado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreCompletoBeneficiario" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="edad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_ben_beneficiarios_BEN_SEXO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreCuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_bxc_beneficiarios_bxc_porcentaje" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="empresa" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{empresa}]]></groupExpression>
+		<groupHeader>
+			<band height="38">
+				<rectangle radius="2">
+					<reportElement mode="Opaque" x="0" y="18" width="732" height="20" forecolor="#FFFFFF" backcolor="#333333"/>
+					<graphicElement>
+						<pen lineColor="#000000"/>
+					</graphicElement>
+				</rectangle>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" mode="Transparent" x="0" y="20" width="732" height="15" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{empresa}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="asociado" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{codigoAsociado}]]></groupExpression>
+		<groupHeader>
+			<band height="25" splitType="Stretch">
+				<rectangle>
+					<reportElement x="0" y="12" width="732" height="13"/>
+				</rectangle>
+				<rectangle>
+					<reportElement x="0" y="0" width="732" height="12" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-17" x="315" y="12" width="50" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[EDAD (AÑOS)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-11" x="401" y="12" width="37" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SEXO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-16" x="471" y="13" width="156" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CUENTA BENEFICIARIO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-18" x="647" y="12" width="60" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[PORCENTAJE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-7" x="71" y="12" width="209" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[NOMBRE DE BENEFICIARIO]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" mode="Transparent" x="0" y="0" width="732" height="12" forecolor="#000000" backcolor="#D2D2D2"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["         "+$F{codigoAsociado}+"      "+$F{nombreCompletoAsociado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="9" splitType="Stretch">
+				<line>
+					<reportElement x="0" y="0" width="732" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="76" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="48" width="732" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE BENEFICIARIOS POR ASOCIADO]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="372" y="62" width="100" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-3" x="284" y="62" width="86" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de Emision:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="732" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="26" width="732" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Cooperativa de empleados de TACA y AEROMAN]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="732" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="3" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="401" y="0" width="37" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_ben_beneficiarios_BEN_SEXO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="647" y="0" width="60" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$F{cta_bxc_beneficiarios_bxc_porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="471" y="1" width="156" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreCuenta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="71" y="1" width="212" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreCompletoBeneficiario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="315" y="0" width="47" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="731" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="15"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="513" y="3" width="191" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="704" y="3" width="27" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+ $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-3" x="0" y="0" width="732" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="16" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="514" y="4" width="191" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="705" y="4" width="27" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+ $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-3" x="0" y="0" width="732" height="1"/>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>

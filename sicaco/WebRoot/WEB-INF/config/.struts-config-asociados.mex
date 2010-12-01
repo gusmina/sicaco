@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/empresaTrabajo.do" location="0,45" dimension="211,88" />
+  <StrutsActivity path="/tipoDomicilio.do" location="1250,50" dimension="328,88" />
+  <StrutsActivity path="/departamentoTrabajo.do" location="650,50" dimension="374,88" />
+  <StrutsActivity path="/tipoContrato.do" location="810,-345" dimension="331,88" />
+  <StrutsActivity path="/tipoAsociado.do" location="950,250" dimension="331,88" />
+  <StrutsActivity path="/tipoTransaccion.do" location="50,450" dimension="345,88" />
+  <StrutsActivity path="/tipoComprobante.do" location="270,-270" dimension="353,88" />
+  <StrutsActivity path="/asociado.do" location="50,650" dimension="311,88" />
+  <StrutsActivity path="/transaccionAsociado.do" location="650,650" dimension="368,88" />
+  <StrutsActivity path="/dependiente.do" location="-405,645" dimension="211,100" />
+  <StrutsActivity path="/cuentaBancaria.do" location="1250,550" dimension="375,88" />
+  <StrutsActivity path="/ingresoAsociado.do" location="-240,420" dimension="150,100" />
+  <StrutsActivity path="/codigosAnteriores.do" location="350,250" dimension="358,88" />
+  <StrutsActivity path="/invalidAsociado.do" location="-330,1095" dimension="364,88" />
+  <StrutsActivity path="/invalidTipoContrato.do" location="1251,-453" dimension="150,100" />
+  <StrutsActivity path="/invalidDependiente.do" location="-630,555" dimension="150,100" />
+  <StrutsActivity path="toAsociados;6" location="555,525" dimension="150,100" />
+  <StrutsActivity path="redirectEmpresa;6" location="1635,945" dimension="117,49" />
+  <StrutsActivity path="redirectListaP;6" location="1545,240" dimension="158,75" />
+  <StrutsActivity path="pagina-lista.asociados.empresaTrabajo" location="45,165" dimension="217,49" />
+  <StrutsActivity path="redirectInvalidData" location="135,-150" dimension="121,49" />
+  <StrutsActivity path="pagina-lista.asociados.tipoDomicilio" location="1250,750" dimension="197,49" />
+  <StrutsActivity path="pagina-lista.asociados.departamentoTrabajo" location="630,-90" dimension="244,49" />
+  <StrutsActivity path="pagina-lista.asociados.tipoContrato" location="1230,-315" dimension="200,49" />
+  <StrutsActivity path="pagina-lista.asociados.tipoAsociado" location="1005,405" dimension="210,75" />
+  <StrutsActivity path="pagina-lista.asociados.tipoTransaccion" location="950,850" dimension="214,49" />
+  <StrutsActivity path="pagina-lista.asociados.tipoComprobante" location="210,-360" dimension="222,49" />
+  <StrutsActivity path="pagina-dml.asociados.nuevoAsociadoFromUser" location="555,450" dimension="260,49" />
+  <StrutsActivity path="/correo.do" location="225,960" dimension="90,75" />
+  <StrutsActivity path="pagina-lista.asociados.busquedaAsociadoInactivo" location="1550,1050" dimension="293,51" />
+  <StrutsActivity path="pagina-dml.asociados.nuevoAsociado" location="-30,870" dimension="219,75" />
+  <StrutsActivity path="/sesion.do" location="-615,780" dimension="89,75" />
+  <StrutsActivity path="/cuentaAportacion.do" location="1065,1035" dimension="184,87" />
+  <StrutsActivity path="pagina-lista.asociados.busquedaAsociado" location="360,840" dimension="239,75" />
+  <StrutsActivity path="pagina-lista.asociados.reingresoAsociado" location="650,850" dimension="237,75" />
+  <StrutsActivity path="/telefonos.do" location="135,765" dimension="104,75" />
+  <StrutsActivity path="pagina-lista.asociados.transaccionAsociado" location="650,1050" dimension="247,75" />
+  <StrutsActivity path="pagina-lista.asociados.transaccionDML" location="795,555" dimension="254,50" />
+  <StrutsActivity path="pagina-lista.asociados.dependientes" location="-405,930" dimension="204,49" />
+  <StrutsActivity path="pagina-dml.asociados.vistaDependientes" location="-315,855" dimension="225,49" />
+  <StrutsActivity path="pagina-dml.asociados.nuevoDependiente" location="-600,435" dimension="227,49" />
+  <StrutsActivity path="pagina-lista.asociados.cuentasBancarias" location="1550,750" dimension="228,49" />
+  <StrutsActivity path="pagina-lista.asociados.ingresosAsociado" location="-165,255" dimension="232,75" />
+  <StrutsActivity path="pagina-lista.asociados.codigosAnteriores" location="1550,850" dimension="229,49" />
+  <StrutsActivity path="/persona.do" location="1590,360" dimension="95,75" />
+  <StrutsTransition id="/departamentoTrabajo.do,redirectInvalidData,/departamentoTrabajo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="867,50" />
+      <AbsolutePoint location="867,4" />
+      <AbsolutePoint location="1186,4" />
+      <AbsolutePoint location="1186,94" />
+      <AbsolutePoint location="1024,94" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoTransaccion.do,lista,pagina-lista.asociados.tipoTransaccion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="282,450" />
+      <AbsolutePoint location="282,353" />
+      <AbsolutePoint location="1230,353" />
+      <AbsolutePoint location="1230,874" />
+      <AbsolutePoint location="1164,874" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/codigosAnteriores.do,lista,pagina-lista.asociados.codigosAnteriores,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="529,250" />
+      <AbsolutePoint location="529,-26" />
+      <AbsolutePoint location="1825,-26" />
+      <AbsolutePoint location="1825,874" />
+      <AbsolutePoint location="1779,874" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/asociado.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,-125" />
+      <AbsolutePoint location="-495,-125" />
+      <AbsolutePoint location="-495,353" />
+      <AbsolutePoint location="15,353" />
+      <AbsolutePoint location="15,575" />
+      <AbsolutePoint location="115,575" />
+      <AbsolutePoint location="115,650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionAsociado.do,dml,pagina-lista.asociados.transaccionDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="834,650" />
+      <AbsolutePoint location="834,605" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoTransaccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="195,-101" />
+      <AbsolutePoint location="195,-75" />
+      <AbsolutePoint location="312,-75" />
+      <AbsolutePoint location="312,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/empresaTrabajo.do,lista,pagina-lista.asociados.empresaTrabajo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="105,133" />
+      <AbsolutePoint location="105,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,dml,pagina-dml.asociados.nuevoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="90,738" />
+      <AbsolutePoint location="90,870" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectListaP;6,null,/persona.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1624,315" />
+      <AbsolutePoint location="1624,360" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cuentaBancaria.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,-103" />
+      <AbsolutePoint location="2263,-103" />
+      <AbsolutePoint location="2263,594" />
+      <AbsolutePoint location="1625,594" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionAsociado.do,lista,pagina-lista.asociados.transaccionAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="912,738" />
+      <AbsolutePoint location="912,1087" />
+      <AbsolutePoint location="897,1087" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/dependiente.do,lista,pagina-lista.asociados.dependientes,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-330,745" />
+      <AbsolutePoint location="-330,930" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/departamentoTrabajo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="226,-101" />
+      <AbsolutePoint location="226,94" />
+      <AbsolutePoint location="650,94" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ingresoAsociado.do,lista,pagina-lista.asociados.ingresosAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-150,420" />
+      <AbsolutePoint location="-150,330" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoDomicilio.do,lista,pagina-lista.asociados.tipoDomicilio,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1578,124" />
+      <AbsolutePoint location="1885,124" />
+      <AbsolutePoint location="1885,695" />
+      <AbsolutePoint location="1348,695" />
+      <AbsolutePoint location="1348,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoComprobante.do,redirectInvalidData,/tipoComprobante.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="447,-270" />
+      <AbsolutePoint location="447,-435" />
+      <AbsolutePoint location="728,-435" />
+      <AbsolutePoint location="728,-226" />
+      <AbsolutePoint location="623,-226" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,listaInactivo,pagina-lista.asociados.busquedaAsociadoInactivo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="269,738" />
+      <AbsolutePoint location="269,932" />
+      <AbsolutePoint location="1628,932" />
+      <AbsolutePoint location="1628,1050" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,transacciones,/transaccionAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="360,738" />
+      <AbsolutePoint location="360,780" />
+      <AbsolutePoint location="804,780" />
+      <AbsolutePoint location="804,738" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/dependiente.do,aperturaAportacion,/cuentaAportacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-405,725" />
+      <AbsolutePoint location="-780,725" />
+      <AbsolutePoint location="-780,1348" />
+      <AbsolutePoint location="1127,1348" />
+      <AbsolutePoint location="1127,1122" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidTipoContrato.do,lista,pagina-lista.asociados.tipoContrato,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1326,-353" />
+      <AbsolutePoint location="1326,-315" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoContrato.do,2" routingType="1">
+    <Bendpoints>
+      <Point rDim1="60,-234" rDim2="-510,151" />
+      <Point rDim1="420,-234" rDim2="-150,151" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,dependientes,/dependiente.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,672" />
+      <AbsolutePoint location="-194,672" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoContrato.do,redirectInvalidData,/invalidTipoContrato.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="60,-134" rDim2="-291,-32" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoAsociado.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="225,-150" />
+      <AbsolutePoint location="225,-167" />
+      <AbsolutePoint location="1115,-167" />
+      <AbsolutePoint location="1115,250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionAsociado.do,regresar,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="834,738" />
+      <AbsolutePoint location="834,820" />
+      <AbsolutePoint location="304,820" />
+      <AbsolutePoint location="304,738" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,correo,/correo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="247,738" />
+      <AbsolutePoint location="247,960" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,error,pagina-dml.asociados.nuevoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="60,738" />
+      <AbsolutePoint location="60,870" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/dependiente.do,dml,pagina-dml.asociados.nuevoDependiente,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-388,645" />
+      <AbsolutePoint location="-388,484" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,aperturaAportacion,/cuentaAportacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="85,650" />
+      <AbsolutePoint location="85,632" />
+      <AbsolutePoint location="-438,632" />
+      <AbsolutePoint location="-438,1258" />
+      <AbsolutePoint location="1157,1258" />
+      <AbsolutePoint location="1157,1122" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/empresaTrabajo.do,redirectInvalidData,/empresaTrabajo.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="90,-74" rDim2="90,-74" />
+      <Point rDim1="180,-74" rDim2="180,-74" />
+      <Point rDim1="180,-29" rDim2="180,-29" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/dependiente.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,-103" />
+      <AbsolutePoint location="-321,-103" />
+      <AbsolutePoint location="-321,645" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidAsociado.do,asocDML,pagina-dml.asociados.nuevoAsociadoFromUser,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-330,1139" />
+      <AbsolutePoint location="-705,1139" />
+      <AbsolutePoint location="-705,229" />
+      <AbsolutePoint location="723,229" />
+      <AbsolutePoint location="723,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,lista,pagina-lista.asociados.busquedaAsociado,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="20,-79" rDim2="-254,-262" />
+      <Point rDim1="245,-79" rDim2="-29,-262" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidDependiente.do,dml,pagina-dml.asociados.nuevoDependiente,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-555,555" />
+      <AbsolutePoint location="-555,484" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,telefono,/telefonos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="188,738" />
+      <AbsolutePoint location="188,765" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionAsociado.do,regresar,pagina-lista.asociados.transaccionDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="804,650" />
+      <AbsolutePoint location="804,605" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,redirectInvalidData,/invalidAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,694" />
+      <AbsolutePoint location="-83,694" />
+      <AbsolutePoint location="-83,1095" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,cuentasBancarias,/cuentaBancaria.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="361,664" />
+      <AbsolutePoint location="410,664" />
+      <AbsolutePoint location="410,383" />
+      <AbsolutePoint location="1356,383" />
+      <AbsolutePoint location="1356,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="toAsociados;6,null,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="555,575" />
+      <AbsolutePoint location="175,575" />
+      <AbsolutePoint location="175,650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,asocDML,pagina-dml.asociados.nuevoAsociadoFromUser,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="361,694" />
+      <AbsolutePoint location="507,694" />
+      <AbsolutePoint location="507,465" />
+      <AbsolutePoint location="555,465" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoComprobante.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="195,-150" />
+      <AbsolutePoint location="195,-226" />
+      <AbsolutePoint location="270,-226" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoAsociado.do,redirectInvalidData,/tipoAsociado.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="10,-99" rDim2="10,-99" />
+      <Point rDim1="220,-99" rDim2="220,-99" />
+      <Point rDim1="220,6" rDim2="220,6" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoDomicilio.do,redirectInvalidData,/tipoDomicilio.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1414,50" />
+      <AbsolutePoint location="1414,-75" />
+      <AbsolutePoint location="1653,-75" />
+      <AbsolutePoint location="1653,94" />
+      <AbsolutePoint location="1578,94" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,sesion,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,724" />
+      <AbsolutePoint location="15,724" />
+      <AbsolutePoint location="15,817" />
+      <AbsolutePoint location="-526,817" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/dependiente.do,vistaDep,pagina-dml.asociados.vistaDependientes,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-299,745" />
+      <AbsolutePoint location="-299,855" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectEmpresa;6,null,/empresaTrabajo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1752,969" />
+      <AbsolutePoint location="2005,969" />
+      <AbsolutePoint location="2005,-510" />
+      <AbsolutePoint location="105,-510" />
+      <AbsolutePoint location="105,45" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoAsociado.do,lista,pagina-lista.asociados.tipoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1115,338" />
+      <AbsolutePoint location="1115,405" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/transaccionAsociado.do,regresar,pagina-lista.asociados.busquedaAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,695" />
+      <AbsolutePoint location="570,695" />
+      <AbsolutePoint location="570,840" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,ingresos,/ingresoAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,664" />
+      <AbsolutePoint location="-165,664" />
+      <AbsolutePoint location="-165,520" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoComprobante.do,lista,pagina-lista.asociados.tipoComprobante,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="417,-270" />
+      <AbsolutePoint location="417,-311" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoContrato.do,lista,pagina-lista.asociados.tipoContrato,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1141,-300" />
+      <AbsolutePoint location="1230,-300" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidAsociado.do,dml,pagina-dml.asociados.nuevoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-15,1095" />
+      <AbsolutePoint location="-15,945" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoTransaccion.do,redirectInvalidData,/tipoTransaccion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="252,450" />
+      <AbsolutePoint location="252,435" />
+      <AbsolutePoint location="440,435" />
+      <AbsolutePoint location="440,495" />
+      <AbsolutePoint location="395,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/departamentoTrabajo.do,lista,pagina-lista.asociados.departamentoTrabajo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="837,50" />
+      <AbsolutePoint location="837,-41" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/empresaTrabajo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="165,-101" />
+      <AbsolutePoint location="165,45" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/dependiente.do,redirectInvalidData,/invalidDependiente.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-405,695" />
+      <AbsolutePoint location="-555,695" />
+      <AbsolutePoint location="-555,655" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoDomicilio.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,-125" />
+      <AbsolutePoint location="1384,-125" />
+      <AbsolutePoint location="1384,50" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,codigosAnteriores,/codigosAnteriores.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="361,724" />
+      <AbsolutePoint location="539,724" />
+      <AbsolutePoint location="539,338" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaBancaria.do,lista,pagina-lista.asociados.cuentasBancarias,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1565,638" />
+      <AbsolutePoint location="1565,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/asociado.do,reingreso,pagina-lista.asociados.reingresoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="225,650" />
+      <AbsolutePoint location="225,605" />
+      <AbsolutePoint location="477,605" />
+      <AbsolutePoint location="477,665" />
+      <AbsolutePoint location="614,665" />
+      <AbsolutePoint location="614,887" />
+      <AbsolutePoint location="650,887" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

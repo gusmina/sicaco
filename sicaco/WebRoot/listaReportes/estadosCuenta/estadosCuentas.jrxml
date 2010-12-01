@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="estadosCuentas" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ascId" class="java.lang.String"/>
+	<parameter name="fecha1" class="java.util.Date"/>
+	<parameter name="fecha2" class="java.util.Date"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     	cta_asc_asociado.`ASC_CODIGO` AS CODIGO, 
+	CONCAT_WS(' ',sec_per_persona.`PER_PRIMER_NOMBRE`,sec_per_persona.`PER_SEGUNDO_NOMBRE`,
+		sec_per_persona.`PER_TERCER_NOMBRE`,sec_per_persona.`PER_PRIMER_APELLIDO`,
+		sec_per_persona.`PER_SEGUNDO_APELLIDO`,sec_per_persona.`PER_APELLIDO_CASADA`)as nombreCompleto,
+	if(cta_asc_asociado.`DPT_ID` is null, '-----',cta_dpt_departamento_trabajo.`DPT_NOMBRE`) AS DPT_NOMBRE
+FROM
+     	`cta_asc_asociado` cta_asc_asociado 
+	INNER JOIN `sec_per_persona` sec_per_persona 
+	ON cta_asc_asociado.`PER_ID` = sec_per_persona.`PER_ID`
+	LEFT OUTER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo 
+	ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     	
+WHERE 
+	cta_asc_asociado.`ASC_ID` = $P{ascId}]]>
+	</queryString>
+	<field name="CODIGO" class="java.lang.String"/>
+	<field name="nombreCompleto" class="java.lang.String"/>
+	<field name="DPT_NOMBRE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="107" splitType="Stretch">
+			<rectangle radius="7">
+				<reportElement key="rectangle-1" x="0" y="1" width="550" height="100"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-6" x="159" y="3" width="234" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" mode="Transparent" x="0" y="20" width="550" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[COOPERATIVA DE EMPLEADOS DE TACA Y AEROMAN]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="256" y="39" width="69" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-15" x="11" y="53" width="48" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Codigo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="11" y="69" width="48" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="11" y="85" width="48" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Departamento:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-1" x="59" y="69" width="493" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="351" y="39" width="69" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-3" x="59" y="53" width="493" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-4" x="59" y="85" width="493" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DPT_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-18" x="136" y="39" width="128" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Estado de Cuentas del]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-19" x="336" y="39" width="14" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[al]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="0" y="0" width="550" height="10"/>
+				<subreportParameter name="ascId">
+					<subreportParameterExpression><![CDATA[$P{ascId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha2">
+					<subreportParameterExpression><![CDATA[$P{fecha2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha1">
+					<subreportParameterExpression><![CDATA[$P{fecha1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sub.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="115" splitType="Prevent">
+			<elementGroup/>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="93" y="16" width="243" height="99"/>
+				<subreportParameter name="fecha2">
+					<subreportParameterExpression><![CDATA[$P{fecha2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ascId">
+					<subreportParameterExpression><![CDATA[$P{ascId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha1">
+					<subreportParameterExpression><![CDATA[$P{fecha1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "sub4.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

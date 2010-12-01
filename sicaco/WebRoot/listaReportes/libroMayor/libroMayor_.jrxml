@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libroMayor" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="FECHA" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     con_cue_cuenta.`CUE_CODIGO_CUENTA` AS CODIGO_CUENTA,
+     con_cue_cuenta.`CUE_NOMBRE` AS CUE_NOMBRE,
+     IFNULL((SELECT  sac.SAC_SALDO_A_LA_FECHA FROM con_sac_saldos_anteriores_cuenta sac
+       WHERE sac.cue_id= con_sac_saldos_anteriores_cuenta.`CUE_ID`
+             AND EXTRACT(YEAR_MONTH FROM sac.`SAC_FECHA`)=
+                 EXTRACT(YEAR_MONTH FROM con_sac_saldos_anteriores_cuenta.`SAC_FECHA`) limit 1),0.0) AS SALDO_ANTERIOR,
+	con_cue_cuenta.`CUE_SALDO_ACTUAL` AS SALDO_ACTUAL,
+IFNULL(SUM(con_dpa_detalle_partida.dpa_valor_debe),0.0) AS DEBE,
+IF(con_tic_tipo_cuenta.tic_acree_deudo=1,1,-1) AS MULTIP_DEBE,
+IFNULL(SUM(con_dpa_detalle_partida.dpa_valor_haber),0.0) AS HABER,
+IF(con_tic_tipo_cuenta.tic_acree_deudo=0,1,-1) AS MULTIP_HABER
+
+FROM
+	con_sac_saldos_anteriores_cuenta,con_tic_tipo_cuenta,
+        con_cue_cuenta LEFT JOIN con_dpa_detalle_partida
+        ON con_cue_cuenta.cue_id = con_dpa_detalle_partida.cue_id
+WHERE 
+con_cue_cuenta.cue_id=con_sac_saldos_anteriores_cuenta.cue_id and
+con_cue_cuenta.tic_id=con_tic_tipo_cuenta.tic_id and
+LENGTH(con_cue_cuenta.cue_codigo_cuenta)=3 and 
+con_cue_cuenta.cue_id not in
+(
+SELECT c.cue_id
+FROM con_dpa_detalle_partida d, con_pco_partida_contable p,con_cue_cuenta c
+WHERE d.pco_id=p.pco_id and d.cue_id=c.cue_id and
+EXTRACT(YEAR_MONTH FROM p.pco_fecha_ingreso_partida)=
+EXTRACT(YEAR_MONTH FROM $P{FECHA}) and 
+LENGTH(c.cue_codigo_cuenta)=3
+order by c.cue_codigo_cuenta
+)
+GROUP BY CODIGO_CUENTA
+UNION
+
+SELECT
+     con_cue_cuenta.`CUE_CODIGO_CUENTA` AS CODIGO_CUENTA,
+     con_cue_cuenta.`CUE_NOMBRE` AS CUE_NOMBRE,
+     IFNULL((SELECT  sac.SAC_SALDO_A_LA_FECHA FROM con_sac_saldos_anteriores_cuenta sac
+       WHERE sac.cue_id= con_sac_saldos_anteriores_cuenta.`CUE_ID`
+             AND EXTRACT(YEAR_MONTH FROM sac.`SAC_FECHA`)=
+                 EXTRACT(YEAR_MONTH FROM con_sac_saldos_anteriores_cuenta.`SAC_FECHA`)),0.0) AS SALDO_ANTERIOR,
+	con_cue_cuenta.`CUE_SALDO_ACTUAL` AS SALDO_ACTUAL,
+IFNULL(SUM(con_dpa_detalle_partida.dpa_valor_debe),0.0) AS DEBE,
+IF(con_tic_tipo_cuenta.tic_acree_deudo=1,1,-1) AS MULTIP_DEBE,
+IFNULL(SUM(con_dpa_detalle_partida.dpa_valor_haber),0.0) AS HABER,
+IF(con_tic_tipo_cuenta.tic_acree_deudo=0,1,-1) AS MULTIP_HABER
+
+FROM
+	con_sac_saldos_anteriores_cuenta,con_tic_tipo_cuenta,
+        con_cue_cuenta INNER JOIN con_dpa_detalle_partida
+        ON con_cue_cuenta.cue_id = con_dpa_detalle_partida.cue_id
+	INNER JOIN con_pco_partida_contable
+	ON con_dpa_detalle_partida.pco_id = con_pco_partida_contable.pco_id
+WHERE 
+con_cue_cuenta.cue_id=con_sac_saldos_anteriores_cuenta.cue_id and
+con_cue_cuenta.tic_id=con_tic_tipo_cuenta.tic_id and
+LENGTH(con_cue_cuenta.cue_codigo_cuenta)=3 and
+EXTRACT(YEAR_MONTH FROM con_pco_partida_contable.pco_fecha_ingreso_partida)=
+EXTRACT(YEAR_MONTH FROM $P{FECHA})
+GROUP BY CODIGO_CUENTA
+
+ORDER BY CODIGO_CUENTA]]>
+	</queryString>
+	<field name="CODIGO_CUENTA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CUE_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SALDO_ANTERIOR" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SALDO_ACTUAL" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DEBE" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MULTIP_DEBE" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="HABER" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="MULTIP_HABER" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="SALDO" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{SALDO_ANTERIOR}.doubleValue()+
+		($F{DEBE}.doubleValue()*$F{MULTIP_DEBE}.doubleValue())+
+		($F{HABER}.doubleValue()*$F{MULTIP_HABER}.doubleValue()))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_DEBE_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEBE}]]></variableExpression>
+	</variable>
+	<variable name="SUM_HABER_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{HABER}]]></variableExpression>
+	</variable>
+	<variable name="MES" class="java.lang.String">
+		<variableExpression><![CDATA[new String($P{FECHA}.getMonth()==1?"ENERO":
+		$P{FECHA}.getMonth()==2?"FEBRERO":
+		$P{FECHA}.getMonth()==3?"MARZO":
+		$P{FECHA}.getMonth()==4?"ABRIL":
+		$P{FECHA}.getMonth()==5?"MAYO":
+		$P{FECHA}.getMonth()==6?"JUNIO":
+		$P{FECHA}.getMonth()==7?"JULIO":
+		$P{FECHA}.getMonth()==8?"AGOSTO":
+		$P{FECHA}.getMonth()==9?"SEPTIEMBRE":
+		$P{FECHA}.getMonth()==10?"OCTUBRE":
+		$P{FECHA}.getMonth()==11?"NOVIEMBRE":"DICIEMBRE")]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="81" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" mode="Opaque" x="0" y="51" width="552" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LIBRO MAYOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="167" y="1" width="215" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Perpetua" size="18" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[C E T Y A,  D E  R. L.]]></text>
+			</staticText>
+			<rectangle radius="15">
+				<reportElement key="rectangle-1" mode="Transparent" x="172" y="0" width="204" height="26"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="64" width="59" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[REPORTE AL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="37" width="552" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Valores Expresados en Dólares de los Estados Unidos de América]]></text>
+			</staticText>
+			<textField pattern="dd MMMMM yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="60" y="64" width="140" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-9" mode="Opaque" x="480" y="4" width="70" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SALDO A LA FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" mode="Opaque" x="63" y="4" width="203" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[TÍTULO DE LAS CUENTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" mode="Opaque" x="5" y="4" width="58" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" mode="Opaque" x="267" y="4" width="62" height="23" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SALDO ANTERIOR]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" stretchType="RelativeToBandHeight" x="2" y="2" width="1" height="26" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-13" mode="Opaque" x="329" y="16" width="75" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CARGOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-14" mode="Opaque" x="404" y="16" width="75" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ABONOS]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-7" isPrintRepeatedValues="false" x="3" y="28" width="549" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+			</line>
+			<line>
+				<reportElement key="line-8" x="3" y="2" width="549" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToBandHeight" x="551" y="2" width="1" height="26" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-17" mode="Opaque" x="329" y="4" width="150" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[MOVIMIENTOS]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" stretchType="RelativeToBandHeight" mode="Opaque" x="329" y="4" width="1" height="23" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-18" stretchType="RelativeToBandHeight" mode="Opaque" x="479" y="4" width="1" height="23" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-19" stretchType="RelativeToBandHeight" mode="Opaque" x="266" y="3" width="1" height="24" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-20" stretchType="RelativeToBandHeight" mode="Opaque" x="63" y="4" width="1" height="23" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="5" y="1" width="58" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODIGO_CUENTA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="63" y="1" width="203" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CUE_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="329" y="1" width="75" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DEBE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="404" y="1" width="75" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{HABER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="482" y="1" width="68" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SALDO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="267" y="1" width="62" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO_ANTERIOR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch">
+			<line>
+				<reportElement key="line-11" x="0" y="0" width="552" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="31" splitType="Stretch">
+			<textField pattern="#,###,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="329" y="0" width="75" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_DEBE_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="403" y="0" width="75" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_HABER_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-14" x="329" y="17" width="75" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-15" x="404" y="17" width="75" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-16" x="404" y="21" width="75" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-17" x="329" y="21" width="75" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-21" stretchType="RelativeToBandHeight" mode="Opaque" x="405" y="3" width="1" height="24" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

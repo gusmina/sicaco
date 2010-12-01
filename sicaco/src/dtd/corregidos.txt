@@ -1,0 +1,505 @@
+2009-02-27
+- 	Ya funciona la pantalla de union de tipo prestamo con tipo de articulo
+- 	Se arreglo el boton de regresa de la pantalla de union de tipos de prestamo con tipo de articulo
+- 	Ya no se envian 2 correos en lugar de uno para la creacion de inicios de sesion
+- 	Ya no da error por encontrar mas de un inicio de sesion activo por una persona en la pantalla de \n
+	correos de los ahorros a plazos de Maguie.
+- 	Ya se muestra el reporte de ordenes de asociado con la busqueda por codigo de asociado o de empleado
+- 	Ya no falla la union de proveedor con tipo de prestamo por haber cambiado de linea
+- 	Ya se muestra cuota mensual en lugar de cuota en la visualizacion del prestamo
+
+
+2009-03-02
+- 	Botón de eliminar no Impresa en las órdenes de compra no sirve ya que de todas maneras aunque
+	no haya sido impresa esta ya fue cargada, ya que desde que se genera la petición de guardarla es
+	que esta es cargada.
+-	La orden de compra no esta permitiendo ordenes con montos menores o iguales a 0, ni en la normal
+	ni en la de donacion, ni en la de donacion masiva.
+-	Ya se utiliza fecha para las ordenes de donacion (una por una), ademas ya se valido que no se pueda
+	ingresar una fecha menor a la del dia.
+-	Se arreglo la comparacion de fechas de ElapsedTime (fechaMenor) para que devuelva verdadero
+	solamente si la fecha primera es menor que la segunda, si esta es igual devuelve falso.
+-	Se corrigio el error que daba al querer cargar un nombre en ordenes, facturacion y otros, cuando este
+	se escribe de la forma apellido, nombre y no se escribio ningun apellido pero si la coma.
+-	Ya se utiliza la fecha de emision tambien en la generacion masiva de ordenes.
+-	Solo aparece el boton de imprimir el reporte y el de realizar pago cuando la orden de pago no ha sido
+	anulada.
+-	Se agrego la columna de la sucursal en la tabla de la lista de bodegas
+-	se arreglo la modificacion de tipo de prestamo para que se recalculara la cuota de un prestamo al cual
+	se le modifica la tasa.
+-	Durante la etapa de correcciones no se presento error alguno al escoger un banco distinto en la parte
+	del pago de ordenes de pago.
+-	Durante las correcciones no se presento problema con la impresion del reporte de la orden de donacion.
+-	Error que se presentaba al crear ordenes de donacion para clientes que no fueran asociados ha sido
+	corregido.
+-	Ya funciona nuevamente la actualizacion automatica del disponible para las transacciones para saber
+	cuanto queda maximo para realizar la siguiente transaccion.
+-	Ya se valida a la hora de guardar e imprimir que no se pueda llevar mas articulos de los que 
+	existen en la bodega. Tambien se valido ya solo para guardar.
+-	Ya se puede eliminar las facturas solo guardadas.
+
+
+2009-03-03
+-	Se muestra cuantas cuotas quedan pendientes de pago, esto no de acuerdo a la fecha del vencimiento
+	sino de acuerdo a la cantidad de saldo pendiente por pagar todavia y de cuanto son las cuotas.
+-	En la pantalla de movimientos del prestamo ya se muestra el tipo de movimiento, si fue abono
+	o si fue cargo o nada, ademas que se muestra ya el interes acumulado pagado en ese movimiento
+	y el saldo anterior.
+
+
+2009-03-04
+-	Se creo el boton de eliminar todas las facturas guardadas dentro de la pantalla que se encuentre en
+	ese momento.
+-	Ya no existe la nota de debito, sino solo la nota de credito en todo el sistema
+-	Ya no da error al realizar el pago de la orden de pago, ya se manda correctamente a contabilidad
+-	Se manda la nota en lugar del tipo de transaccion a contabilidad desde la transaccion.
+-	Se creo una nueva union en la base, de la tabla de la solicitud de la transaccion electronica a la tabla
+	de la cuenta bancaria del proveedor.
+
+
+2009-03-05
+-	Se removió tipo de nota de la pantalla de tipos de seguros ya que estaba haciendo relajo y no parece
+	ser útil, al menos por el momento (se dejo comentariado), gracias a esto ya se guarda y se modifica
+	bien el tipo de seguro.
+-	Se restringio el espacio para el nombre de los repositorios de facturas al tamanho indicado en la 
+	base.
+-	Se agregaron en la base las columnas de entrada por nota de credito y salida por nota de credito.
+-	Se modificaron los titulos de las pantallas correspondientes de notas.
+-	Se probo que la nota de credito por devolucion de asociados a cetia se esta realizando correctamente
+-	Se arreglo la pantalla de creditos fiscales de compra a proveedor, la cual ya permite realizar compras
+-	Ya se puede entrar nuevamente a las notas de credito por devolucion a proveedor y esta se realiza
+	exitosamente.
+-	Modifique mi funcion de javascript para evitar que se puedan escribir mas de 1 punto para los numeros
+	que se ingresan
+-	Se creo una funcion para recalcular la cantidad de meses para saber como se debe realizar el calculo de
+ 	cuota para un tipo seguro de acuerdo a cuanto falta para que finalice la poliza.
+-	Se puede escoger el mes actual o el siguiente mes para el seguro.
+
+
+2009-03-06
+-	Se agregaron los nuevos parametros en la facturacion para mandarlos a contabilidad.
+-	Se valido que ya no pueda existir dos articulos con el mismo nombre
+-	Durante mis pruebas no se me generó una copia del seguro en ningún momento.
+-	Ya se validó el problema que daba al presionarse el botón de agregar beneficiario en la pantalla de
+	seguros cuando no se ha escrito nada dentro de él.
+-	Ya no da error la modificación de monto, cuota o costo total, se validó además que solo se pueda
+	modificar el costo total o el monto cuando no se le ha realizado ningún movimiento al seguro.
+-	Se eliminó VALOR_PRE_AUTOMATICO de la tabla de parámetros
+
+
+2009-03-09
+-	Limpiar base existe ahora solamente en la parte de las ordenes de donacion, y se programo para que
+	solamente borre las que siguen cargadas, es decir que no han sido cobradas por el proveedor todavía.
+-	Ya no da error el pago electronico para las ordenes de pago.
+-	Se muestra la nueva forma en que funciona el request de la transaccion bancaria en la tabla de pago
+	electronico. (nuevo query de busqueda para esta pantalla)
+-	La visualización de las órdenes está funcionando correctamente, así como el botón de cancelar.
+-	En la orden de pago para la tabla el javascript hace que se convierta la cantidad ingresada a que sea
+	no mayor que el maximo, es decir que el monto original.
+
+
+2009-03-10
+-	Se valido que no se pudiera transferir o corregir dinero de una cuenta hacia ella misma.
+
+
+2009-03-12
+-	Ya se muestran correctamente los saldos restantes para terminar de pagar los seguros y los prestamos
+-	Se arreglaron los reportes de planilla que lleven el cobro de cuota de afiliacion.
+-	Solo se puede mandar menos o la cantidad exacta para terminar de pagar un prestamo o un seguro
+-	Se valido que solo se pueda meter dinero hacia cuentas una por 1 y no mandar 2 de la misma cuenta
+	Si se quiere una cantidad mayor se elimina la primera y se manda nuevamente con una cantidad mas
+	grande
+	
+
+2009-03-17
+-	ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: A,C,P,D,S,R,E ES DECIR:  ANULADO, CARGADO, PAGADO(PROV), DEBE,COBRADO(ASOCYPROV), COBRADO(ASOC), EMITIDA';
+-	ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: A,C,P,D,S,R,E,F,G ES DECIR:  ANULADO, CARGADO, PAGADO(PROV), DEBE,COBRADO(ASOCYPROV), COBRADO(ASOC), EMITIDA, EN COBRO, EN COBRO(PAGA ASOC)';
+-	ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: (A)ANULADO, (C)CARGADO, (P)PAGADO(PROV), (D)DEBE, (S)COBRADO(ASOCYPROV), (R)COBRADO(ASOC), (E)EMITIDA, (F)EN COBRO, (G)EN COBRO(PAGA ASOC)';
+-	Ya se cambian correctamente los estados de la orden de compra
+-	Se muestra calculo de intereses acumulados y pendientes solo para los prestamos activos
+
+
+2009-03-18
+-	Verificación de planilla se está realizando por empresas.
+-	Se muestran ya los codigos que no se encontraron al cargar el archivo, ya no aparecen en blanco
+-	Parece ser que ya se realiza la actualizacion de planilla con las cantidades correctas, todas dividida
+	entre el divisor como tiene que ser.
+	
+	
+2009-03-19
+-	Se corrigio el calculo de los intereses para los ahorros que se muestra en la pantalla de ahorros
+-	Se verifico que se esté distribuyendo correctamente la planilla, todo se fue a donde se tenía que ir,
+	ni más ni menos. Para hacerlo se arreglo lo que se va a ahorro descuentos pues se estaba perdiendo 
+	este dinero y además se mejoró el calculo de intereses para los ahorros también en esta pantalla.
+-	
+
+2009-03-20
+-	ALTER TABLE `sicacodb`.`fac_fen_factura_encabezado` ADD COLUMN `FEN_DESCRIPCION` VARCHAR(1000)  AFTER `SUC_ID`;
+
+
+2009-03-24
+-	delete FROM sec_mop_menu_opcion where mop_name like 'ajustem'
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('MANUAL', 'FACTURACION', 'Factura Manual', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', null, '/facturacion', 10, 'A')
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_CO', 'MANUAL', 'Consumidor Final', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=v&tf=CO', 
+	'/facturacion', 1, 'A')
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_VC', 'MANUAL', 'Venta a Contribuyentes', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=v&tf=VC', 
+	'/facturacion', 2, 'A')
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_CR', 'MANUAL', 'Compra a Proveedor', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=c', 
+	'/facturacion', 3, 'A')
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_L_V', 'MANUAL', 'Lista de ventas', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 'facturaManual?accion=ventas', 
+	'/facturacion', 4, 'A')
+-	insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_L_C', 'MANUAL', 'Lista de compras', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 'facturaManual?accion=compras', 
+	'/facturacion', 5, 'A')
+
+	
+2009-03-25
+-	victor ramirez, y juan ramon , inactivos
+-	insert into cta_ttr_tipo_transaccion 
+	values (44, "Cargo por Prestamo Automatico", "Cargo por Prestamo Automatico", "C")
+
+	
+2009-03-26
+-	Ya no falla agregar beneficiarios nuevos, y la creacion de seguros por archivo
+	esta funcionando correctamente, al menos cuando el seguro es nuevo, solo me
+	falta probar cuando es renovacion de un seguro ya existente.
+-	Ya no deja guardar la transaccion cuando no se ha seleccionado ninguna cuenta
+-	Error por llevarse mas de lo que puede del credito fue solo casualidad
+
+
+2009-03-27
+-	insert into ctr_est_estado values (23,'PREST','CARGADO A FIADORES')
+
+
+2009-03-28
+-	ALTER TABLE `sicacodb`.`cta_cas_cuenta_asociado` 
+	ADD COLUMN `CAS_PRESTAMO_PAGA` BIGINT(20)  
+	COMMENT 'CAMPO PARA GUARDAR EL CAS CUENTA DE UN PRESTAMO QUE ES PAGADO POR FIADORES EMPLEADOS O ASOCIADOS' AFTER `PXT_ID`;
+
+	
+2009-03-30
+-	Se creo una forma de hacer que cuando se le cargue un prestamo a fiadores
+	empleados, se verifique si estos ya son asociados, si lo son, el sistema viene
+	y convierte sus uniones de pxt a asc en la tabla fxp.
+-	Se reviso además que el metodo que hace que un prestamo que esta siendo pagado
+	por un fiador empleado que se hace en asociado, se le pase entonces ese
+	prestamo al asociado nuevo que se crea, esto a partir del asc_codigo
+-	update CTR_PAR_PARAMETROS 
+	SET par_descripcion = 'LA PORCENTAJE QUE RECIBIRA EL ABOGADO POR SUS SERVICIOS A LA HORA DEL EMBARGO, ESTA CANTIDAD NO ENTRA EN LAS CUENTAS DE CETIA PUES VA DIRECTO AL ABOGADO AUNQUE SE PAGE A TRAVES DE ELLOS.' 
+	where par_nombre like 'pago_abogado'
+-	INSERT INTO ctr_par_parametros 
+	VALUES ('MESES_PAGO_ABOGADO', 'CANTIDAD DE MESES PARA QUE SE INDIQUE LA CANTIDAD A PAGAR AL ABOGADO EN UNA NOTA', 
+	'2009-03-30', NULL, 4.0, NULL, 'ADMIN', '2009-03-30', '2009-03-30', 'ADMIN', 'P')
+-	Pago a abogado completado.
+
+	
+2009-03-31
+-	insert into ctr_est_estado values(24, 'PREST', 'ESPERA DESEMBOLSO')
+-	ya se manda el desembolso de prestamo por pago electronico a la pantalla de
+	pago electronico.
+
+	
+2009-04-01
+-	update sec_mop_menu_opcion  mop_orden=1 where mop_title='Catalogo de cuentas'
+update sec_mop_menu_opcion  mop_orden=2 where mop_title='Movimientos en cuentas contables'
+update sec_mop_menu_opcion  mop_orden=3 where mop_title='Estado de Resultados'
+update sec_mop_menu_opcion  mop_orden=4 where mop_title='Balance General'
+update sec_mop_menu_opcion  mop_orden=5 where mop_title='Libro Mayor'
+update sec_mop_menu_opcion  mop_orden=6 where mop_title='Balanza General de Comprobacion'
+update sec_mop_menu_opcion  mop_orden=7 where mop_title='Reporte Libro Auxiliar Mayor'
+
+-procedimiento
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_REPORTE_DIVIDENDOS`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_REPORTE_DIVIDENDOS`(ANIO INT)
+BEGIN
+
+	DECLARE done INT DEFAULT 0;
+	DECLARE ID_ASOC1 CHAR(12);
+	DECLARE CODIGO_SOCIO1 VARCHAR(50);
+	DECLARE NOMBRE_SOCIO1 VARCHAR(1200);
+        DECLARE TOTAL_APORTACIONES1 DECIMAL(13,5);
+	DECLARE INTERESES_PAGADOS1 DECIMAL(13,5);
+        DECLARE DIVIDENDOS_APORTACIONES1 DECIMAL(13,5); 
+	DECLARE DIVIDENDOS_INTERESES1 DECIMAL(13,5);
+	DECLARE MESES_ACTIVO1 INTEGER;
+	DECLARE NOMBRE_EMPRESA1 VARCHAR(1000);
+	DECLARE ESTADO_ASOCIADO1 VARCHAR(2);
+
+	DECLARE DIVIDENDOS_CUR CURSOR FOR
+		select  distinct asoc.asc_id, 
+	
+			asoc.asc_codigo ascCodigo, 
+	
+			concat(ifnull(per.PER_PRIMER_NOMBRE,''),' ', ifnull(per.PER_SEGUNDO_NOMBRE,''),' ',
+				ifnull(per.PER_PRIMER_APELLIDO,''),' ', ifnull(per.PER_SEGUNDO_APELLIDO,'')) nombrePersonaAsoc, 
+	
+			(SELECT sum(txa.txa_Monto) 
+				FROM Cta_Ttr_Tipo_Transaccion ttr INNER JOIN Cta_Txa_Transaccionxcuenta_Asociado txa ON 	
+				ttr.ttr_Id = 	txa.ttr_Id INNER JOIN Cta_Cas_Cuenta_Asociado cas1 ON txa.cas_Cuenta = cas1.cas_Cuenta
+			where ttr.ttr_Uso='A' and cas1.cah_Id is not null and cas1.cah_Id like 'A%' and year(txa_Fecha)=ANIO
+					and cas1.asc_id=asoc.asc_id
+			group by cas1.asc_Id)	totalAportaciones,
+	
+			ifnull((
+				select SUM(mxp4.mxp_interes_acumulado + mxp4.mxp_interes_pendiente)
+				from cta_cas_cuenta_asociado cas4, cta_pre_prestamo pre4, cta_mxp_movimiento_prestamo mxp4
+				where cas4.pre_id = pre4.pre_id 
+					AND pre4.pre_id=mxp4.pre_id 
+					AND YEAR(mxp4.mxp_fecha)=ANIO
+					AND (mxp4.mxp_interes_acumulado >0 OR mxp4.mxp_interes_pendiente>0)
+					and cas4.asc_id = asoc.asc_id
+	 		GROUP BY cas4.asc_id),0)interesesPagados,
+	
+			ifnull(asoc.asc_dividendo_aportaciones,0) ascDividendoAportaciones,
+	
+			ifnull(asoc.asc_dividendo_prestamo,0) ascDividendoPrestamo,
+	
+			(SELECT 
+				sum(period_diff(date_format(ifnull(i.ina_fecha_salida,curdate()),'%Y%m'),
+	    			if(year(i.ina_fecha_ingreso)<ANIO, concat(ANIO,'01'),date_format(i.ina_fecha_ingreso,'%Y%m'))))	 as meses_diferencia
+ 			FROM cta_ina_ingresosxasociado i where i.asc_id=asoc.asc_id
+
+			group by asc_id)mesesActivo, 
+	
+			IFNULL(etr.ETR_NOMBRE ,'N/D') as etrNombre,
+	 
+			if(asoc.EST_ID_2=0,'A',if(asoc.EST_ID_2=6,'I','ND')) estadoAsoc
+
+
+		from    cta_cah_cuenta_ahorro cah 
+			left join cta_cas_cuenta_asociado cas on cas.cah_id = cah.cah_id
+			left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+			INNER join sec_per_persona per on per.per_id = asoc.per_id
+			left join cta_dpt_departamento_trabajo dpt on dpt.dpt_id = asoc.dpt_id
+			INNER join cta_etr_empresa_trabajo etr on etr.etr_id = dpt.etr_id
+	
+		where cah.cah_id like 'A%' and asoc.asc_estado_distribucion != 'P'
+		order by asoc.EST_ID_2, etr.ETR_NOMBRE asc;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	
+	DROP TABLE IF EXISTS TABLA_REPORTE_D;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_REPORTE_D
+	(ID_ASOC CHAR(12),
+	ascCodigo VARCHAR(50),
+	nombrePersonaAsoc VARCHAR(1200),
+        totalAportaciones DECIMAL(13,5),
+	interesesPagados DECIMAL(13,5),
+        ascDividendoAportaciones DECIMAL(13,5), 
+	ascDividendoPrestamo DECIMAL(13,5),
+	mesesActivo INTEGER,
+	etrNombre VARCHAR(1000),
+	estadoAsoc VARCHAR(2));
+
+	OPEN DIVIDENDOS_CUR;
+	
+	DIVIDENDOS_LOOP: LOOP
+            FETCH DIVIDENDOS_CUR INTO ID_ASOC1,CODIGO_SOCIO1,NOMBRE_SOCIO1,TOTAL_APORTACIONES1,INTERESES_PAGADOS1,
+					DIVIDENDOS_APORTACIONES1, DIVIDENDOS_INTERESES1,MESES_ACTIVO1,NOMBRE_EMPRESA1,
+					ESTADO_ASOCIADO1;
+            IF done=1 THEN
+               LEAVE DIVIDENDOS_LOOP;
+            END IF;
+	    IF MESES_ACTIVO1 > 0 THEN
+		   INSERT INTO TABLA_REPORTE_D
+		  	(ID_ASOC,ascCodigo,nombrePersonaAsoc,totalAportaciones,interesesPagados,
+			ascDividendoAportaciones, ascDividendoPrestamo,mesesActivo,etrNombre,estadoAsoc)
+			VALUES(ID_ASOC1,CODIGO_SOCIO1,NOMBRE_SOCIO1,TOTAL_APORTACIONES1,INTERESES_PAGADOS1,
+					DIVIDENDOS_APORTACIONES1, DIVIDENDOS_INTERESES1,MESES_ACTIVO1,NOMBRE_EMPRESA1,
+					ESTADO_ASOCIADO1);
+	   END IF;
+	END LOOP DIVIDENDOS_LOOP;
+     	CLOSE DIVIDENDOS_CUR;
+
+	SELECT * FROM  TABLA_REPORTE_D;
+END$$
+
+DELIMITER ;
+
+************************
+
+-	
+SELECT
+     mxa.`mxa_id` AS mxa_id
+FROM
+     `cta_txa_transaccionxcuenta_asociado` txa INNER JOIN `cta_mxa_movimiento_ahorro` mxa ON txa.`TXA_ID` = mxa.`txa_id`
+
+where txa.`TTR_ID`=15
+
+
+delete from cta_mxa_movimiento_ahorro where mxa_id between 3091 and 4112
+
+delete from cta_txa_transaccionxcuenta_asociado where ttr_id=15
+
+-	ALTER TABLE `sicacodb`.`cta_stb_sol_trans_banc` ADD COLUMN `OPA_ID` INTEGER  COMMENT 'ID DE LA ORDEN DE PAGO DE ESTA TRANSFERENCIA' AFTER `PCB_NUMERO_CUENTA`;
+-	
+
+-	*****
+CREATE TABLE  `sicacodb`.`cta_las_liquidar_asociado` (
+  `LAS_ID` int(11) NOT NULL,
+  `LAS_NOMBRE_CUENTA` varchar(300) NOT NULL,
+  `LAS_SALDO` double NOT NULL,
+  `LAS_INTERES` double default NULL,
+  `LAS_OTRAS_DEDUCCIONES` double default NULL,
+  `LAS_FAVOR_CONTRA` int(11) NOT NULL COMMENT 'indica si el registro debe ser tomado como saldo a favor o coo deuda (en contra) del asociado',
+  `LAS_ASC_ID` char(12) NOT NULL COMMENT 'id del asociado al que se esta liquidando'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+*****
+
+-	ALTER TABLE `sicacodb`.`cta_stb_sol_trans_banc` ADD COLUMN `PRE_ID` VARCHAR(15)  COMMENT 'ID DEL PRESTAMO PARA EL CUAL SE HACE LA TRANSFERENCIA' AFTER `OPA_ID`;
+-	
+
+2009-04-02
+-	ALTER TABLE `sicacodb`.`ord_opa_orden_de_pago` MODIFY COLUMN `OPA_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'I' COMMENT 'I IMPRESA, A ANULADA, P PAGADA, D PENDIENTE';
+-	
+
+
+2009-04-13
+-	update sec_mop_menu_opcion set mop_action = '/reporteIni?p76e3123r=report_planilla_empresa&m009o8765d=Reporte_PlanillasXEmpresa' 
+	where mop_name = 'REP_PLAN_EMP'
+-	
+
+-
+
+
+ALTER TABLE `sicacodb`.`sec_mop_menu_opcion` MODIFY COLUMN `MOP_TITLE` VARCHAR(80)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Reporte de cuentas Inactivas de Asociados',
+	mop_description='Reporte de cuentas Inactivas de Asociados',
+	mop_tooltip='Reporte de cuentas Inactivas de Asociados' 
+where mop_title='Reporte cuentas Clientes Inactivos'
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Clientes de Cuentas Inactivos Resumen',
+	mop_description='Cuadro Resumen de Cuentas de Asociados Inactivos',
+	mop_tooltip='Cuadro Resumen de Cuentas de Asociados Inactivos' 
+where mop_title='Cuadro Resumen de Cuentas de Asociados Inactivos'
+
+delete FROM sec_rop_rol_menu where mop_name='REP_CU_INAC_CLI'
+delete from sec_mop_menu_opcion where mop_name='REP_CU_INAC_CLI'
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Reporte de Prestamos Cancelados en el mes',
+	mop_description='Reporte de Prestamos Cancelados en el mes',
+	mop_tooltip='Reporte de Prestamos Cancelados en el mes' 
+where mop_name='REP_CRE_CAN_MES'
+
+-
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_CUENTAS_INACTIVAS_SOCIOS`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_CUENTAS_INACTIVAS_SOCIOS` ()
+BEGIN
+	DECLARE done INT DEFAULT 0;
+	DECLARE CODIGO_CUENTA BIGINT(20);
+	
+	EMPRESA1 VARCHAR(2000);
+	CODIGO1 BIGINT(20);
+	NOMBRE_SOCIO1 VARCHAR(1200);
+        FECHA_UT1 DATE;
+	MONTO_TRANS1 DECIMAL(13,5);
+	FECHA_AP1 DATE;
+        NOMBRE_CUENTA1 VARCHAR(2000); 
+	SALDO1 DECIMAL(13,5);
+	CUOTA1 DECIMAL(13,5);
+	INTERES_ACUMULADO1 DECIMAL(13,5);
+	ABONO_CAPITAL_PRES1 DECIMAL(13,5);
+
+	DECLARE CURSOR_CUENTAS CURSOR FOR
+		SELECT a1.CODIGO FROM
+			(
+			SELECT
+    		 cas.`cas_cuenta` AS CODIGO,
+     		IF(MAX(txa.`TXA_FECHA`)<=SUBDATE(CURDATE(),INTERVAL 10 day),
+			MAX(txa.`TXA_FECHA`),NULL) AS FECHA
+     
+		FROM
+     			`cta_cas_cuenta_asociado` cas 
+			INNER JOIN `cta_txa_transaccionxcuenta_asociado` txa ON cas.`CAS_CUENTA` = txa.`CAS_CUENTA`
+			INNER JOIN `cta_ttr_tipo_transaccion` ttr ON txa.`TTR_ID` = ttr.`TTR_ID`
+    		 	INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    		 	LEFT OUTER JOIN `cta_tah_tipo_ahorro` tah ON cah.`tah_id` = tah.`TAH_ID`
+		WHERE
+			ttr.`TTR_USO`='A' AND cas.`cah_id` IS NOT NULL
+		GROUP BY CODIGO
+		) a1  WHERE a1.FECHA IS NOT NULL;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	
+	DROP TABLE IF EXISTS TABLA_CUENTAS_INACTIVAS;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_CUENTAS_INACTIVAS
+	(EMPRESA VARCHAR(2000),
+	CODIGO BIGINT(20),
+	NOMBRE_SOCIO VARCHAR(1200),
+        FECHA_UT DATE,
+	MONTO_TRANS DECIMAL(13,5),
+	FECHA_AP DATE,
+        NOMBRE_CUENTA VARCHAR(2000), 
+	SALDO DECIMAL(13,5),
+	CUOTA DECIMAL(13,5),
+	INTERES_ACUMULADO DECIMAL(13,5),
+	ABONO_CAPITAL_PRES DECIMAL(13,5));
+END$$
+
+DELIMITER ;
+
+
+
+
+01-07-2009
+Control de Facturas y Control de Cheques
+Dar tamaño Char(50) a campo Número de Serie (en base y en aplicación), actualmente tiene Char(10).
+En base:
+ALTER TABLE `sicacodb`.`ctr_cfc_control_facturacion` MODIFY COLUMN `CFC_SERIE` CHAR(50)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `sicacodb`.`ctr_rfc_repositorio_facturas` MODIFY COLUMN `CFC_SERIE` CHAR(50)  CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL;
+
+
+Lista de Artículos
+Colocar el precio sugerido y el costo de cada artículo con un total de dos dígitos:  $####.00
+
+
+Control de Usuarios
+La inactivación de usuarios se esta realizando, sin embargo cuando se reactiva al usuario, pareciera que no lo esta realizando pues no le permite al usuario ingresar de nuevo al sistema.
+
+
+Facturas Consumidor Final
+Si una bodega esta inactiva no debería permitir vender de dicha bodega. Validar en factura de consumidor final y en ventas a contribuyentes que no permita vender de esta cuando se encuentre Inactiva.
+
+Impresión Facturación
+En el documento impreso no se muestra la parte de “Condición de Pago” y este sí es definido en la pantalla de factura. Indican mediante un texto como “No definido”.
+No se mostró tampoco el código y la cantidad del artículo.

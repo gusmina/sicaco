@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comprobante" pageWidth="612" pageHeight="396" whenNoDataType="AllSectionsNoDetail" columnWidth="358" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="txaComprobante" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[new Long(4841)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sucNombre" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct
+txa.txa_fecha as fecha, 
+if(ttr.ttr_id=33,concat('Abono por Transferencia Electronica - ',txa.txa_nota), txa.txa_nota)  as ttrNombre, 
+txa.txa_monto txaMonto, 
+txa.txa_comprobante as comprobante ,
+	if(cas.cah_id is not null,
+		(select cah1.cah_saldo_actual from cta_cah_cuenta_ahorro cah1 where cah1.cah_id=cas.cah_id),
+		if(cas.seg_id is not null,
+			(select seg1.seg_saldo_actual from cta_seg_seguros seg1 where seg1.seg_id=cas.seg_id),
+			if(cas.pre_id is not null,
+				(select pre1.PRE_SALDO_ACTUAL_T + pre1.PRE_PEND_MOV from cta_pre_prestamo pre1 where pre1.pre_id=cas.pre_id),
+				0
+			)		
+		)
+	) nuevoSaldo,
+	if(cas.seg_id is not null or cas.pre_id is not null,-1,1) as factor,
+	ttr.ttr_uso ttrUso,
+	if(ttr.ttr_uso = 'A' and cas.pre_id is not null,
+		 (select (ifnull(mxp.MXP_INTERES_PENDIENTE,0) + ifnull(mxp.MXP_MORA,0) + ifnull(mxp.MXP_INTERES_ACUMULADO,0)) 
+	from 	cta_txa_transaccionxcuenta_asociado txa1 inner join 
+		cta_mxp_movimiento_prestamo mxp on mxp.txa_id = txa1.txa_id
+		inner join cta_pre_prestamo pre1 on pre1.pre_id=mxp.pre_id
+	where txa1.TXA_COMPROBANTE = $P{txaComprobante} and pre1.pre_id=cas.pre_id),
+		0
+	) intereses,
+	asoc.ASC_CODIGO_ASOCIADO ascCodigo, concat_ws(' ',per.per_primer_nombre,per.per_segundo_nombre,per.per_primer_apellido) ascNombreNit
+	
+from 	cta_txa_transaccionxcuenta_asociado txa
+	inner join cta_cas_cuenta_asociado cas on cas.CAS_CUENTA = txa.CAS_CUENTA
+	inner join cta_ttr_tipo_transaccion ttr on (ttr.ttr_id = txa.ttr_id and ttr.ttr_uso = 'A')
+	left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+	inner join sec_per_persona per on asoc.asc_id = per.per_id
+where txa.TXA_COMPROBANTE = $P{txaComprobante}  and ttr.ttr_uso = 'A']]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ttrNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="txaMonto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comprobante" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nuevoSaldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="factor" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ttrUso" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="intereses" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ascCodigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ascNombreNit" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="capital" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{txaMonto}.doubleValue() - $F{intereses}.doubleValue() )]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="saldoAnterior" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{nuevoSaldo}.doubleValue() - ( ($F{txaMonto}.doubleValue() - $F{intereses}.doubleValue())*$F{factor}.intValue() ))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="sumaMonto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{txaMonto}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_txaMonto_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{txaMonto}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="155" splitType="Stretch">
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="447" y="94" width="100" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{sumaMonto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="83" y="67" width="318" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ascNombreNit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="83" y="80" width="318" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ascCodigo}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" x="447" y="67" width="100" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="83" y="93" width="318" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sucNombre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" mode="Opaque" x="470" y="21" width="100" height="12" forecolor="#FFFFFF"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{comprobante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="13" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{comprobante}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="12" y="2" width="190" height="18"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ttrNombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-$#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="202" y="2" width="69" height="18"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{txaMonto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-$#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="485" y="2" width="69" height="18"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{nuevoSaldo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-$#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="416" y="2" width="69" height="18"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldoAnterior}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-$#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="340" y="2" width="69" height="18">
+					<printWhenExpression><![CDATA[new Boolean($F{intereses}.doubleValue()>0)]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{intereses}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-$#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="271" y="2" width="69" height="18">
+					<printWhenExpression><![CDATA[new Boolean($F{ttrUso}.equals("A"))]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{capital}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="100" splitType="Stretch">
+			<textField pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="40" y="2" width="549" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new Number2Letter().getLetter($V{sumaMonto}.doubleValue())+" Dólares"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

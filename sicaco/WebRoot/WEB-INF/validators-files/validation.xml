@@ -1,0 +1,660 @@
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+<form-validation >
+	<formset>
+	
+		<form name="personaForm">
+			<field property="perDui" depends="required" page="3">
+				<msg name="required"  key="errors.persona.perDui" bundle="errors"/>
+			</field>
+			<field property="perNit" depends="required" page="3">
+				<msg name="required"  key="errors.persona.perNit" bundle="errors"/>
+			</field>
+			<field property="perPrimerNombre" depends="required" page="3">
+				<msg name="required"  key="errors.persona.perPrimerNombre" bundle="errors"/>
+			</field>
+			<field property="perPrimerApellido" depends="required" page="3">
+				<msg name="required"  key="errors.persona.perPrimerApellido" bundle="errors"/>
+			</field>
+			<field property="perFechaNacimiento" depends="date" page="3">
+				<msg name="date"  key="errors.persona.perFechaNacimiento" bundle="errors"/>
+				<var>
+					<var-name>datePattern</var-name>
+					<var-value>dd-MM-yyyy</var-value>
+				</var>
+			</field>
+		</form>
+		
+		<form name="correoForm">
+			<field  property="email" depends="required,email" page="3" >
+				<msg name="required"  key="errors.email.required" bundle="errors" />
+				<msg name="email"  key="errors.email.validPattern" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="autenticacionForm">
+    		<field property="nombreUsuario" depends="required" page="3">
+    			<msg name="required" key="errors.autenticacion.nombreusuario" bundle="errors" />
+    		</field>
+    		<field property="contrasenia" depends="required" page="3">
+    			<msg name="required" key="errors.autenticacion.password" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="rolesForm">
+    		<field property="rolNombre" depends="required" page="3">
+				<msg name="required" key="errors.rol.nombre" bundle="errors"/>    		
+    		</field>
+    		<field property="rolDescripcion" depends="required" page="3">
+    			<msg name="required" key="errors.rol.descripcion" bundle="errors" />
+    		</field>
+    		<field property="rolTipoSesion" depends="required" page="3">
+    			<msg name="required" key="errors.rol.rolTipoSesion" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="sesionForm">
+    		<field property="iseNombreUsuario" depends="required" page="3">
+    			<msg name="required" key="errors.session.iseNombreUsuario" bundle="errors"/>  
+    		</field>
+    		<field property="isePorqueInactivacion" depends="required" page="4">
+    			<msg name="required" key="errors.session.isePorqueInactivacion" bundle="errors"/>  
+    		</field>
+    	</form>
+    	
+    	<form name="telefonosForm">
+    		<field property="id.telTelefono" depends="required" page="3">
+    			<msg name="required" key="errors.telefono.id.telTelefono" bundle="errors"/> 
+    		</field>
+    	</form>
+    	
+    	<form name="perEmergenciaForm">
+    		<field property="pemPrimerNombre" depends="required" page="3">
+    			<msg name="required" key="errors.telefono.pemPrimerNombre" bundle="errors"/>
+    		</field>
+    		<field property="pemPrimerApellido" depends="required" page="3">
+    			<msg name="required" key="errors.telefono.pemPrimerApellido" bundle="errors"/>
+    		</field>
+    		<field property="pemTelefono" depends="required" page="3">
+    			<msg name="required" key="errors.telefono.pemTelefono" bundle="errors"/>
+    		</field>
+    	</form>
+    	
+    	<form name="tipoProveedorForm">
+			<field  property="tprNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.tipoProveedor.required" bundle="errors" />
+    		</field>
+    	</form>
+    	<form name="activeInactivePersonForm">
+    		<field property="perId" depends="required" page="3">
+    			<msg name="required" key="errors.aipersona.duinit" bundle="errors"/>
+    		</field>
+    	</form>
+    	
+    	<form name="lineaForm">
+			<field  property="linNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.linea.linNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="linDescripcion" depends="required" page="3" >
+				<msg name="required"  key="errors.linea.linDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="linUtilidad" depends="required" page="3" >
+				<msg name="required"  key="errors.linea.linUtilidad.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoArticuloForm">
+			<field  property="tarNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.tar.tarNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tarDescripcion" depends="required" page="3" >
+				<msg name="required"  key="errors.tar.tarDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="articuloForm">
+			<field  property="artNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.art.artNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="artPrecioMinimo" depends="required" page="3" >
+				<msg name="required"  key="errors.art.artPrecioMinimo.required" bundle="errors" />
+    		</field>
+    		<field  property="invMedMedida.medId" depends="required" page="3" >
+				<msg name="required"  key="errors.art.invMedMedida.medId.required" bundle="errors" />
+    		</field>
+    		<field  property="invTarTipoArticulo.tarId" depends="required" page="3" >
+				<msg name="required"  key="errors.art.invTarTipoArticulo.tarId.required" bundle="errors" />
+    		</field>
+    		<field  property="invLinLinea.linId" depends="required" page="3" >
+				<msg name="required"  key="errors.art.invLinLinea.linId.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="conversionForm">
+			<field  property="cnvNuevaMedida" depends="required" page="3" >
+				<msg name="required"  key="errors.conversion.cnvNuevaMedida.required" bundle="errors" />
+    		</field>
+    		<field  property="cnvFactor" depends="required" page="3" >
+				<msg name="required"  key="errors.conversion.cnvFactor.required" bundle="errors" />
+    		</field>
+    		<field  property="cnvNombreMedida" depends="required" page="3" >
+				<msg name="required"  key="errors.conversion.cnvNombreMedida.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="bodegasForm">
+			<field  property="bodNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.bodegas.bodNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="bodDireccion" depends="required" page="3" >
+				<msg name="required"  key="errors.bodegas.bodDireccion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="contactoProveedorForm">
+			<field  property="cprNombreCompleto" depends="required" page="3" >
+				<msg name="required"  key="errors.contactoPro.cprNombreCompleto.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="empresaForm">
+			<field  property="empNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.empNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="empNit" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.empNit.required" bundle="errors" />
+    		</field>
+    		<field  property="empDireccion" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.empDireccion.required" bundle="errors" />
+    		</field>
+    		<field  property="empTel" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.empTel.required" bundle="errors" />
+    		</field>
+    		<field  property="empIniOp" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.empIniOp.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="facturaUsoForm">
+			<field  property="fusNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.empresa.fusNombre.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="zonaForm">
+			<field  property="zonCodigo" depends="required" page="3" >
+				<msg name="required"  key="errors.zona.zonCodigo.required" bundle="errors" />
+    		</field>
+    		<field  property="zonNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.zona.zonNombre.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="sucursalForm">
+			<field  property="sucNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.sucursal.sucNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="sucDireccion" depends="required" page="3" >
+				<msg name="required"  key="errors.sucursal.sucDireccion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="medidaForm">
+			<field  property="medId" depends="required" page="3" >
+				<msg name="required"  key="errors.medida.medId.required" bundle="errors" />
+    		</field>
+    		<field  property="medNombreMedida" depends="required" page="3" >
+				<msg name="required"  key="errors.medida.nombreMedida.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="medidaTipoForm">
+			<field  property="tmeNombre" depends="required" page="3" >
+				<msg name="required"  key="errors.medidaTipo.tmeNombre.required" bundle="errors" />
+    		</field>
+    		<field property="tmeDescripcion" depends="required" page="3">
+    			<msg name="required"  key="errors.medidaTipo.tmeDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoClasificacionForm">
+			<field  property="tclClasificacion" depends="required" page="3" >
+				<msg name="required"  key="errors.tcl.tclClasificacion.required" bundle="errors" />
+    		</field>
+    		<field property="tclDescripcion" depends="required" page="3">
+    			<msg name="required"  key="errors.tcl.tclDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="proveedorForm">
+			<field  property="proCodigo" depends="required" page="3" >
+				<msg name="required"  key="errors.pro.proCodigo.required" bundle="errors" />
+    		</field>
+    		<field property="proNombre" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proNombre.required" bundle="errors" />
+    		</field>
+    		<field property="proRegistro" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proRegistro.required" bundle="errors" />
+    		</field>
+    		<field property="proNit" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proNit.required" bundle="errors" />
+    		</field>
+    		<field property="proDireccion" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proDireccion.required" bundle="errors" />
+    		</field>
+    		<field property="proNumeroTelefono" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proNumeroTelefono.required" bundle="errors" />
+    		</field>
+    		<field property="proGiro" depends="required" page="3">
+    			<msg name="required"  key="errors.pro.proGiro.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="cuentaReferenciaForm">
+			<field  property="refCuenta" depends="required" page="3" >
+				<msg name="required"  key="errors.ref.refCuenta.required" bundle="errors" />
+    		</field>
+    		<field  property="refDescripcion" depends="required" page="3" >
+				<msg name="required"  key="errors.ref.refDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="prCuentaBancariaForm">
+			<field  property="id.pcbNumeroCuenta" depends="required" page="3" >
+				<msg name="required"  key="errors.pcb.id.pcbNumeroCuenta.required" bundle="errors" />
+    		</field>
+    	</form>
+    	    	
+    	<form name="clienteForm">
+			<field  property="cliCodigo" depends="required" page="3">
+				<msg name="required"  key="errors.empresa.fusNombre.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	
+    	<form name="estantesForm">
+			<field  property="stnCodigo" depends="required" page="3">
+				<msg name="required"  key="errors.stn.stnCodigo.required" bundle="errors" />
+    		</field>
+    		<field  property="stnPosicion" depends="required" page="3">
+				<msg name="required"  key="errors.stn.stnPosicion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="empresaTrabajoForm">
+			<field  property="etrDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.etr.etrDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="etrNombre" depends="required" page="3">
+				<msg name="required"  key="errors.etr.etrNombre.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="controlFacturaForm">
+			<field  property="cfcSerie" depends="required" page="3">
+				<msg name="required"  key="errors.cfc.cfcSerie.required" bundle="errors" />
+    		</field>
+    		<field  property="cfcCorrIni" depends="required" page="3">
+				<msg name="required"  key="errors.cfc.cfcCorrIni.required" bundle="errors" />
+    		</field>
+    		<field  property="cfcCorrFin" depends="required" page="3">
+				<msg name="required"  key="errors.cfc.cfcCorrFin.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoContratoForm">
+			<field  property="tcoNombre" depends="required" page="3">
+				<msg name="required"  key="errors.etr.etrNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tcoDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.etr.etrDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    		
+    	<form name="tipoAsociadoForm">
+			<field  property="tasNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tas.tasNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tasDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tas.tasDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoTransaccionForm">
+			<field  property="ttrNombre" depends="required" page="3">
+				<msg name="required"  key="errors.ttr.ttrNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="ttrDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.ttr.ttrDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    		
+    	<form name="tipoComprobanteForm">
+			<field  property="tcmNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tcm.tcmNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tcmDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tcm.tcmDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="ordenCompraForm">
+    		<field  property="proCodigo" depends="required" page="3">
+				<msg name="required"  key="errors.oco.proCodigo.required" bundle="errors" />
+    		</field>
+    		<field  property="proNombre" depends="required" page="3">
+				<msg name="required"  key="errors.oco.proNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="ascCodigo3" depends="required" page="3">
+				<msg name="required"  key="errors.oco.ascCodigo3.required" bundle="errors" />
+    		</field>
+    		<field  property="ascNombre" depends="required" page="3">
+				<msg name="required"  key="errors.oco.ascNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="ocoMonto" depends="required" page="3">
+				<msg name="required"  key="errors.oco.ocoMonto.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoDomicilioForm">
+			<field  property="domNombre" depends="required" page="3">
+				<msg name="required"  key="errors.dom.domNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="domDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.dom.domDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	<form name="planMesForm">
+    		<field  property="plmNombre" depends="required" page="3">
+				<msg name="required"  key="errors.plm.plmNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="plmDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.plm.plmDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="plmDuracion" depends="required" page="3">
+				<msg name="required"  key="errors.plm.plmDuracion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tasaInteresForm">
+    		<field  property="tinNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tin.tinNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tinDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tin.tinDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="tinTasa" depends="required" page="3">
+				<msg name="required"  key="errors.tin.tinTasa.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="lineaAhorroForm">
+    		<field  property="lahNombre" depends="required" page="3">
+				<msg name="required"  key="errors.lah.lahNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="lahDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.lah.lahDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="lahDesde" depends="required" page="3">
+				<msg name="required"  key="errors.lah.lahDesde.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoAhorroForm">
+    		<field  property="tahNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tah.tahNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tahDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tah.tahDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaTinTasaInteres.tinId" depends="required" page="3">
+				<msg name="required"  key="errors.tah.tahTasaInteres.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaLahLineaAhorro.lahId" depends="required" page="3">
+				<msg name="required"  key="errors.tah.tahLineaAhorro.required" bundle="errors" />
+    		</field>
+    	</form>
+    	   <form name="tipoCuentaBancariaForm">
+			<field  property="tcuNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tcu.tcuNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tcuDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tcu.tcuDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+		
+		    	<form name="asociadoForm">
+    		<field property="ascCodigo" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascCodigo" bundle="errors"/>
+			</field>
+			<field property="ascSalario" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascSalario" bundle="errors"/>
+			</field>
+			<!--  <field property="ascIsss" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascIsss" bundle="errors"/>
+			</field> -->
+			<field property="ascDuiFechaExp" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascDuiFechaExp" bundle="errors"/>
+			</field>
+			<field property="ascDuiLugarExp" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascDuiLugarExp" bundle="errors"/>
+			</field>
+			<field property="ascNombreNit" depends="required" page="2">
+				<msg name="required"  key="errors.asociado.ascNombreNit" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perNit" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perNit" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perDui" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perDui" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perLugarNacimiento" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perLugarNacimiento" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perPrimerNombre" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perPrimerNombre" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perPrimerApellido" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perPrimerApellido" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perMunicipio" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perMunicipio" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perCalle" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perCalle" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perColoniaBarrio" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perColoniaBarrio" bundle="errors"/>
+			</field>
+			<field property="secPerPersona.perCodigoPostal" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perCodigoPostal" bundle="errors"/>
+			</field> 
+			<field property="secPerPersona.perFechaNacimiento" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.perFechaNacimiento" bundle="errors"/>
+			</field>
+					<field property="ascNombreNit" depends="required" page="3">
+				<msg name="required"  key="errors.asociado.ascNombreNit" bundle="errors"/>
+			</field>
+		</form>
+		
+    	<form name="tipoFiadorForm">
+			<field  property="tfiNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tif.tfiNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tfiDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tif.tfiDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoGarantiaForm">
+			<field  property="tgaNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tgar.tgaNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tgaDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tgar.tgaDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoPrestamoForm">
+    		<field  property="tprNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tpr.tprNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaTinTasaInteres.tinId" depends="required" page="3">
+				<msg name="required"  key="errors.tpr.tprTasaInteres.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaLprLineaPrestamo.lprId" depends="required" page="3">
+				<msg name="required"  key="errors.tpr.tprLineaPrestamo.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaPlmPlanMeses.plmId" depends="required" page="3">
+				<msg name="required"  key="errors.tpr.tprPlanMeses.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+		<form name="tipoNotaForm">
+			<field  property="tntNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tnt.tntNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tntDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tnt.tntDescripcion.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="lineaPrestamoForm">
+    		<field  property="lprNombre" depends="required" page="3">
+				<msg name="required"  key="errors.lpr.lprNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="lprDesde" depends="required" page="3">
+				<msg name="required"  key="errors.lpr.lprDesde.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="beneficiariosForm">
+			<field  property="benPrimerNombre" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benPrimerNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="benPrimerApellido" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benPrimerApellido.required" bundle="errors" />
+    		</field>
+    		<field  property="benFechaNacimiento" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benFechaNacimiento.required" bundle="errors" />
+    		</field>
+    		<field  property="benSexo" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benSexo.required" bundle="errors" />
+    		</field>
+    		<field  property="benEstado" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benEstado.required" bundle="errors" />
+    		</field>
+    		<field  property="secParParentesco.parId" depends="required" page="3">
+				<msg name="required"  key="errors.ben.benParentesco.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="cuentaBancariaForm">
+			<field  property="cbaCuenta" depends="required" page="3">
+				<msg name="required"  key="errors.cba.NoCuenta.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="cuentaAportacionForm">
+			<field  property="cahCuota" depends="required" page="3">
+				<msg name="required"  key="errors.cap.cuotaAportacion.required" bundle="errors" />
+				<msg name="double"  key="errors.cap.cuentaAportacion.double" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoSeguroForm">
+    		<field  property="tisNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tis.tisNombre.required" bundle="errors" />
+    		</field>
+    		<field  property="tisPoliza" depends="required" page="3">
+				<msg name="required"  key="errors.tis.tisPoliza.required" bundle="errors" />
+    		</field>
+    		<field  property="tisDescripcion" depends="required" page="3">
+				<msg name="required"  key="errors.tis.tisDescripcion.required" bundle="errors" />
+    		</field>
+    		<field  property="tisInicioPoliza" depends="required" page="3">
+				<msg name="required"  key="errors.tis.tisInicioPoliza.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="bancosForm">
+    		<field  property="banNombre" depends="required" page="3">
+				<msg name="required"  key="errors.bancos.banNombre.required" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	    <form name="fiadorForm">
+    	    <field  property="fxpId" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtDui.required" bundle="errors" />
+    		</field>
+    		<!-- <field  property="ctaPxtPersonaExterna.pxtDui" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtDui.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaPxtPersonaExterna.pxtNombres" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtNombres.required" bundle="errors" />
+    		</field>
+    		 <field  property="ctaPxtPersonaExterna.pxtPrimerApellido" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtPrimerApellido.required" bundle="errors" />
+    		</field>
+    		<field  property="ctaPxtPersonaExterna.pxtDireccion" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtDireccion.required" bundle="errors" />
+    		</field>
+    		 <field  property="ctaPxtPersonaExterna.pxtTelefonoCasa" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtTelefonoCasa.required" bundle="errors" />
+    		</field>
+    		 <field  property="ctaPxtPersonaExterna.pxtTrabajo" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtLugarTrabajo.required" bundle="errors" />
+    		</field>
+    		 <field  property="ctaPxtPersonaExterna.pxtSalario" depends="required" page="3">
+				<msg name="required"  key="errors.fxp.pxtSalario.required" bundle="errors" />
+    		</field> -->
+    	</form>
+    	
+    	<form name="garantiaPrestamoForm">
+    		<field  property="garNombreInmueble" depends="required" page="3">
+				<msg name="required"  key="errors.gar.nombreInmuebleRequired" bundle="errors" />
+    		</field>
+    		 <field  property="garUbicacion" depends="required" page="3">
+				<msg name="required"  key="errors.gar.ubicacionInmuebleRequiered" bundle="errors" />
+    		</field>
+    		<field  property="garDescripcionInmueble" depends="required" page="3">
+				<msg name="required"  key="errors.gar.descripcionInmuebleRequired" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	  <form name="descuentosExternosForm">
+    		<field  property="dexNombreDescuento" depends="required" page="3">
+				<msg name="required"  key="errors.gar.nombreInmuebleRequired" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="notaGenericForm">
+    		<field  property="notNota" depends="required" page="3">
+				<msg name="required"  key="errors.nxp.notaRequired" bundle="errors" />
+    		</field>
+    	</form>
+    	
+    	<form name="tipoCuentaContableForm">
+    		<field  property="ticNombre" depends="required" page="3">
+				<msg name="required"  key="errors.tic.nombreRequiered" bundle="errors" />
+    		</field>
+       	</form>
+       	
+       	<form name="controlChequeForm">
+    		<field  property="cckSerie" depends="required" page="3">
+				<msg name="required"  key="errors.cck.serieRequired" bundle="errors" />
+    		</field>
+    		<field  property="cckCorrIni" depends="required" page="3">
+				<msg name="required"  key="errors.cck.iniRequired" bundle="errors" />
+    		</field>
+    		<field  property="cckCorrFin" depends="required" page="3">
+				<msg name="required"  key="errors.cck.finRequired" bundle="errors" />
+    		</field>
+    		<field  property="cckDigitos" depends="required" page="3">
+				<msg name="required"  key="errors.cck.digitosRequired" bundle="errors" />
+    		</field>
+       	</form>
+       	
+   	</formset>
+</form-validation>

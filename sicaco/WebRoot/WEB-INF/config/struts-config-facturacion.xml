@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="facturaUsoForm"
+			type="com.cetia.sicaco.facturacion.struts.form.FacturaUsoForm" />
+		<form-bean name="facturaForm"
+			type="com.cetia.sicaco.facturacion.struts.form.FacturaForm" />
+		<form-bean name="encabezadoFacturaForm"
+			type="com.cetia.sicaco.facturacion.struts.form.EncabezadoFacturaForm" />
+		<form-bean name="detalleFacturaForm"
+			type="com.cetia.sicaco.facturacion.struts.form.DetalleFacturaForm" />
+		<form-bean name="clienteForm"
+			type="com.cetia.sicaco.facturacion.struts.form.ClienteForm" />
+    	<form-bean name="facturaManualForm" 
+    		type="com.cetia.sicaco.facturacion.struts.form.FacturaManualForm" />
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="redirectEncabezado"
+			path="/encabezadoFactura.do?accion=lista&amp;nueva=1" redirect="true"
+			module="/facturacion" />
+		<forward name="redirectListaFactC"
+			path="/listaFacturas.do?accion=lista&amp;voc=1" redirect="true" />
+		<forward name="redirectListaFactV"
+			path="/listaFacturas.do?accion=lista&amp;voc=2" redirect="true" />
+		<forward name="redirectListaFactND"
+			path="/listaFacturas.do?accion=lista&amp;voc=3" redirect="true" />
+		<forward name="redirectListaFactNC"
+			path="/listaFacturas.do?accion=lista&amp;voc=4" redirect="true" />
+	</global-forwards>
+	<action-mappings>
+		<action attribute="facturaUsoForm" input="redirectInvalidData"
+			name="facturaUsoForm" parameter="accion" path="/facturaUso"
+			scope="request"
+			type="com.cetia.sicaco.facturacion.struts.action.FacturaUsoAction">
+			<forward name="lista"
+				path="pagina-lista.facturacion.facturaUso" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/facturaUso.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="encabezadoFacturaForm"
+			input="redirectInvalidData" name="encabezadoFacturaForm"
+			parameter="accion" path="/encabezadoFactura" scope="request"
+			type="com.cetia.sicaco.facturacion.struts.action.EncabezadoFacturaAction">
+			<forward name="lista"
+				path="pagina-factura.facturacion.encabezadoFactura" />
+			<forward name="redirectInvalidData"
+				path="/encabezadoFactura.do?accion=redirectInvalidData"
+				redirect="true" />
+			<forward name="newPrecioSugerido"
+				path="pagina-sugerido.facturacion.encabezadoFactura" />
+			<forward name="ingresarDetalle" path="/detalleFactura.do" />
+		</action>
+		<action attribute="detalleFacturaForm"
+			input="redirectInvalidData" name="detalleFacturaForm"
+			parameter="accion" path="/detalleFactura" scope="request"
+			type="com.cetia.sicaco.facturacion.struts.action.DetalleFacturaAction">
+			<forward name="lista" path="pagina-dml-facturacion.detalle" />
+			<forward name="redirectInvalidData"
+				path="/detalleFactura.do?accion=redirectInvalidData"
+				redirect="true" />
+			<forward name="reorder"
+				path="pagina-reorder.facturacion.detalle" />
+			<forward name="regresar"
+				path="/encabezadoFactura.do?nueva=0&amp;accion=lista" />
+		</action>
+		<action attribute="encabezadoFacturaForm"
+			input="redirectInvalidData" name="encabezadoFacturaForm"
+			parameter="accion" path="/listaFacturas" scope="request"
+			type="com.cetia.sicaco.facturacion.struts.action.ListaFacturasAction">
+			<forward name="lista"
+				path="pagina-lista.facturacion.listaFacturas" />
+			<forward name="dml"
+				path="pagina-dml.facturacion.listaFacturas" />
+		</action>
+		<action attribute="clienteForm" input="redirectInvalidData"
+			name="clienteForm" parameter="accion" path="/cliente" scope="request"
+			type="com.cetia.sicaco.facturacion.struts.action.ClienteAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.facturacion.mantClientes" />
+			<forward name="redirectInvalidData"
+				path="/cliente.do?accion=redirectInvalidData" />
+		</action>
+    <action
+      attribute="facturaManualForm"
+      input="redirectInvalidData"
+      name="facturaManualForm"
+      parameter="accion"
+      path="/facturaManual"
+      scope="request"
+      type="com.cetia.sicaco.facturacion.struts.action.FacturaManualAction">
+      <forward name="ventas" path="pagina-lista.facturacion.ventas" />
+      <forward name="lista" path="pagina-lista.facturacion.facturaManual" />
+      <forward name="compras" path="pagina-lista.facturacion.compras" />
+    </action>
+
+
+	</action-mappings>
+
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-facturacion.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+	
+	
+</struts-config>
+

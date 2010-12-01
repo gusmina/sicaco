@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!-- <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd"> -->
+<jasperReport
+		 name="LibroDeVentaConsumidorFinal_subreportCreditos"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="535"
+		 pageHeight="802"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="MES" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="AÑO" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT DISTINCT
+    SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`IS NOT NULL,
+       fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`,0.00)) AS VENTAS_EXENTAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))/1.13) AS VENTAS_GRAVADAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))*0.13)  AS IVA
+
+FROM
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE (fac_fen_factura_encabezado.`FUS_ID`=1 OR fac_fen_factura_encabezado.`FUS_ID`=3) AND
+      MONTHNAME(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=
+      (SELECT CASE $P{MES}
+WHEN 'ENERO' THEN 1
+WHEN 'FEBRERO' THEN 2
+WHEN 'MARZO' THEN 3
+WHEN 'ABRIL' THEN 4
+WHEN 'MAYO' THEN 5
+WHEN 'JUNIO' THEN 6
+WHEN 'JULIO' THEN 7
+WHEN 'AGOSTO' THEN 8
+WHEN 'SEPTIEMBRE' THEN 9
+WHEN 'OCTUBRE' THEN 10
+WHEN 'NOVIEMBRE' THEN 11
+WHEN 'DICIEMBRE' THEN 12
+END)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{AÑO},SIGNED)
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA`='C'
+
+UNION
+
+SELECT DISTINCT
+    SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`IS NOT NULL,
+       fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`,0.00)) AS VENTAS_EXENTAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))/1.13) AS VENTAS_GRAVADAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))*0.13)  AS IVA
+
+FROM
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE (fac_fen_factura_encabezado.`FUS_ID`=1 OR fac_fen_factura_encabezado.`FUS_ID`=3) AND
+      MONTHNAME(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=
+            (SELECT CASE $P{MES}
+            WHEN 'ENERO' THEN 1
+            WHEN 'FEBRERO' THEN 2
+            WHEN 'MARZO' THEN 3
+            WHEN 'ABRIL' THEN 4
+            WHEN 'MAYO' THEN 5
+            WHEN 'JUNIO' THEN 6
+            WHEN 'JULIO' THEN 7
+            WHEN 'AGOSTO' THEN 8
+            WHEN 'SEPTIEMBRE' THEN 9
+            WHEN 'OCTUBRE' THEN 10
+            WHEN 'NOVIEMBRE' THEN 11
+            WHEN 'DICIEMBRE' THEN 12
+            END)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{AÑO},SIGNED)
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA`='F'
+      AND CONVERT(fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA`,SIGNED)>=0
+      AND CONVERT(fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA`,SIGNED)<=14
+
+UNION
+
+SELECT DISTINCT
+    SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`IS NOT NULL,
+       fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`,0.00)) AS VENTAS_EXENTAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))/1.13) AS VENTAS_GRAVADAS,
+
+    (SUM(IF(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` IS NOT NULL
+    AND (fac_fen_factura_encabezado.`FUS_ID`=1 OR
+      fac_fen_factura_encabezado.`FUS_ID`=3),
+      fac_fen_factura_encabezado.`FEN_TOTAL_VENTA`,0.00))*0.13)  AS IVA
+
+FROM
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE (fac_fen_factura_encabezado.`FUS_ID`=1 OR fac_fen_factura_encabezado.`FUS_ID`=3) AND
+      MONTHNAME(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=
+            (SELECT CASE $P{MES}
+            WHEN 'ENERO' THEN 1
+            WHEN 'FEBRERO' THEN 2
+            WHEN 'MARZO' THEN 3
+            WHEN 'ABRIL' THEN 4
+            WHEN 'MAYO' THEN 5
+            WHEN 'JUNIO' THEN 6
+            WHEN 'JULIO' THEN 7
+            WHEN 'AGOSTO' THEN 8
+            WHEN 'SEPTIEMBRE' THEN 9
+            WHEN 'OCTUBRE' THEN 10
+            WHEN 'NOVIEMBRE' THEN 11
+            WHEN 'DICIEMBRE' THEN 12
+            END)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{AÑO},SIGNED)
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA`='F'
+      AND CONVERT(fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA`,SIGNED)>=15
+      AND CONVERT(fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA`,SIGNED)<=150]]></queryString>
+
+	<field name="VENTAS_EXENTAS" class="java.math.BigDecimal"/>
+	<field name="VENTAS_GRAVADAS" class="java.math.BigDecimal"/>
+	<field name="IVA" class="java.math.BigDecimal"/>
+
+	<variable name="SUMA_TOTALES_DE_CADA_FILA" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($F{VENTAS_EXENTAS}.doubleValue()+$F{VENTAS_GRAVADAS}.doubleValue()+
+	   $F{IVA}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_SUMA_TOTALES_DE_CADA_FILA_1" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$V{SUMA_TOTALES_DE_CADA_FILA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_IVA_1" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{IVA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VENTAS_GRAVADAS_1" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENTAS_GRAVADAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VENTAS_EXENTAS_1" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENTAS_EXENTAS}]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="31"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="0"
+						width="80"
+						height="30"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Ventas
+Exentas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="80"
+						y="0"
+						width="88"
+						height="30"
+						key="staticText-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Ventas
+Gravadas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="168"
+						y="0"
+						width="59"
+						height="29"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[IVA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="227"
+						y="0"
+						width="87"
+						height="30"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[VENTAS
+TOTALES]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="30"
+						width="314"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="77"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VENTAS_EXENTAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="77"
+						y="0"
+						width="87"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{VENTAS_GRAVADAS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="164"
+						y="0"
+						width="63"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{IVA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="227"
+						y="0"
+						width="87"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{SUMA_TOTALES_DE_CADA_FILA}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="17"
+						width="314"
+						height="0"
+						key="line-2"
+						positionType="FixRelativeToBottom"
+						isPrintWhenDetailOverflows="true"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="17"
+						width="314"
+						height="0"
+						key="line-3"
+						positionType="FixRelativeToBottom"
+						isPrintWhenDetailOverflows="true"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="33"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="228"
+						y="4"
+						width="87"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{SUM_SUMA_TOTALES_DE_CADA_FILA_1}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="2"
+						width="314"
+						height="0"
+						key="line-5"
+						positionType="FixRelativeToBottom"
+						isPrintWhenDetailOverflows="true"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="165"
+						y="4"
+						width="62"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUM_IVA_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="80"
+						y="4"
+						width="84"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUM_VENTAS_GRAVADAS_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="4"
+						width="80"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUM_VENTAS_EXENTAS_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</summary>
+</jasperReport>

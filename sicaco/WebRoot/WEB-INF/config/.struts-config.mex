@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/default2.do" location="240,285" dimension="150,61" />
+  <StrutsActivity path="default;6" location="75,135" dimension="150,100" />
+  <StrutsActivity path="/seguridad/autenticacion.do" location="495,60" dimension="174,75" />
+  <StrutsTransition id="default;6,null,/default2.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="150,235" />
+      <AbsolutePoint location="150,315" />
+      <AbsolutePoint location="240,315" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/default2.do,null,/seguridad/autenticacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="315,285" />
+      <AbsolutePoint location="315,97" />
+      <AbsolutePoint location="495,97" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+    <form-bean name="planillaForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.PlanillaForm" />
+    <form-bean name="cambioCodEmpleadoForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CambioCodEmpleadoForm" />
+    <form-bean name="cargaAutomaticaPrestamoForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CargaAutomaticaPrestamoForm" />
+    <form-bean name="cargoFiadoresForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CargoFiadoresForm" />
+    <form-bean name="cargaAutomaticaSegurosForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CargaAutomaticaSegurosForm" />
+    <form-bean name="dividendosXlsForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.DividendosXlsForm" />
+    <form-bean name="cuentasParaDividendosForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CuentasParaDividendosForm" />
+    <form-bean name="pagaNetBankingForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.PagaNetBankingForm" />
+<form-bean name="liquidacionAsociadoForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.LiquidacionAsociadoForm" />
+    <form-bean name="capitalizacionAhorroForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CapitalizacionAhorroForm" />
+    <form-bean name="distribucionDividendosForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.DistribucionDividendosForm" />
+    <form-bean name="correccionCapitalForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.CorreccionCapitalForm" />
+    <form-bean name="listaDistribuidosForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.ListaDistribuidosForm" />
+    <form-bean name="envioCorreoRetiroAhorroForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.EnvioCorreoRetiroAhorroForm" />
+    <form-bean name="transaccionFechaForm" type="com.cetia.sicaco.procesosEspeciales.struts.form.TransaccionFechaForm" />
+  </form-beans>
+
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings >
+    <action
+      attribute="planillaForm"
+      input="redirectInvalidData"
+      name="planillaForm"
+      parameter="accion"
+      path="/planilla"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.PlanillaAction">
+      <forward name="verificar" path="pagina-dml.procesosEspeciales.planilla" />
+      <forward name="lista" path="pagina-lista.procesosEspeciales.planilla" />
+    </action>
+    <action
+      attribute="cambioCodEmpleadoForm"
+      input="redirectInvalidData"
+      name="cambioCodEmpleadoForm"
+      parameter="accion"
+      path="/cambioCodEmpleado"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CambioCodEmpleadoAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.cambioCodEmpleado" />
+    </action>
+    <action
+      attribute="cargaAutomaticaPrestamoForm"
+      input="redirectInvalidData"
+      name="cargaAutomaticaPrestamoForm"
+      parameter="accion"
+      path="/cargaAutomaticaPrestamo"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CargaAutomaticaPrestamoAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.cargaAutomaticaPrestamo" />
+      <forward name="sinxls" path="pagina-lista.procesosEspeciales.cargaAutoSinExcel" />
+    </action>
+    <action
+      attribute="cargoFiadoresForm"
+      input="redirectInvalidData"
+      name="cargoFiadoresForm"
+      parameter="accion"
+      path="/cargoFiadores"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CargoFiadoresAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.cargoFiadores" />
+      <forward name="lfiadores" path="pagina-lista.procesosEspeciales.lfiadores" />
+    </action>
+    <action
+      attribute="cargaAutomaticaSegurosForm"
+      input="redirectInvalidData"
+      name="cargaAutomaticaSegurosForm"
+      parameter="accion"
+      path="/cargaAutomaticaSeguros"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CargaAutomaticaSegurosAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.cargaAutomaticaSeguros" />
+    </action>
+    <action
+      attribute="pagaNetBankingForm"
+      input="redirectInvalidData"
+      name="pagaNetBankingForm"
+      parameter="accion"
+      path="/pagaNetBanking"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.PagaNetBankingAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.pagaNetBanking" />
+    </action>
+    <action
+      attribute="liquidacionAsociadoForm"
+      name="liquidacionAsociadoForm"
+      parameter="accion"
+      path="/liquidacionAsociado"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.LiquidacionAsociadoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.liquidacionAsociados" />
+      <forward name="forwardToLiquidacion" path="pagina.dml.procesosEspeciales.liquidarAsociado" />
+      <forward name="forwardToProyeccionLiquidacion" path="pagina.dml.procesosEspeciales.forwardToProyeccionLiquidacion"/>
+    </action>
+    <action forward="pagina.dml.procesosEspeciales.capitalizacionAhorro" path="/capitalizacionAhorroIni" />
+    <action
+      attribute="capitalizacionAhorroForm"
+      input="pagina.dml.procesosEspeciales.capitalizacionAhorro"
+      name="capitalizacionAhorroForm"
+      parameter="accion"
+      path="/capitalizacionAhorro"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CapitalizacionAhorroAction" >
+      <forward name="lista" path="pagina.dml.procesosEspeciales.capitalizacionAhorro" />
+    </action>
+    <action
+      attribute="distribucionDividendosForm"
+      input="pagina.dml.procesosEspeciales.distribucionDividendos"
+      name="distribucionDividendosForm"
+      parameter="accion"
+      path="/distribucionDividendos"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.DistribucionDividendosAction">
+      <forward name="lista" path="pagina.dml.procesosEspeciales.distribucionDividendos" />
+    </action>
+    <action
+      attribute="correccionCapitalForm"
+      input="redirectInvalidData"
+      name="correccionCapitalForm"
+      parameter="accion"
+      path="/correccionCapital"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.CorreccionCapitalAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.correccionCapital" />
+    </action>
+    <action
+      attribute="listaDistribuidosForm"
+      name="listaDistribuidosForm"
+      parameter="accion"
+      path="/listaDistribuidos"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.ListaDistribuidosAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.listaDistribuidos" />
+    </action>
+    <action
+      attribute="envioCorreoRetiroAhorroForm"
+      input="redirectInvalidData"
+      name="envioCorreoRetiroAhorroForm"
+      parameter="accion"
+      path="/envioCorreoRetiroAhorro"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.EnvioCorreoRetiroAhorroAction">
+      <forward name="lista" path="pagina.dml.procesosEspeciales.EnvioCorreoRetiroAhorro" />
+    </action>
+    <action
+      attribute="transaccionFechaForm"
+      input="redirectInvalidData"
+      name="transaccionFechaForm"
+      parameter="accion"
+      path="/transaccionFecha"
+      scope="request"
+      type="com.cetia.sicaco.procesosEspeciales.struts.action.TransaccionFechaAction">
+      <forward name="lista" path="pagina-lista.procesosEspeciales.transaccionFecha" />
+    </action>
+
+
+    
+    
+
+  </action-mappings>
+
+  <controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-procesosEspeciales.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+</struts-config>
+

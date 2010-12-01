@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.proveedor" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los proveedores que tienen relaciones con CETIA" type="string" />
+		<put name="accion" value="/inventario/proveedor.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/proveedorDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.inventario.proveedor" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Edicion de Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de proveedores" type="string" />
+		<put name="contenido" value="/inventario/proveedorDML.jsp" />
+		<put name="accion" value="/inventario/proveedor.do?accion=dml" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.contactoProveedor" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Contactos"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los contactos de proveedores que tienen relaciones con CETIA" type="string" />
+		<put name="accion" value="/inventario/contactoProveedor.do?accion=contacto" type="string" />
+		<put name="contenido" value="/inventario/contactoProveedorDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.inventario.contactoProveedor" extends="plantilla">
+		<put name="nombre-pantalla" value="Edicion de Contactos"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de contactos" type="string" />
+		<put name="contenido" value="/inventario/contactoProveedorDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.tipoClasificacion" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipos de Clasificacion de Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los tipos de clasificaciones de proveedores" type="string" />
+		<put name="accion" value="/inventario/tipoClasificacion.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/tipoClasificacionDML.jsp"/>
+	</definition>
+	
+		<definition name="pagina-lista.inventario.clasificado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Clasificacion de Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las clasificaciones de proveedores" type="string" />
+		<put name="accion" value="/inventario/clasificado.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/clasificadoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.clasificado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Clasificacion de Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las clasificaciones de proveedores" type="string" />
+		<put name="accion" value="/inventario/clasificado.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/clasificadoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.prCuentaBancaria" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cuentas bancarias de Proveedores"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las cuentas bancarias de un proveedor" type="string" />
+		<put name="accion" value="/inventario/prCuentaBancaria.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/cuentaBancariaDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.linea" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lineas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las lineas" type="string" />
+		<put name="accion" value="/inventario/linea.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/lineaDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.conversion" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Conversion"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las conversiones posibles de una medida" type="string" />
+		<put name="accion" value="/inventario/conversion.do?accion=convert" type="string" />
+		<put name="contenido" value="/inventario/conversionDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.bodegas" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Bodegas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las bodegas de la empresa" type="string" />
+		<put name="accion" value="/inventario/bodegas.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/bodegasDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.inventario.bodegas" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Accion Bodegas"/>
+		<put name="descripcion-pagina"
+			value="Acciones de bodegas" type="string" />
+		<put name="contenido" value="/inventario/bodegasDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.nivel" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Secciones"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de las secciones de un Estante" type="string" />
+		<put name="accion" value="/inventario/nivel.do?accion=level" type="string" />
+		<put name="contenido" value="/inventario/nivelDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.estantes" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Estantes"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de los estantes de una bodega" type="string" />
+		<put name="accion" value="/inventario/estantes.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/estantesDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.estantes" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Accion Estantes"/>
+		<put name="descripcion-pagina"
+			value="Acciones de estantes" type="string" />
+		<put name="contenido" value="/inventario/estantesDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.tipoarticulo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo de Articulos"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de Tipo de  Articulos" type="string" />
+		<put name="accion" value="/inventario/tipoArticulo.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/tipoArticuloDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.tipoarticulo" extends="plantilla">
+		<put name="nombre-pantalla" value="Edicion de Tipo de Articulos"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de Tipo de Articulos" type="string" />
+		<put name="contenido" value="/inventario/tipoArticuloDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.medida" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Medidas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de Tipo de  Articulos" type="string" />
+		<put name="accion" value="/inventario/medida.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/medidaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.medida" extends="plantilla">
+		<put name="nombre-pantalla" value="Edicion de Medidas"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de Tipo de Articulos" type="string" />
+		<put name="contenido" value="/inventario/medidaDML.jsp" />
+	</definition>	
+	
+	<definition name="pagina-lista.inventario.tme.medida" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo de Medida"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de Tipo de  Articulos" type="string" />
+		<put name="accion" value="/inventario/medidaTipo.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/tipoMedidaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.tme.medida" extends="plantilla">
+		<put name="nombre-pantalla" value="Tipo de Medida"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de Tipo de Articulos" type="string" />
+		<put name="contenido" value="/inventario/tipoMedidaDML.jsp" />
+	</definition>	
+	
+	<definition name="pagina-lista.inventario.articulo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Articulo"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de los articulos ingresados al sistema" type="string" />
+		<put name="accion" value="/inventario/articulo.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/articuloDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.articulo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Accion Articulo"/>
+		<put name="descripcion-pagina"
+			value="Acciones de Articulos" type="string" />
+		<put name="contenido" value="/inventario/articuloDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.capacidad" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Capacidad de Producto"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de las capacidades de un articulo en una bodega" type="string" />
+		<put name="accion" value="/inventario/capacidad.do?accion=capacity" />
+		<put name="contenido" value="/inventario/capacidadDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.artBodega" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Existencia de productos por bodega"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de las existencias de un articulo en una bodega" type="string" />
+		<put name="accion" value="/inventario/artBodega.do?accion=lista" />
+		<put name="contenido" value="/inventario/artBodegaDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.inventario.movimiento" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Movimientos por Artículo"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de los movimientos de un articulo en una bodega" type="string" />
+		<put name="accion" value="/inventario/movimiento.do?accion=lista" />
+		<put name="contenido" value="/inventario/movimientosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.movBodega" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Movimientos de Articulo por bodega"/>
+		<put name="descripcion-pagina"
+			value="Movilizacion de un articulo de una bodega a otra" type="string" />
+		<put name="contenido" value="/inventario/moverDML.jsp" />
+	</definition>
+
+		<definition name="pagina-dml.inventario.proveedorOrden" extends="plantilla">
+		<put name="nombre-pantalla" value="Union de Proveedor Con Tipo de Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Union de Proveedor Con Tipo de Prestamo" type="string" />
+		<put name="contenido" value="/inventario/proveedorOrdenDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.inventario.articuloTipoPrestamoDML" extends="plantilla">
+		<put name="nombre-pantalla" value="Union de Tipo de Articulo con Tipo de Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Union de Tipo de Articulo con Tipo de Prestamo" type="string" />
+		<put name="contenido" value="/inventario/articuloTipoPrestamoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.inventario.moverInventario" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Movimiento de Inventario entre Bodegas"/>
+		<put name="descripcion-pagina"
+			value="Mover inventario de una bodega a otra" type="string" />
+		<put name="contenido" value="/inventario/moverInventarioDML.jsp"/>
+	</definition>
+</tiles-definitions>

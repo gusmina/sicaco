@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="612" pageHeight="360" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fenId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT fen.fen_numero_factura numeroFactura,fen.fen_id fenId,
+	fen.fen_fecha_factura fechaFactura, 
+	(case binary fen.fen_cancelada 
+		when 'E' then 'Efectivo' 
+		when 'C' then 'Credito' 
+		else 'No Definido' 
+	end) tipoPago,
+	ifnull(suc.suc_nombre,'No Definida') sucNombre,
+	
+	fen.asc_id fenAscId,
+	ifnull(concat(per.per_primer_nombre,' ', per.per_segundo_nombre,' ', per.per_tercer_nombre,' ', per.per_primer_apellido,' ',per.per_segundo_apellido,' ',per.per_apellido_casada ),'No Definido') nombreAsociado,
+	ifnull(asoc.asc_codigo,'No Definido') ascCodigo,
+	ifnull(asoc.asc_codigo_asociado,'No Definido') ascCodigoAsoc,
+	concat(ifnull(per.per_nit,'-'),' / ',ifnull(per.per_dui,'-')) nitDui,
+	
+	fen.cli_codigo fenCliCodigo,
+	ifnull(cli.cli_nombre,'No Definido') cliNombre,
+	ifnull(cli.cli_contribuyente,'No Definido') cliContribuyente,
+
+	(select ifnull(sum(dfa2.dfa_precio_total),0) 
+	 from fac_dfa_detalle_factura dfa2
+	 where dfa2.dfa_exento = 1
+		and dfa2.fen_id=fen.fen_id)totalExento ,
+	(select ifnull(sum(dfa2.dfa_precio_total),0)
+	 from fac_dfa_detalle_factura dfa2
+	 where dfa2.dfa_exento = 0
+		and dfa2.fen_id=fen.fen_id)*
+    	(select (rim.rim_impuesto/100)+1
+	from con_rim_retencion_impuesto rim
+	where rim.tim_id = 'A'
+	and (rim.rim_fecha_invalidez is null
+	or rim.rim_fecha_invalidez < now())) totalGrabado,
+	fen.fen_total_ventas_exentas totalVExentas,
+	fen.fen_total_venta totalVenta, fen.fen_tipo_factura,
+	(select (rim.rim_impuesto/100)+1
+	from con_rim_retencion_impuesto rim
+	where rim.tim_id = 'A'
+	and (rim.rim_fecha_invalidez is null
+	or rim.rim_fecha_invalidez < now())) as iva
+FROM fac_fen_factura_encabezado fen 
+	left join sec_suc_sucursal suc on suc.suc_id = fen.suc_id
+	left join cta_asc_asociado asoc on asoc.asc_id = fen.asc_id
+	left join sec_per_persona per on per.per_id = asoc.per_id
+
+	left join fac_cli_cliente cli on cli.cli_codigo = fen.cli_codigo
+	
+where fen.fen_id=$P{fenId}]]>
+	</queryString>
+	<field name="numeroFactura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fenId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaFactura" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoPago" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sucNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fenAscId" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreAsociado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ascCodigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ascCodigoAsoc" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nitDui" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fenCliCodigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliNombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cliContribuyente" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalExento" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalGrabado" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalVExentas" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalVenta" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fen_tipo_factura" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="iva" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="127" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="54" y="78" width="368" height="13">
+					<printWhenExpression><![CDATA[($F{fenCliCodigo}==null && $F{fenAscId}!=null)?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nitDui}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="428" y="54" width="142" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fechaFactura}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="428" y="66" width="142" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipoPago}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="428" y="78" width="142" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sucNombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="54" y="54" width="368" height="13">
+					<printWhenExpression><![CDATA[($F{fenCliCodigo}==null && $F{fenAscId}!=null)?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreAsociado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="54" y="66" width="368" height="13">
+					<printWhenExpression><![CDATA[($F{fenCliCodigo}==null && $F{fenAscId}!=null)?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ascCodigoAsoc}+" / "+$F{ascCodigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="54" y="66" width="368" height="13">
+					<printWhenExpression><![CDATA[($F{fenAscId}==null)?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[( $F{fenCliCodigo}==null ? "No Definido" : $F{fenCliCodigo} )]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="54" y="54" width="368" height="13">
+					<printWhenExpression><![CDATA[($F{fenAscId}==null)?Boolean.TRUE:Boolean.FALSE]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliNombre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="511" y="13" width="100" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numeroFactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="0" y="0" width="611" height="16" isPrintWhenDetailOverflows="true"/>
+				<subreportParameter name="iva">
+					<subreportParameterExpression><![CDATA[$F{iva}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fenId">
+					<subreportParameterExpression><![CDATA[$P{fenId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fen_tipo_factura">
+					<subreportParameterExpression><![CDATA[$F{fen_tipo_factura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "srDetalleFactura.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="50" splitType="Stretch">
+			<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="419" y="2" width="90" height="13"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalExento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="509" y="2" width="90" height="13"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalGrabado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="509" y="15" width="90" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalVExentas}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="509" y="28" width="90" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{totalVenta}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="44" y="1" width="375" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Number2Letter().getLetter($F{totalVenta}.doubleValue())+" Dólares"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="16" y="1" width="28" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Son:]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

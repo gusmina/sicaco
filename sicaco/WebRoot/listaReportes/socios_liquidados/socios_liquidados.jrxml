@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="socios_liquidados" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="mes" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["12"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+      CONCAT_WS(' ', sec_per_persona.`PER_PRIMER_NOMBRE`,
+     sec_per_persona.`PER_SEGUNDO_NOMBRE`,
+     sec_per_persona.`PER_TERCER_NOMBRE`,
+     sec_per_persona.`PER_PRIMER_APELLIDO`,
+     sec_per_persona.`PER_SEGUNDO_APELLIDO`,
+     sec_per_persona.`PER_APELLIDO_CASADA`) as nombreCompleto,
+     IF(cta_cah_cuenta_ahorro.`tah_id` IS NULL, 'APORTACIONES',
+	cta_tah_tipo_ahorro.`TAH_NOMBRE`) AS CUENTA_NOMBRE,
+     cta_cah_cuenta_ahorro.`cah_saldo_actual` AS SALDO_CUENTA,0.0 as INTERES_ACUMULADO,
+	0.0 AS OTRAS_DEDUCCIONES,1 as accion,
+     ifnull(cta_asc_asociado.`ASC_SALDO_A_FAVOR`,0.00) as saldoAFavor,
+(SELECT
+     ifnull(sum(cta_asc_asociado.`ASC_SALDO_A_FAVOR`),0.00)
+FROM
+     `cta_asc_asociado` cta_asc_asociado
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio}) as totalAFavor,
+    cta_asc_asociado.`ASC_CODIGO_ASOCIADO` 
+
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     LEFT OUTER JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`,
+    `sec_per_persona` sec_per_persona
+
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio} AND sec_per_persona.`PER_ID`=cta_asc_asociado.`PER_ID`
+
+UNION
+
+SELECT
+ CONCAT_WS(' ', sec_per_persona.`PER_PRIMER_NOMBRE`,
+     sec_per_persona.`PER_SEGUNDO_NOMBRE`,
+     sec_per_persona.`PER_TERCER_NOMBRE`,
+     sec_per_persona.`PER_PRIMER_APELLIDO`,
+     sec_per_persona.`PER_SEGUNDO_APELLIDO`,
+     sec_per_persona.`PER_APELLIDO_CASADA`) as nombreCompleto,
+     IF(cta_pre_prestamo.`TPR_ID` IS NULL, 'CREDITO',
+	cta_lpr_linea_prestamo.`LPR_NOMBRE`) AS CUENTA_NOMBRE,
+     cta_pre_prestamo.`PRE_SALDO_ACTUAL_T` SALDO_CUENTA,
+     SUM(IFNULL(cta_pre_prestamo.`PRE_PEND_MOV`,0.0)+
+     	IFNULL(cta_pre_prestamo.`PRE_MORA_MOV`,0.0)+
+     	IFNULL(cta_pre_prestamo.`PRE_INTERES_ACUMULADO`,0.0)) AS INTERES_ACUMULADO,
+     IFNULL(cta_pre_prestamo.`PRE_OTRAS_DEDUCCIONES`,0.0) AS OTRAS_DEDUCCIONES,
+    	-1 as accion,
+     ifnull(cta_asc_asociado.`ASC_SALDO_A_FAVOR`,0.00) as saldoAFavor,
+(SELECT
+     ifnull(sum(cta_asc_asociado.`ASC_SALDO_A_FAVOR`),0.00)
+FROM
+     `cta_asc_asociado` cta_asc_asociado
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio}) as totalAFavor,
+    cta_asc_asociado.`ASC_CODIGO_ASOCIADO` 
+     	
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_pre_prestamo` cta_pre_prestamo ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID`
+     LEFT OUTER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID` 
+     LEFT OUTER JOIN `cta_lpr_linea_prestamo` cta_lpr_linea_prestamo ON cta_tpr_tipo_prestamo.`LPR_ID` = cta_lpr_linea_prestamo.`LPR_ID`,
+    `sec_per_persona` sec_per_persona
+
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio} AND sec_per_persona.`PER_ID`=cta_asc_asociado.`PER_ID`
+
+GROUP BY cta_pre_prestamo.`PRE_ID`
+
+UNION
+
+SELECT
+ CONCAT_WS(' ', sec_per_persona.`PER_PRIMER_NOMBRE`,
+     sec_per_persona.`PER_SEGUNDO_NOMBRE`,
+     sec_per_persona.`PER_TERCER_NOMBRE`,
+     sec_per_persona.`PER_PRIMER_APELLIDO`,
+     sec_per_persona.`PER_SEGUNDO_APELLIDO`,
+     sec_per_persona.`PER_APELLIDO_CASADA`) as nombreCompleto,
+     cta_tis_tipo_seguro.`TIS_NOMBRE` AS CUENTA_NOMBRE,
+     cta_seg_seguros.`SEG_SALDO_ACTUAL` AS SALDO_CUENTA,
+	0.0 as INTERES_ACUMULADO,0.0 AS OTRAS_DEDUCCIONES,
+	-1 as accion,
+     ifnull(cta_asc_asociado.`ASC_SALDO_A_FAVOR`,0.00) as saldoAFavor,
+(SELECT
+     ifnull(sum(cta_asc_asociado.`ASC_SALDO_A_FAVOR`),0.00)
+FROM
+     `cta_asc_asociado` cta_asc_asociado
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio}) as totalAFavor,
+    cta_asc_asociado.`ASC_CODIGO_ASOCIADO` 
+
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_seg_seguros` cta_seg_seguros ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+     INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`,
+    `sec_per_persona` sec_per_persona
+
+WHERE  MONTH(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{mes} AND YEAR(cta_asc_asociado.`ASC_RETIRO_COOPE`) = $P{anio} AND sec_per_persona.`PER_ID`=cta_asc_asociado.`PER_ID`]]>
+	</queryString>
+	<field name="nombreCompleto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CUENTA_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SALDO_CUENTA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INTERES_ACUMULADO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="OTRAS_DEDUCCIONES" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="accion" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAFavor" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="totalAFavor" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASC_CODIGO_ASOCIADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="saldo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoAFavor}]]></variableExpression>
+	</variable>
+	<variable name="count" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{saldoAFavor}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="0" width="732" height="59"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.
+SOCIOS LIQUIDADOS 
+VALORES EXPRESADOS EN DOLARES DE LOS ESTADOS UNIDOS DE AMERICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="0" y="59" width="35" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="35" y="59" width="162" height="18"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="38" splitType="Stretch">
+			<crosstab columnBreakOffset="6">
+				<reportElement key="crosstab-1" mode="Opaque" x="0" y="0" width="732" height="38" backcolor="#FFFFFF"/>
+				<crosstabHeaderCell>
+					<cellContents mode="Transparent"/>
+				</crosstabHeaderCell>
+				<rowGroup name="nombreCompleto" width="167" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{nombreCompleto}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" x="52" y="0" width="115" height="21"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{nombreCompleto}]]></textFieldExpression>
+							</textField>
+							<rectangle>
+								<reportElement key="rectangle-1" mode="Transparent" x="51" y="0" width="116" height="21"/>
+							</rectangle>
+							<rectangle>
+								<reportElement key="rectangle-1" mode="Transparent" x="0" y="0" width="51" height="21"/>
+							</rectangle>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Transparent">
+							<rectangle>
+								<reportElement key="rectangle-1" mode="Transparent" x="0" y="0" width="167" height="20" backcolor="#FFFFFF"/>
+							</rectangle>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField" mode="Transparent" x="0" y="0" width="167" height="20" backcolor="#F0F0F0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["TOTALES"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="codigo" width="1">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{ASC_CODIGO_ASOCIADO}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents>
+							<textField>
+								<reportElement x="-166" y="0" width="51" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="6"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{codigo}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="CUENTA_NOMBRE" height="20" totalPosition="End" headerPosition="Center">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{CUENTA_NOMBRE}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="0" width="44" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="5" isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{CUENTA_NOMBRE}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent">
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" x="44" y="0" width="44" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="5" isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["SALDO A FAVOR"]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-1" x="0" y="0" width="44" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="5" isBold="true"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["SALDO EN CONTRA"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="SALDO_CUENTA_Sum" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[new java.math.BigDecimal(($F{SALDO_CUENTA}.doubleValue()*$F{accion}.doubleValue()))]]></measureExpression>
+				</measure>
+				<measure name="SALDO_CONTRA" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[new java.math.BigDecimal(($F{SALDO_CUENTA}.doubleValue()*$F{accion}.doubleValue()))]]></measureExpression>
+				</measure>
+				<measure name="saldo" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{saldoAFavor}]]></measureExpression>
+				</measure>
+				<measure name="saldoSum" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{totalAFavor}]]></measureExpression>
+				</measure>
+				<crosstabCell width="44" height="21">
+					<cellContents mode="Transparent">
+						<rectangle>
+							<reportElement x="0" y="0" width="44" height="20"/>
+						</rectangle>
+						<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+							<reportElement key="textField" x="0" y="0" width="44" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[(($V{SALDO_CUENTA_Sum}.doubleValue()<0)?
+new java.math.BigDecimal($V{SALDO_CUENTA_Sum}.doubleValue()*-1):
+new java.math.BigDecimal($V{SALDO_CUENTA_Sum}.doubleValue()))]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="88" height="21" columnTotalGroup="CUENTA_NOMBRE">
+					<cellContents mode="Transparent">
+						<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+							<reportElement key="textField-1" x="44" y="0" width="44" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldo}]]></textFieldExpression>
+						</textField>
+						<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+							<reportElement key="textField-2" x="0" y="0" width="44" height="20" forecolor="#000000">
+								<printWhenExpression><![CDATA[($V{SALDO_CUENTA_Sum}.doubleValue()>0)?Boolean.FALSE:Boolean.TRUE]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDO_CUENTA_Sum}.abs()]]></textFieldExpression>
+						</textField>
+						<rectangle>
+							<reportElement key="rectangle-1" mode="Transparent" x="44" y="0" width="44" height="20"/>
+						</rectangle>
+						<rectangle>
+							<reportElement key="rectangle-1" mode="Transparent" x="0" y="0" width="44" height="20" forecolor="#000000"/>
+						</rectangle>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="44" height="21" rowTotalGroup="nombreCompleto">
+					<cellContents mode="Transparent">
+						<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+							<reportElement key="textField" x="0" y="0" width="44" height="21"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[(($V{SALDO_CUENTA_Sum}.doubleValue()<0)?
+new java.math.BigDecimal($V{SALDO_CUENTA_Sum}.doubleValue()*-1):
+new java.math.BigDecimal($V{SALDO_CUENTA_Sum}.doubleValue()))]]></textFieldExpression>
+						</textField>
+						<rectangle>
+							<reportElement key="rectangle-1" mode="Transparent" x="0" y="0" width="44" height="20"/>
+						</rectangle>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="88" height="21" rowTotalGroup="nombreCompleto" columnTotalGroup="CUENTA_NOMBRE">
+					<cellContents mode="Transparent">
+						<rectangle>
+							<reportElement x="0" y="0" width="44" height="20"/>
+						</rectangle>
+						<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+							<reportElement key="textField" x="0" y="0" width="44" height="20" forecolor="#000000"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SALDO_CUENTA_Sum}.abs()]]></textFieldExpression>
+						</textField>
+						<rectangle>
+							<reportElement x="44" y="0" width="44" height="20"/>
+						</rectangle>
+						<textField pattern="$ #,##0.00">
+							<reportElement x="44" y="0" width="44" height="20"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Double"><![CDATA[$V{saldoSum}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="codigo">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="codigo" columnTotalGroup="CUENTA_NOMBRE">
+					<cellContents/>
+				</crosstabCell>
+				<whenNoDataCell>
+					<cellContents mode="Transparent"/>
+				</whenNoDataCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

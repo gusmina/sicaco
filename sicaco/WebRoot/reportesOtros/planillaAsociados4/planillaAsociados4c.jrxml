@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="planillaAsociados4c"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="612"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<style 
+		name="Titulo"
+		isDefault="false"
+		forecolor="#333333"
+		hAlign="Center"
+		vAlign="Middle"
+		fontSize="14"
+		isBold="true"
+	>
+	</style>
+
+	<parameter name="EMPRESA" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DIVISOR" isForPrompting="true" class="java.math.BigDecimal"/>
+	<parameter name="VALOR_INSCRIPCION" isForPrompting="true" class="java.lang.Double"/>
+	<queryString><![CDATA[CALL `sicacodb`.`SP_PLANILLA_E`($P{DIVISOR},$P{VALOR_INSCRIPCION},$P{EMPRESA})]]></queryString>
+
+	<field name="ASC_CODIGO" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="VALOR_INSCRIPCION" class="java.math.BigDecimal"/>
+	<field name="TOTAL_APORTACION" class="java.math.BigDecimal"/>
+	<field name="TOTAL_AHORRO" class="java.math.BigDecimal"/>
+	<field name="TOTAL_PRESTAMO" class="java.math.BigDecimal"/>
+	<field name="TOTAL_SEGURO" class="java.math.BigDecimal"/>
+
+	<variable name="APO_AHO" class="java.math.BigDecimal" resetType="Column" calculation="Nothing">
+		<variableExpression><![CDATA[$F{TOTAL_APORTACION}.add($F{TOTAL_AHORRO})]]></variableExpression>
+	</variable>
+	<variable name="PRE_SEG" class="java.math.BigDecimal" resetType="Column" calculation="Nothing">
+		<variableExpression><![CDATA[$F{TOTAL_PRESTAMO}.add($F{TOTAL_SEGURO})]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ASC_CODIGO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="100"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{APO_AHO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="200"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTAL_PRESTAMO}.add($F{VALOR_INSCRIPCION})]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="300"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTAL_SEGURO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

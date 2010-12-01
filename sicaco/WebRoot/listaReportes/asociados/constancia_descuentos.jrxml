@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="constancia_descuentos" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="537" leftMargin="45" rightMargin="30" topMargin="14" bottomMargin="0" isFloatColumnFooter="true" whenResourceMissingType="Empty">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ASC_ID" class="java.lang.String"/>
+	<parameter name="PRE_ID" class="java.lang.String"/>
+	<parameter name="ASC_SALARIO" class="java.lang.Float">
+		<defaultValueExpression><![CDATA[new Float(0.00)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MIN_APORT" class="java.lang.Float">
+		<defaultValueExpression><![CDATA[new Float(0.00)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[/*Obteniendo las cuotas de todos los prestamos activos
+y la cuota del prestamo que se esta solicitando*/
+SELECT
+     lp.`lpr_nombre`,
+     (pr.`pre_cuota` * 2) AS pre_cuota 
+FROM
+     `cta_cas_cuenta_asociado` c INNER JOIN `cta_pre_prestamo` pr ON c.`pre_id` = pr.`pre_id`
+     INNER JOIN `cta_tpr_tipo_prestamo` tp ON pr.`tpr_id` = tp.`tpr_id`
+     INNER JOIN `cta_lpr_linea_prestamo` lp ON tp.`lpr_id` = lp.`lpr_id`
+WHERE
+     c.asc_id = $P{ASC_ID}
+     and c.est_id = 13 or (pr.`pre_id`= $P{PRE_ID} and c.est_id = 14)
+and pr.pre_id not in (SELECT pre_id FROM cta_cas_cuenta_asociado c where cas_refinanciado is not null)
+UNION
+/*Obteniendo los descuentos externos del nuevo préstamo (si tuviera)*/
+SELECT
+     IFNULL(dx.`dex_nombre_descuento`,'Descuentos Externos'),
+     IFNULL(dx.`dex_monto`,0.00) AS pre_cuota
+FROM
+     `cta_pre_prestamo` prs LEFT OUTER JOIN `cta_dex_descuentos_externos` dx ON prs.`pre_id` = dx.`pre_id`
+WHERE
+     prs.pre_id = $P{PRE_ID}]]>
+	</queryString>
+	<field name="lpr_nombre" class="java.lang.String"/>
+	<field name="pre_cuota" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="SUM_pre_cuota_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{pre_cuota}]]></variableExpression>
+	</variable>
+	<variable name="pre_cuota_1" class="java.math.BigDecimal" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{pre_cuota}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="170" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="211" y="17" width="100" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$P{MIN_APORT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="17" width="179" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Aportacion Minima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="2" width="179" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Salario]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="211" y="2" width="100" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Float"><![CDATA[$P{ASC_SALARIO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="15" width="537" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="2" width="179" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lpr_nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00" isBlankWhenNull="false">
+				<reportElement x="211" y="2" width="101" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pre_cuota}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="48" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="1" y="25" width="178" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Porcentaje de salario comprometido]]></text>
+			</staticText>
+			<textField evaluationTime="Page" pattern="$ #,##0.00" isBlankWhenNull="false">
+				<reportElement x="211" y="3" width="101" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($V{pre_cuota_1}.doubleValue()+$P{MIN_APORT}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="3" width="179" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total Descuentos]]></text>
+			</staticText>
+			<textField evaluationTime="Page" pattern="#,##0.00 %" isBlankWhenNull="false">
+				<reportElement x="211" y="25" width="101" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double(($V{pre_cuota_1}.doubleValue()+$P{MIN_APORT}.doubleValue())/$P{ASC_SALARIO}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="2" width="537" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

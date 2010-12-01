@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Saldo_Seguros" printOrder="Horizontal" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="732" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="codEmpresa" class="java.lang.String"/>
+	<parameter name="tipoSeguro" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+   IF(cta_asc_asociado.`DPT_ID` IS NULL, cta_asc_asociado.`ASC_DIR_TRABAJO`,
+	cta_etr_empresa_trabajo.`ETR_NOMBRE`) AS EMPRESA,
+     cta_asc_asociado.`asc_codigo_asociado` as codigoAsociado,
+     CONCAT_WS(' ',
+    sec_per_persona.`PER_PRIMER_NOMBRE`,sec_per_persona.`PER_SEGUNDO_NOMBRE`,
+    sec_per_persona.`PER_TERCER_NOMBRE`,sec_per_persona.`PER_PRIMER_APELLIDO`,
+    sec_per_persona.`PER_SEGUNDO_APELLIDO`,sec_per_persona.`PER_APELLIDO_CASADA`)as nombreCompleto,
+     cta_seg_seguros.`SEG_MONTO` AS MONTO,
+     cta_seg_seguros.`SEG_SALDO_ACTUAL` AS SALDO_ACTUAL,
+     cta_cas_cuenta_asociado.`CAS_FECHA_APERTURA` AS FECHA_APERTURA,
+     (select MAX(txa.TXA_FECHA) from cta_txa_transaccionxcuenta_asociado txa
+	where txa.`CAS_CUENTA`=cta_cas_cuenta_asociado.`CAS_CUENTA`) AS ULTIMO_MOV,
+    cta_seg_seguros.`SEG_CERTIFICADO`, cta_seg_seguros.`SEG_CUOTA`,
+    cta_tis_tipo_seguro.`TIS_NOMBRE` AS TIPO_SEGURO_NOMBRE
+FROM
+         `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado 
+        ON cta_asc_asociado.`PER_ID`= sec_per_persona.`PER_ID`
+    INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+        ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+         INNER JOIN `cta_seg_seguros` cta_seg_seguros 
+        ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+         LEFT OUTER jOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo 
+        ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+         INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+        ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+         INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro 
+        ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`
+
+WHERE
+         sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     AND cta_etr_empresa_trabajo.`ETR_ID` like $P{codEmpresa}
+AND cta_tis_tipo_seguro.`TIS_ID` like $P{tipoSeguro}
+
+ORDER BY
+    cta_etr_empresa_trabajo.`ETR_ID`, TIPO_SEGURO_NOMBRE,cta_asc_asociado.`asc_codigo_asociado`]]>
+	</queryString>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="codigoAsociado" class="java.lang.String"/>
+	<field name="nombreCompleto" class="java.lang.String"/>
+	<field name="MONTO" class="java.math.BigDecimal"/>
+	<field name="SALDO_ACTUAL" class="java.math.BigDecimal"/>
+	<field name="FECHA_APERTURA" class="java.sql.Date"/>
+	<field name="ULTIMO_MOV" class="java.sql.Timestamp"/>
+	<field name="SEG_CERTIFICADO" class="java.lang.String"/>
+	<field name="SEG_CUOTA" class="java.math.BigDecimal"/>
+	<field name="TIPO_SEGURO_NOMBRE" class="java.lang.String"/>
+	<variable name="SUM_SALDO_ACTUAL_2" class="java.math.BigDecimal" resetType="Group" resetGroup="tipoSeguro" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_ACTUAL}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SALDO_ACTUAL_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{SALDO_ACTUAL}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.String"/>
+	<group name="empresa">
+		<groupExpression><![CDATA[$F{EMPRESA}]]></groupExpression>
+		<groupHeader>
+			<band height="11">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="732" height="11" forecolor="#FFFFFF" backcolor="#666666"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["                     "+$F{EMPRESA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="tipoSeguro">
+		<groupExpression><![CDATA[$F{TIPO_SEGURO_NOMBRE}]]></groupExpression>
+		<groupHeader>
+			<band height="11" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-1" x="0" y="0" width="100" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_SEGURO_NOMBRE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="10" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="199" y="0" width="100" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_SEGURO_NOMBRE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-15" x="172" y="0" width="24" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<textField pattern="$#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="398" y="0" width="32" height="10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SALDO_ACTUAL_2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="77" splitType="Stretch">
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="92" y="60" width="100" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-3" x="0" y="60" width="90" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de Emision:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="732" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="732" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="26" width="732" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE SALDOS DE SEGUROS POR EMPRESA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="38" width="732" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[VALORES EXPRESADOS EN DOLARES DE LOS ESTADOS UNIDOS DE AMERICA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="3" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement key="line-1" x="0" y="1" width="732" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="0" y="23" width="732" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="1" width="81" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="86" y="1" width="209" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DE ASOCIADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="530" y="1" width="77" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA DE ULTIMO MOVIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="452" y="1" width="72" height="22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA DE APERTURA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="303" y="1" width="70" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[MONTO ORIGINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="380" y="1" width="67" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SALDO A LA FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-16" x="613" y="1" width="49" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CUOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="669" y="1" width="59" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="9" splitType="Stretch">
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="316" y="0" width="48" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MONTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="397" y="0" width="34" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO_ACTUAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="452" y="0" width="71" height="9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{FECHA_APERTURA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="531" y="0" width="76" height="9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{ULTIMO_MOV}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="81" height="9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigoAsociado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="86" y="0" width="209" height="9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="619" y="0" width="35" height="9"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SEG_CUOTA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="679" y="0" width="40" height="9"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SEG_CERTIFICADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="2" splitType="Stretch"/>
+	</lastPageFooter>
+	<summary>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-14" x="206" y="0" width="46" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="398" y="0" width="33" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SALDO_ACTUAL_3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub2" pageWidth="355" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="355" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20">
+	<parameter name="ascId" class="java.lang.String"/>
+	<parameter name="fecha1" class="java.util.Date"/>
+	<parameter name="fecha2" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     cta_res_cuenta_resumenes.`res_linea` AS linea,
+     cta_res_cuenta_resumenes.`res_cuenta_nom` AS cuenta,
+     cta_res_cuenta_resumenes.`res_saldo_ant` AS saldoAnt,
+     cta_res_cuenta_resumenes.`res_saldo_act` AS saldoAct
+FROM
+     `cta_res_cuenta_resumenes` cta_res_cuenta_resumenes]]>
+	</queryString>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAct" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="linea_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{linea}]]></variableExpression>
+	</variable>
+	<group name="linea">
+		<groupExpression><![CDATA[$F{linea}]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch">
+				<line>
+					<reportElement x="1" y="10" width="1" height="10"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="2" y="1" width="303" height="9" forecolor="#000000" backcolor="#C8BEBE"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="0" width="304" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="5" y="10" width="197" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Cuenta"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="2" y="9" width="303" height="1"/>
+				</line>
+				<line>
+					<reportElement x="1" y="0" width="1" height="10"/>
+				</line>
+				<line>
+					<reportElement x="202" y="10" width="1" height="10"/>
+				</line>
+				<textField>
+					<reportElement x="203" y="10" width="50" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Saldo Anterior"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="254" y="10" width="1" height="10"/>
+				</line>
+				<line>
+					<reportElement x="1" y="19" width="304" height="1"/>
+				</line>
+				<line>
+					<reportElement x="305" y="0" width="1" height="10"/>
+				</line>
+				<textField>
+					<reportElement x="255" y="9" width="50" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Saldo Actual"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="305" y="9" width="1" height="10"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="10">
+				<line>
+					<reportElement x="1" y="0" width="304" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<line>
+				<reportElement x="254" y="0" width="1" height="11"/>
+			</line>
+			<textField pattern="$#,##0.00;(-#,##0.00)">
+				<reportElement x="213" y="0" width="40" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldoAnt}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00;(-#,##0.00)">
+				<reportElement x="264" y="0" width="40" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldoAct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="0" width="197" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="0" width="1" height="11"/>
+			</line>
+			<line>
+				<reportElement x="202" y="0" width="1" height="11"/>
+			</line>
+			<line>
+				<reportElement x="305" y="0" width="1" height="11"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

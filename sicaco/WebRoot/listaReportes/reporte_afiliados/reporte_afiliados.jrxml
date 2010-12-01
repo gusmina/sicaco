@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_afiliados" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.Integer"/>
+	<parameter name="ano" class="java.lang.Integer"/>
+	<parameter name="gerente" class="java.lang.String"/>
+	<parameter name="promotora" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     cta_asc_asociado.`ASC_CODIGO` AS cta_asc_asociado_ASC_CODIGO,
+     CONCAT_WS(' ',sec_per_persona.`per_primer_nombre`,sec_per_persona.`per_segundo_nombre`,sec_per_persona.`per_primer_apellido`,sec_per_persona.`per_segundo_apellido`) AS cta_asc_asociado_ASC_NOMBRE_NIT,
+     cta_ina_ingresosxasociado.`INA_FECHA_INGRESO` AS cta_ina_ingresosxasociado_INA_FECHA_INGRESO,
+     cta_cah_cuenta_ahorro.`cah_cuota` AS cta_cah_cuenta_ahorro_cah_cuota,
+     cta_cah_cuenta_ahorro.`cah_id` AS cta_cah_cuenta_ahorro_cah_id,
+     cta_cas_cuenta_asociado.`cah_id` AS cta_cas_cuenta_asociado_cah_id,
+     IFNULL(cta_dpt_departamento_trabajo.`DPT_NOMBRE`,'---') AS cta_dpt_departamento_trabajo_DPT_NOMBRE,
+     cta_asc_asociado.`ASC_ID` AS cta_asc_asociado_ASC_ID,
+ctr_est_estado.`EST_NOMBRE` AS estado,
+     (CASE $P{mes}
+	WHEN 1 THEN 'ENERO'
+	WHEN 2 THEN 'FEBRERO'
+	WHEN 3 THEN 'MARZO'
+	WHEN 4 THEN 'ABRIL'
+	WHEN 5 THEN 'MAYO'
+	WHEN 6 THEN 'JUNIO'
+	WHEN 7 THEN 'JULIO'
+	WHEN 8 THEN 'AGOSTO'
+	WHEN 9 THEN 'SEPTIEMBRE'
+	WHEN 10 THEN 'OCTUBRE'
+	WHEN 11 THEN 'NOVIEMBRE'
+	WHEN 12 THEN 'DICIEMBRE'
+     END) as nombre_mes
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_ina_ingresosxasociado` cta_ina_ingresosxasociado ON cta_asc_asociado.`ASC_ID` = cta_ina_ingresosxasociado.`ASC_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     LEFT OUTER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+          INNER JOIN `sec_per_persona` sec_per_persona ON cta_asc_asociado.`per_id` = sec_per_persona.`per_id`
+INNER JOIN `ctr_est_estado` ctr_est_estado ON cta_asc_asociado.`est_id_2` = ctr_est_estado.`est_id`
+WHERE
+     cta_cas_cuenta_asociado.`cah_id` LIKE 'A%'
+     and cta_cah_cuenta_ahorro.`cah_id` LIKE 'A%' and
+month(cta_ina_ingresosxasociado.`INA_FECHA_INGRESO`)=$P{mes} and
+year(cta_ina_ingresosxasociado.`INA_FECHA_INGRESO`)=$P{ano}
+ORDER BY cta_ina_ingresosxasociado_INA_FECHA_INGRESO,cta_asc_asociado_ASC_CODIGO]]>
+	</queryString>
+	<field name="cta_asc_asociado_ASC_CODIGO" class="java.lang.String"/>
+	<field name="cta_asc_asociado_ASC_NOMBRE_NIT" class="java.lang.String"/>
+	<field name="cta_ina_ingresosxasociado_INA_FECHA_INGRESO" class="java.sql.Date"/>
+	<field name="cta_cah_cuenta_ahorro_cah_cuota" class="java.math.BigDecimal"/>
+	<field name="cta_cah_cuenta_ahorro_cah_id" class="java.lang.String"/>
+	<field name="cta_cas_cuenta_asociado_cah_id" class="java.lang.String"/>
+	<field name="cta_dpt_departamento_trabajo_DPT_NOMBRE" class="java.lang.String"/>
+	<field name="cta_asc_asociado_ASC_ID" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nombre_mes" class="java.lang.String"/>
+	<variable name="correlativo" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></variableExpression>
+	</variable>
+	<variable name="valor_status" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="45" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="26" width="552" height="14" forecolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["COOPERATIVA  DE EMPLEADOS DE TACA Y AEROMAN"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="552" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="26" width="552" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="552" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["REPORTE DE AFILIADOS DEL MES DE "+$F{nombre_mes}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-1" y="0" width="552" height="16" backcolor="#F0F0F0"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-2" x="30" y="0" width="72" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="103" y="0" width="152" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="255" y="0" width="56" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="312" y="0" width="35" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Apo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="349" y="0" width="164" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Departamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="513" y="0" width="38" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="0" width="30" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="-1" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="551" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="103" y="0" width="152" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_NOMBRE_NIT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="255" y="0" width="55" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{cta_ina_ingresosxasociado_INA_FECHA_INGRESO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ ##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="312" y="0" width="32" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cta_cah_cuenta_ahorro_cah_cuota}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="348" y="0" width="164" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_dpt_departamento_trabajo_DPT_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="1" width="30" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{correlativo}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-3" x="513" y="0" width="38" height="12"/>
+				<subreportParameter name="ascId">
+					<subreportParameterExpression><![CDATA[$F{cta_asc_asociado_ASC_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/status_afiliados.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="30" y="1" width="72" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="-1" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="551" y="0" width="1" height="13"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="334" y="3" width="191" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField" x="525" y="3" width="27" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+ $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="334" y="3" width="191" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pagina " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="525" y="3" width="27" height="12"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" "+ $V{PAGE_NUMBER} + ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="170" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-2" x="0" y="28" width="551" height="46"/>
+				<subreportParameter name="mes">
+					<subreportParameterExpression><![CDATA[$P{mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nombreMes">
+					<subreportParameterExpression><![CDATA[$F{nombre_mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ano">
+					<subreportParameterExpression><![CDATA[$P{ano}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"/suma_nuevos.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement key="staticText-17" x="49" y="156" width="144" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[GERENTE ADMINISTRATIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-18" x="334" y="156" width="144" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PROMOTORA SOCIAL]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="334" y="141" width="144" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{promotora}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="49" y="142" width="144" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{gerente}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-1" x="49" y="141" width="144" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="334" y="142" width="146" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="5" width="553" height="1"/>
+			</line>
+			<line>
+				<reportElement x="-1" y="0" width="1" height="6"/>
+			</line>
+			<line>
+				<reportElement x="551" y="0" width="1" height="5"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

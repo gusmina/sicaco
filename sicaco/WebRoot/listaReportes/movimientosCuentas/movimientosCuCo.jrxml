@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimientosCuCo" pageWidth="871" pageHeight="3600" orientation="Landscape" columnWidth="871" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="fechaIni" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ttrId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tahId" class="java.lang.String"/>
+	<parameter name="lahId" class="java.lang.String"/>
+	<parameter name="lprId" class="java.lang.String"/>
+	<parameter name="tisId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  'Aportaciones' as linea,
+  mxa.mxa_fecha as fecha,
+  ttr.ttr_nombre as transaccion,
+  aso.asc_codigo as codigo,
+  aso.asc_nombre_nit as nombre,
+  if(ttr.ttr_uso = 'C',txa.txa_monto,0.00) as car_cap,
+  if(ttr.ttr_uso = 'C',0.00,0.00) as car_int,
+  if(ttr.ttr_uso = 'A',txa.txa_monto,0.00) as abo_cap,
+  if(ttr.ttr_uso = 'A',0.00,0.00) as abo_int,
+  txa.txa_id as ref
+FROM
+  cta_mxa_movimiento_ahorro mxa,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_ttr_tipo_transaccion ttr,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_lah_linea_ahorro lah,
+  cta_cah_cuenta_ahorro cah
+
+where
+  cah.tah_id is null and
+  cah.cah_id = mxa.cah_id and
+  cas.asc_id = aso.asc_id and
+  cas.cas_cuenta = txa.cas_cuenta and
+  mxa.txa_id = txa.txa_id and
+  txa.ttr_id = ttr.ttr_id and
+  txa.txa_monto > 0 and
+  date(mxa_fecha) between $P{fechaIni} and $P{fechaFin} and
+  if($P{ttrId}=-1,1,$P{ttrId}=txa.ttr_id)and
+  if($P{tipo}=1,1=1,1=0)
+
+  
+UNION
+
+SELECT
+  tah.tah_nombre as linea,
+  mxa.mxa_fecha as fecha,
+  ttr.ttr_nombre as transaccion,
+  aso.asc_codigo as codigo,
+  aso.asc_nombre_nit as nombre,
+  if(ttr.ttr_uso = 'C',txa.txa_monto,0.00) as car_cap,
+  if(ttr.ttr_uso = 'C',mxa.mxa_interes_tran,0.00) as car_int,
+  if(ttr.ttr_uso = 'A',txa.txa_monto,0.00) as abo_cap,
+  if(ttr.ttr_uso = 'A',mxa.mxa_interes_tran,0.00) as abo_int,
+  txa.txa_id as ref
+FROM
+  cta_mxa_movimiento_ahorro mxa,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_ttr_tipo_transaccion ttr,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_lah_linea_ahorro lah,
+  cta_tah_tipo_ahorro tah,
+  cta_cah_cuenta_ahorro cah
+
+where
+  cah.cah_id = mxa.cah_id and
+  cah.tah_id = tah.tah_id and
+  lah.lah_id = tah.lah_id and
+  cas.asc_id = aso.asc_id and
+  cas.cas_cuenta = txa.cas_cuenta and
+  mxa.txa_id = txa.txa_id and
+  txa.ttr_id = ttr.ttr_id and
+  txa.txa_monto > 0 and
+  date(mxa_fecha) between $P{fechaIni} and $P{fechaFin} and
+  if($P{ttrId}=-1,1,$P{ttrId}=txa.ttr_id)and
+  if($P{tipo}=2,1=1,1=0) and
+  if($P{tahId}=-1,1,cah.tah_id=$P{tahId}) and
+  if($P{lahId}=-1,1,tah.lah_id=$P{lahId})
+
+UNION
+
+SELECT
+  lpr.lpr_nombre as linea,
+  mxp.mxp_fecha as fecha,
+  ttr.ttr_nombre as transaccion,
+  aso.asc_codigo as codigo,
+  aso.asc_nombre_nit as nombre,
+  if(ttr.ttr_uso = 'C',txa.txa_monto-(mxp.mxp_interes_pendiente+mxp.mxp_interes_acumulado),0.00) as car_cap,
+  if(ttr.ttr_uso = 'C',mxp.mxp_interes_pendiente+mxp.mxp_interes_acumulado,0.00) as car_int,
+  if(ttr.ttr_uso = 'A',txa.txa_monto-(mxp.mxp_interes_pendiente+mxp.mxp_interes_acumulado),0.00) as abo_cap,
+  if(ttr.ttr_uso = 'A',mxp.mxp_interes_pendiente+mxp.mxp_interes_acumulado,0.00) as abo_int,
+  txa.txa_id as ref
+FROM
+  cta_mxp_movimiento_prestamo mxp,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_ttr_tipo_transaccion ttr,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_lpr_linea_prestamo lpr,
+  cta_tpr_tipo_prestamo tpr,
+  cta_pre_prestamo pre
+
+where
+  pre.pre_id = mxp.pre_id and
+  pre.tpr_id = tpr.tpr_id and
+  lpr.lpr_id = tpr.lpr_id and
+  cas.asc_id = aso.asc_id and
+  cas.cas_cuenta = txa.cas_cuenta and
+  mxp.txa_id = txa.txa_id and
+  txa.ttr_id = ttr.ttr_id and
+  date(mxp_fecha) between $P{fechaIni} and $P{fechaFin} and
+  if($P{ttrId}=-1,1,$P{ttrId}=txa.ttr_id)and
+  if($P{tipo}=3,1=1,1=0) and
+  if($P{lprId}=-1,1,tpr.lpr_id=$P{lprId})
+
+  UNION
+SELECT
+  tis.tis_nombre as linea,
+  mxs.mxs_fecha as fecha,
+  ttr.ttr_nombre as transaccion,
+  aso.asc_codigo as codigo,
+  aso.asc_nombre_nit as nombre,
+  if(ttr.ttr_uso = 'C',txa.txa_monto,0.00) as car_cap,
+  if(ttr.ttr_uso = 'C', 0.00,0.00) as car_int,
+  if(ttr.ttr_uso = 'A',txa.txa_monto,0.00) as abo_cap,
+  if(ttr.ttr_uso = 'A',0.00,0.00) as abo_int,
+  txa.txa_id as ref
+FROM
+  cta_mxs_movimiento_seguros mxs,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_ttr_tipo_transaccion ttr,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_tis_tipo_seguro tis,
+  cta_seg_seguros seg
+
+where
+  seg.seg_id = mxs.seg_id and
+  seg.tis_id = tis.tis_id and
+  cas.asc_id = aso.asc_id and
+  cas.cas_cuenta = txa.cas_cuenta and
+  mxs.txa_id = txa.txa_id and
+  txa.ttr_id = ttr.ttr_id and
+  txa.txa_monto > 0 and
+  date(mxs_fecha) between $P{fechaIni} and $P{fechaFin} and
+  if($P{ttrId}=-1,1,$P{ttrId}=txa.ttr_id)and
+  if($P{tipo}=4,1=1,1=0) and
+  if($P{tisId}=-1,1,seg.tis_id=$P{tisId})
+
+  
+  
+order by fecha
+ ;]]>
+	</queryString>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="transaccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="car_cap" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="car_int" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="abo_cap" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="abo_int" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="16">
+			<textField>
+				<reportElement x="0" y="0" width="73" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fecha"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="156" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Transaccion"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="365" y="0" width="62" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Codigo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="0" width="216" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Nombre"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="643" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Car/Cap"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="700" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Car/Int"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="757" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Abo/Cap"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="814" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Abo/Int"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="0" width="136" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Linea"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="73" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="156" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{transaccion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="######">
+				<reportElement x="365" y="0" width="62" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="0" width="216" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="643" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{car_cap}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="700" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{car_int}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="757" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{abo_cap}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="814" y="0" width="57" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{abo_int}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="0" width="136" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

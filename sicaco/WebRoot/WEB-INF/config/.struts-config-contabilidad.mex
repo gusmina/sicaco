@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/cueCuenta.do" location="50,150" dimension="385,92" />
+  <StrutsActivity path="/invalidCueCuenta.do" location="650,150" dimension="385,92" />
+  <StrutsActivity path="/partidaContable.do" location="50,350" dimension="413,92" />
+  <StrutsActivity path="/invalidPartidaContable.do" location="650,450" dimension="413,92" />
+  <StrutsActivity path="/tipoCuentaContable.do" location="1250,450" dimension="437,92" />
+  <StrutsActivity path="/invalidTipoCuentaContable.do" location="50,550" dimension="437,92" />
+  <StrutsActivity path="/conceptoPartida.do" location="650,650" dimension="416,92" />
+  <StrutsActivity path="/invalidConceptoPartida.do" location="1250,650" dimension="416,92" />
+  <StrutsActivity path="/relacionCuentaCorriente.do" location="50,750" dimension="463,92" />
+  <StrutsActivity path="/busquedaPartida.do" location="650,850" dimension="470,92" />
+  <StrutsActivity path="/relacionInventario.do" location="1250,850" dimension="426,92" />
+  <StrutsActivity path="/relacionOrdenPago.do" location="50,950" dimension="433,92" />
+  <StrutsActivity path="/relacionOrdenCompra.do" location="650,1050" dimension="450,92" />
+  <StrutsActivity path="/cierreMensual.do" location="1250,1050" dimension="405,92" />
+  <StrutsActivity path="/configuracionEstadoFinanciero.do" location="50,1150" dimension="497,92" />
+  <StrutsActivity path="/cuentasEspeciales.do" location="1078,1228" dimension="318,100" />
+  <StrutsActivity path="/cierreAnual.do" location="1621,1279" dimension="150,100" />
+  <StrutsActivity path="/impresionCheques.do" location="45,1545" dimension="196,61" />
+  <StrutsActivity path="/relacionProcesosEspeciales.do" location="1901,1222" dimension="150,100" />
+  <StrutsActivity path="pagina-lista.contabilidad.cueCuenta" location="-330,30" dimension="136,49" />
+  <StrutsActivity path="redirectInvalidData" location="345,-45" dimension="139,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.partidaContableDML" location="960,-30" dimension="288,49" />
+  <StrutsActivity path="pagina-lista.contabilidad.tipoCuentaContable" location="585,300" dimension="286,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.conceptoPartida" location="600,-75" dimension="266,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.unionCuentaCorriente" location="1320,-555" dimension="299,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.listaPartidas" location="1260,255" dimension="246,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.unionInventario" location="1380,-405" dimension="225,49" />
+  <StrutsActivity path="pagina-lista.contabilidad.unionOrdenPago" location="2010,-563" dimension="229,49" />
+  <StrutsActivity path="pagina-lista.contabilidad.unionOrdenCompra" location="1980,345" dimension="286,50" />
+  <StrutsActivity path="pagina-dml.contabilidad.cierreMensual" location="1455,-240" dimension="252,50" />
+  <StrutsActivity path="pagina-dml.contabilidad.configBalance" location="50,1350" dimension="251,50" />
+  <StrutsActivity path="pagina-dml.contabilidad.configEstado" location="650,1350" dimension="255,78" />
+  <StrutsActivity path="pagina-dml.contabilidad.configCuentas" location="50,1450" dimension="253,50" />
+  <StrutsActivity path="pagina-dml.contabilidad.cierreAnual" location="1440,1500" dimension="236,50" />
+  <StrutsActivity path="pagina-dml.contabilidad.impresionCheque" location="300,1545" dimension="272,49" />
+  <StrutsActivity path="pagina-lista.contabilidad.unionProcesosEspeciales" location="1860,1455" dimension="320,50" />
+  <StrutsActivity path="pagina-lista.contabilidad.configBalance" location="650,1250" dimension="254,50" />
+  <StrutsActivity path="/impresionCheq" location="1250,1450" dimension="134,53" />
+  <StrutsActivity path="/impresionCheqye" location="650,1550" dimension="149,53" />
+  <StrutsActivity path="/impresionC" location="950,1550" dimension="110,53" />
+  <StrutsActivity path="/impresionCeh" location="350,1650" dimension="126,53" />
+  <StrutsActivity path="/" location="1250,1650" dimension="38,53" />
+  <StrutsTransition id="/configuracionEstadoFinanciero.do,estado,pagina-dml.contabilidad.configEstado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="316,1242" />
+      <AbsolutePoint location="316,1385" />
+      <AbsolutePoint location="650,1385" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/partidaContable.do,lista,pagina-lista.contabilidad.partidaContableDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="463,396" />
+      <AbsolutePoint location="1081,396" />
+      <AbsolutePoint location="1081,19" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/conceptoPartida.do,lista,pagina-lista.contabilidad.conceptoPartida,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,696" />
+      <AbsolutePoint location="528,696" />
+      <AbsolutePoint location="528,-60" />
+      <AbsolutePoint location="600,-60" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/conceptoPartida.do,redirectInvalidData,/invalidConceptoPartida.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1066,726" />
+      <AbsolutePoint location="1250,726" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cierreMensual.do,dml,pagina-dml.contabilidad.cierreMensual,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1655,1096" />
+      <AbsolutePoint location="1702,1096" />
+      <AbsolutePoint location="1702,-190" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidTipoCuentaContable.do,lista,pagina-lista.contabilidad.tipoCuentaContable,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="487,596" />
+      <AbsolutePoint location="635,596" />
+      <AbsolutePoint location="635,350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/relacionOrdenCompra.do,lista,pagina-lista.contabilidad.unionOrdenCompra,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1100,1096" />
+      <AbsolutePoint location="1231,1096" />
+      <AbsolutePoint location="1231,366" />
+      <AbsolutePoint location="1980,366" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cierreAnual.do,dml,pagina-dml.contabilidad.cierreAnual,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1661,1379" />
+      <AbsolutePoint location="1661,1500" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/relacionInventario.do,lista,pagina-lista.contabilidad.unionInventario,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1676,896" />
+      <AbsolutePoint location="1762,896" />
+      <AbsolutePoint location="1762,-380" />
+      <AbsolutePoint location="1605,-380" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoCuentaContable.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="414,-45" />
+      <AbsolutePoint location="414,-115" />
+      <AbsolutePoint location="1521,-115" />
+      <AbsolutePoint location="1521,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/impresionCheqye,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1545" />
+      <AbsolutePoint location="143,1518" />
+      <AbsolutePoint location="724,1518" />
+      <AbsolutePoint location="724,1550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/busquedaPartida.do,nuevaPartida,/partidaContable.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,896" />
+      <AbsolutePoint location="-59,896" />
+      <AbsolutePoint location="-59,396" />
+      <AbsolutePoint location="50,396" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/impresionCheq,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="113,1606" />
+      <AbsolutePoint location="113,1771" />
+      <AbsolutePoint location="1317,1771" />
+      <AbsolutePoint location="1317,1503" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/invalidPartidaContable.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="484,-15" />
+      <AbsolutePoint location="562,-15" />
+      <AbsolutePoint location="562,496" />
+      <AbsolutePoint location="650,496" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cueCuenta.do,lista,pagina-lista.contabilidad.cueCuenta,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,196" />
+      <AbsolutePoint location="-262,196" />
+      <AbsolutePoint location="-262,79" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidCueCuenta.do,lista,pagina-lista.contabilidad.cueCuenta,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="836,150" />
+      <AbsolutePoint location="836,54" />
+      <AbsolutePoint location="-194,54" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/busquedaPartida.do,lista,pagina-lista.contabilidad.listaPartidas,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1120,896" />
+      <AbsolutePoint location="1201,896" />
+      <AbsolutePoint location="1201,280" />
+      <AbsolutePoint location="1260,280" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/relacionOrdenPago.do,lista,pagina-lista.contabilidad.unionOrdenPago,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="483,996" />
+      <AbsolutePoint location="1932,996" />
+      <AbsolutePoint location="1932,-530" />
+      <AbsolutePoint location="2010,-530" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/partidaContable.do,regreso,/busquedaPartida.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="463,426" />
+      <AbsolutePoint location="1081,426" />
+      <AbsolutePoint location="1081,850" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cueCuenta.do,redirectInvalidData,/invalidCueCuenta.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="435,196" />
+      <AbsolutePoint location="650,196" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/impresionC,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="113,1606" />
+      <AbsolutePoint location="113,1771" />
+      <AbsolutePoint location="1005,1771" />
+      <AbsolutePoint location="1005,1603" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noCheques,pagina-dml.contabilidad.impresionCheque,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1545" />
+      <AbsolutePoint location="143,1515" />
+      <AbsolutePoint location="436,1515" />
+      <AbsolutePoint location="436,1545" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/impresionCeh,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1606" />
+      <AbsolutePoint location="143,1676" />
+      <AbsolutePoint location="350,1676" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1606" />
+      <AbsolutePoint location="143,1778" />
+      <AbsolutePoint location="1269,1778" />
+      <AbsolutePoint location="1269,1703" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidConceptoPartida.do,lista,pagina-lista.contabilidad.conceptoPartida,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1666,696" />
+      <AbsolutePoint location="2341,696" />
+      <AbsolutePoint location="2341,-50" />
+      <AbsolutePoint location="866,-50" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina-dml.contabilidad.impresionCheque,null,/impresionCheques.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="300,1569" />
+      <AbsolutePoint location="241,1569" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/configuracionEstadoFinanciero.do,balance,pagina-dml.contabilidad.configBalance,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="286,1242" />
+      <AbsolutePoint location="286,1350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/relacionProcesosEspeciales.do,lista,pagina-lista.contabilidad.unionProcesosEspeciales,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1976,1322" />
+      <AbsolutePoint location="1976,1455" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cueCuenta.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="414,5" />
+      <AbsolutePoint location="414,150" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/conceptoPartida.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="345,-20" />
+      <AbsolutePoint location="-149,-20" />
+      <AbsolutePoint location="-149,726" />
+      <AbsolutePoint location="650,726" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoCuentaContable.do,redirectInvalidData,/invalidTipoCuentaContable.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1468,542" />
+      <AbsolutePoint location="1468,626" />
+      <AbsolutePoint location="487,626" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,lista,pagina-dml.contabilidad.impresionCheque,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1545" />
+      <AbsolutePoint location="143,1518" />
+      <AbsolutePoint location="436,1518" />
+      <AbsolutePoint location="436,1545" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,pagina-dml.contabilidad.impresionCheque,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1606" />
+      <AbsolutePoint location="143,1621" />
+      <AbsolutePoint location="436,1621" />
+      <AbsolutePoint location="436,1594" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/relacionCuentaCorriente.do,lista,pagina-lista.contabilidad.unionCuentaCorriente,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="513,796" />
+      <AbsolutePoint location="1842,796" />
+      <AbsolutePoint location="1842,-530" />
+      <AbsolutePoint location="1619,-530" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/partidaContable.do,redirectInvalidData,/invalidPartidaContable.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,442" />
+      <AbsolutePoint location="256,526" />
+      <AbsolutePoint location="650,526" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/impresionCheques.do,noChequeSelec,/impresionCheques.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="143,1575" />
+      <AbsolutePoint location="143,1575" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoCuentaContable.do,lista,pagina-lista.contabilidad.tipoCuentaContable,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1468,450" />
+      <AbsolutePoint location="1468,325" />
+      <AbsolutePoint location="871,325" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidPartidaContable.do,lista,pagina-lista.contabilidad.partidaContableDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1050,450" />
+      <AbsolutePoint location="1050,19" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentasEspeciales.do,dml,pagina-dml.contabilidad.configCuentas,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1235,1328" />
+      <AbsolutePoint location="1235,1475" />
+      <AbsolutePoint location="303,1475" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

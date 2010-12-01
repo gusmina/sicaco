@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="renta_asociados" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<queryString>
+		<![CDATA[SELECT 
+     IF(cta_asc_asociado.`ASC_NOMBRE_NIT` IS NULL, 
+	REPEAT(' ',40),
+	if(LENGTH(cta_asc_asociado.`ASC_NOMBRE_NIT`)>=40,
+		SUBSTRING(cta_asc_asociado.`ASC_NOMBRE_NIT`,1,40),
+		cta_asc_asociado.`ASC_NOMBRE_NIT`)
+        ) as nombre_mayor_a_40,
+    if(cta_asc_asociado.`ASC_NOMBRE_NIT` IS NULL, 
+	'',
+	if(LENGTH(cta_asc_asociado.`ASC_NOMBRE_NIT`)<40,
+	REPEAT(' ',(40-LENGTH(cta_asc_asociado.`ASC_NOMBRE_NIT`))),'')) as complemento,
+concat(sec_per_persona.`PER_NIT`,
+
+concat(
+	repeat('0',
+		15-length(
+			replace(
+				round(	ifnull(cta_asc_asociado.`ASC_DIVIDENDO_APORTACIONES`,0)+
+      					ifnull(cta_asc_asociado.`ASC_DIVIDENDO_PRESTAMO`,0)
+				,2)
+			,'.',''))),
+	replace(
+		round( ifnull(cta_asc_asociado.`ASC_DIVIDENDO_APORTACIONES`,0) +
+			ifnull(cta_asc_asociado.`ASC_DIVIDENDO_PRESTAMO` ,0),2)
+		,'.',''),
+
+	concat(
+		repeat('0',15-length(
+				replace(
+					round(cta_cah_cuenta_ahorro.`cah_saldo_actual`,2)
+				,'.','')))),
+	replace(
+		round(cta_cah_cuenta_ahorro.`cah_saldo_actual`,2)
+		,'.','')
+	
+), year(curdate())-1
+
+) as trama
+
+FROM
+     `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_cah_cuenta_ahorro.`cah_id` = cta_cas_cuenta_asociado.`cah_id`
+     INNER JOIN `cta_asc_asociado` cta_asc_asociado ON cta_cas_cuenta_asociado.`ASC_ID` = cta_asc_asociado.`ASC_ID`
+     INNER JOIN `sec_per_persona` sec_per_persona ON cta_asc_asociado.`PER_ID` = sec_per_persona.`PER_ID`
+WHERE
+     cta_cah_cuenta_ahorro.`cah_id` like 'A%' and cta_asc_asociado.`ASC_NOMBRE_NIT` IS NOT NULL and cta_asc_asociado.`ASC_NOMBRE_NIT` != '']]>
+	</queryString>
+	<field name="nombre_mayor_a_40" class="java.lang.String"/>
+	<field name="complemento" class="java.lang.String"/>
+	<field name="trama" class="java.lang.String"/>
+	<variable name="variable_concatenada" class="java.lang.String">
+		<variableExpression><![CDATA[new String($F{nombre_mayor_a_40}.concat($F{complemento}.concat($F{trama}).concat("\r\n")))]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="12" splitType="Prevent">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="612" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new String(
+    $F{nombre_mayor_a_40}.
+    concat($F{complemento}).
+    concat($F{trama})
+).concat("\r\n")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="cuentaReferenciaForm"
+			type="com.cetia.sicaco.orden.struts.form.CuentaReferenciaForm" />
+		<form-bean name="ordenCompraForm"
+			type="com.cetia.sicaco.orden.struts.form.OrdenCompraForm" />
+		<form-bean name="ordenPagoForm"
+			type="com.cetia.sicaco.orden.struts.form.OrdenPagoForm" />
+
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="redirectProveedor"
+			path="/proveedor.do?accion=lista" redirect="true"
+			module="/inventario" />
+
+	</global-forwards>
+
+	<action-mappings>
+		<action attribute="cuentaReferenciaForm"
+			input="redirectInvalidData" name="cuentaReferenciaForm"
+			parameter="accion" path="/cuentaReferencia" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.orden.struts.action.CuentaReferenciaAction">
+			<forward name="lista"
+				path="pagina-lista.orden.cuentaReferencia" />
+			<forward name="redirectInvalidData"
+				path="/cuentaReferencia.do?accion=redirectInvalidData"
+				redirect="true" />
+			<forward name="dml"
+				path="pagina-dml.orden.cuentaReferencia" />
+		</action>
+
+		<action
+      attribute="ordenCompraForm"
+      input="redirectInvalidData"
+      name="ordenCompraForm"
+      parameter="accion"
+      path="/ordenCompra"
+      scope="request"
+      type="com.cetia.sicaco.orden.struts.action.OrdenCompraAction">
+      <forward name="lista" path="pagina-lista.orden.compra" />
+      <forward
+        name="redirectInvalidData"
+        path="/ordenCompra.do?accion=redirectInvalidData"
+        redirect="true" />
+      <forward name="dml" path="pagina-dml.orden.compra" />
+      <forward name="listaMasiva" path="pagina-lista.orden.listaMasiva" />
+      <forward name="busq" path="pagina-lista.orden.busquedaOrden" />
+    </action>
+		<action attribute="ordenPagoForm" input="redirectInvalidData"
+			name="ordenPagoForm" parameter="accion" path="/ordenPago"
+			scope="request"
+			type="com.cetia.sicaco.orden.struts.action.OrdenPagoAction">
+			<forward name="lista" path="pagina-lista.orden.pago" />
+			<forward name="dml" path="pagina-dml.orden.pago" />
+			<forward name="redirectInvalidData"
+				path="/ordenPago.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="fill" path="/detalleOrden.do"
+				module="/orden" />
+      <forward name="dmlListaPago" path="/listaOrdenPago.do?accion=dml" />
+      
+		</action>
+		<action attribute="ordenCompraForm" input="redirectInvalidData"
+			name="ordenCompraForm" parameter="accion" path="/detalleOrden"
+			scope="request"
+			type="com.cetia.sicaco.orden.struts.action.DetalleOrdenAction"
+			validate="false">
+			<forward name="lista"
+				path="pagina-lista.orden.detalleOrden" />
+			<forward name="regresar" path="/ordenPago.do"
+				module="/orden" />
+		</action>
+		<action attribute="ordenPagoForm" input="redirectInvalidData"
+			name="ordenPagoForm" parameter="accion" path="/listaOrdenPago"
+			scope="request"
+			type="com.cetia.sicaco.orden.struts.action.ListaOrdenPagoAction">
+			<forward name="lista" path="pagina-lista.orden.listaPago" />
+			<forward name="dml" path="pagina-dml.orden.dmlPago" />
+		</action>
+
+	</action-mappings>
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-orden.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+	
+</struts-config>
+

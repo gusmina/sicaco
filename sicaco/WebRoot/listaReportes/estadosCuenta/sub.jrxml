@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub" pageWidth="552" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="552" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ascId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["201002251872"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha1" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha2" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select * from 
+(SELECT
+     null AS Monto,
+     cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA,
+     cta_txa_transaccionxcuenta_asociado.`TXA_ID` AS id_trans,
+     if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,'APORTACIONES',cta_tah_tipo_ahorro.`TAH_NOMBRE`)AS CUENTA_NOMBRE,
+	 if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,'APORTACIONES',cta_tah_tipo_ahorro.`TAH_ID`)AS CUENTA_ID,
+     cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS DESCUENTO,
+     cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO,
+     if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,0,IFNULL(cta_mxa_movimiento_ahorro.`mxa_interes_tran`,0))as INTERES,
+     0 AS INTERES_PENDIENTE,
+     0 as INTERES_PAGADO,
+     cta_mxa_movimiento_ahorro.`mxa_saldo` AS SALDO,
+     CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`,IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN(26,33,15,50),IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))AS DESCRIPCION,
+     cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO,
+     if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,1,2)AS NUMERO,
+     cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS COMPROBANTE
+FROM
+     `cta_asc_asociado` cta_asc_asociado INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     LEFT OUTER JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`
+     INNER JOIN `cta_mxa_movimiento_ahorro` cta_mxa_movimiento_ahorro ON cta_cah_cuenta_ahorro.`cah_id` = cta_mxa_movimiento_ahorro.`cah_id`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_mxa_movimiento_ahorro.`txa_id` = cta_txa_transaccionxcuenta_asociado.`TXA_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+WHERE
+     cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`) >= date($P{fecha1})
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`) <= date($P{fecha2})
+
+UNION
+
+SELECT 
+    cta_pre_prestamo.`PRE_MONTO_SOLICITADO` AS Monto,
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA, 
+	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans, 
+    cta_tpr_tipo_prestamo.`TPR_NOMBRE` AS CUENTA_NOMBRE,
+	cta_pre_prestamo.`PRE_ID` AS CUENTA_ID,
+     	IF((cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`- IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  -
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0))<0.0,0.0,
+	(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`- IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  -
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0))) AS DESCUENTO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO, 
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  as INTERES,
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0) as INTERES_PENDIENTE,
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0) + 
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0) as INTERES_PAGADO,
+	cta_mxp_movimiento_prestamo.`mxp_saldo` AS SALDO, 
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`, 
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15,50), 
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION, 
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO, 
+	3 AS NUMERO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS COMPROBANTE
+FROM 
+    	`cta_asc_asociado` cta_asc_asociado 
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID` 
+     	INNER JOIN `cta_pre_prestamo` cta_pre_prestamo 
+	ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID` 
+     	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado 
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA` 
+     	INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo 
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID` 
+     	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion 
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID` 
+     	LEFT OUTER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo 
+	ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+WHERE 
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId} 
+ 	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)>=date($P{fecha1}) 
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<=date($P{fecha2})
+UNION
+
+SELECT
+	null as Monto, 
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA, 
+	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans, 
+    cta_tis_tipo_seguro.`TIS_NOMBRE` AS CUENTA_NOMBRE, 
+	cta_seg_seguros.`seg_id` AS CUENTA_ID,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS DESCUENTO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO,
+	0.0 as INTERES,
+	0.0 AS INTERES_PENDIENTE,
+	0.0 as INTERES_PAGADO, 
+	cta_mxs_movimiento_seguros.`mxs_saldo` AS SALDO, 
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`, 
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15,50), 
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION, 
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO, 
+	4 AS NUMERO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` AS COMPROBANTE
+	 
+FROM 
+    	`cta_asc_asociado` cta_asc_asociado 
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID` 
+     	INNER JOIN `cta_seg_seguros` cta_seg_seguros 
+	ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID` 
+     	INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro 
+	ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID` 
+ 	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado 
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA` 
+ 	INNER JOIN `cta_mxs_movimiento_seguros` cta_mxs_movimiento_seguros 
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxs_movimiento_seguros.`TXA_ID` 
+ 	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion 
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+
+WHERE 
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId}  
+ 	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)>=date($P{fecha1}) 
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<=date($P{fecha2}) 
+
+
+ORDER BY NUMERO,CUENTA_ID,CUENTA_NOMBRE,FECHA,id_trans ) as q
+
+Where TOTAL_DESCUENTO >0.005]]>
+	</queryString>
+	<field name="Monto" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_trans" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CUENTA_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CUENTA_ID" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DESCUENTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTAL_DESCUENTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INTERES" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INTERES_PENDIENTE" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="INTERES_PAGADO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="SALDO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DESCRIPCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TTR_USO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NUMERO" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COMPROBANTE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="CUENTAS">
+		<groupExpression><![CDATA[$F{CUENTA_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="43" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-8" x="369" y="21" width="49" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Interes 
+Pendiente]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-9" x="410" y="22" width="49" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Interes 
+Pagado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-7" x="335" y="21" width="34" height="18"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Interes Deven.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-1" x="0" y="23" width="50" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5"/>
+					</textElement>
+					<text><![CDATA[Fecha 
+Transacción]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-3" x="248" y="23" width="40" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Cargo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-4" x="291" y="23" width="40" height="11"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Abono]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-5" x="455" y="23" width="43" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Total 
+Descuento
+]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-6" x="499" y="23" width="50" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Saldo
+Actual]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-1" x="50" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-2" x="247" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-3" x="289" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-4" x="372" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-5" x="498" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-6" x="0" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-7" x="551" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-9" x="0" y="22" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-11" x="0" y="11" width="1" height="11"/>
+				</line>
+				<line>
+					<reportElement key="line-19" x="0" y="40" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-8" mode="Opaque" x="0" y="10" width="552" height="1" forecolor="#000000"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField-1" mode="Opaque" x="1" y="11" width="550" height="11" isPrintWhenDetailOverflows="true" forecolor="#0F0B0B" backcolor="#C8BEBE"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{CUENTA_NOMBRE}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-27" x="551" y="11" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement key="line-30" x="332" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-31" x="454" y="23" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement key="line-38" x="414" y="23" width="1" height="20"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-2" x="51" y="23" width="35" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5"/>
+					</textElement>
+					<text><![CDATA[N° Comprobante]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" x="91" y="23" width="156" height="17"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Descripcion]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-1" x="86" y="23" width="1" height="20"/>
+				</line>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="449" y="10" width="49" height="11">
+						<printWhenExpression><![CDATA[new Boolean (!$F{Monto}.isNaN())]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Monto Solicitado: "]]></textFieldExpression>
+				</textField>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="499" y="10" width="49" height="11"/>
+					<textElement verticalAlignment="Middle">
+						<font size="5" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$F{Monto}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18" splitType="Stretch">
+				<line>
+					<reportElement key="line-24" x="289" y="0" width="1" height="18"/>
+				</line>
+				<line>
+					<reportElement key="line-26" x="498" y="0" width="1" height="18"/>
+				</line>
+				<line>
+					<reportElement key="line-23" x="247" y="0" width="1" height="18"/>
+				</line>
+				<line>
+					<reportElement key="line-20" x="0" y="0" width="1" height="17"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="50" y="0" width="1" height="17"/>
+				</line>
+				<line>
+					<reportElement key="line-9" x="0" y="17" width="552" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-21" x="551" y="0" width="1" height="18"/>
+				</line>
+				<line>
+					<reportElement key="line-37" x="414" y="0" width="1" height="17"/>
+				</line>
+				<line>
+					<reportElement key="line-25" x="372" y="0" width="1" height="17"/>
+				</line>
+				<line>
+					<reportElement key="line-33" x="454" y="0" width="1" height="18"/>
+				</line>
+				<line>
+					<reportElement key="line-28" x="332" y="0" width="1" height="17"/>
+				</line>
+				<line>
+					<reportElement key="line-9" x="1" y="8" width="550" height="1"/>
+				</line>
+				<line>
+					<reportElement key="line-22" x="86" y="0" width="1" height="17"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Prevent">
+			<line>
+				<reportElement key="line-32" stretchType="RelativeToBandHeight" x="454" y="0" width="1" height="13"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="51" y="0" width="35" height="11">
+					<printWhenExpression><![CDATA[new Boolean(!$F{COMPROBANTE}.substring(0,1).equals("-"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPROBANTE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="91" y="0" width="156" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="1" y="0" width="34" height="10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="248" y="1" width="35" height="9">
+					<printWhenExpression><![CDATA[new java.lang.Boolean($F{TTR_USO}.equals( "C" ))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="291" y="1" width="35" height="9">
+					<printWhenExpression><![CDATA[($F{TTR_USO}.equals("A")? Boolean.TRUE: Boolean.FALSE)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField-7" x="509" y="1" width="39" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{SALDO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="375" y="0" width="35" height="10">
+					<printWhenExpression><![CDATA[new Boolean($F{INTERES_PENDIENTE}.doubleValue()>0.0)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{INTERES_PENDIENTE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="415" y="0" width="34" height="10">
+					<printWhenExpression><![CDATA[new Boolean($F{INTERES_PAGADO}.doubleValue()>0.0)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{INTERES_PAGADO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00;(-#,##0.00)" isBlankWhenNull="true">
+				<reportElement key="textField" x="455" y="1" width="32" height="9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_DESCUENTO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-12" stretchType="RelativeToBandHeight" x="50" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" x="86" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" x="247" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-15" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="13"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="51" y="0" width="35" height="11">
+					<printWhenExpression><![CDATA[new Boolean($F{COMPROBANTE}.substring(0,1).equals("-"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COMPROBANTE}.substring(7,9)+
+$F{COMPROBANTE}.substring(5,7)+
+$F{COMPROBANTE}.substring(1,5)]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-18" stretchType="RelativeToBandHeight" x="551" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-17" stretchType="RelativeToBandHeight" x="498" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-39" stretchType="RelativeToBandHeight" x="414" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-16" stretchType="RelativeToBandHeight" x="372" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-29" stretchType="RelativeToBandHeight" x="332" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-14" stretchType="RelativeToBandHeight" x="289" y="0" width="1" height="13"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="10" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,59 @@
+@CHARSET "UTF-8";
+#menu {
+	margin: 0px;
+	padding: 0px;
+	background-image: url(/cetia/imagenes/tema/menu.jpg	);
+}
+
+#menu li{
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.menu-link-padre {
+	margin: 0px;
+	padding: 0px;
+	padding-left:17px;
+	text-decoration: none;
+	color: white;
+	font-size: 12px;
+	font-weight: bolder;
+	background-image: url(/cetia/imagenes/menu/open_menu.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+
+.menu-link {
+	margin: 0px;
+	padding: 0px;
+	padding-left:17px;
+	text-decoration: none;
+	color: #53431E;
+	font-size: 12px;
+	background-image: url(/cetia/imagenes/menu/arrowRight.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+
+#menu li ul {
+	margin: 0px;
+	padding: 0px 0px 0px 10px;
+}
+
+.menu-element-over {
+	/*background-color: blue;*/
+	background-color: #A07241;
+}
+
+.menu-option-over {
+	/*background-color: yellow;*/
+	/*color: #7a4b09;*/
+	/*font-weight: bold;*/
+	/*font-size: 14px;*/
+	background-color: #A07241;
+}
+
+/*.menubar {
+	height: 20px;
+}*/

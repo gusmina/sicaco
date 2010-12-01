@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDeCostoDeInventario" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="737" leftMargin="19" rightMargin="36" topMargin="42" bottomMargin="28">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="FECHA_FIN" class="java.util.Date"/>
+	<parameter name="FECHA_INI" class="java.util.Date"/>
+	<parameter name="SUCURSAL" class="java.lang.Integer"/>
+	<parameter name="NOMRE_SUCURSAL" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[
+
+
+SELECT 
+     lin.`LIN_NOMBRE` AS LIN_NOMBRE,
+     art.`ART_CODIGO` AS ART_CODIGO,
+     art.`ART_NOMBRE` AS ART_NOMBRE,
+     art.`MED_ID`     AS MED_PRESENTACION,
+     inv.`SME_CANTIDAD` AS CANTIDAD_PRODUCTO,
+     ifnull((
+	select sum(d.dfa_cantidad * i.cnv_factor) as cantidad_compras
+	from fac_fen_factura_encabezado f, fac_dfa_detalle_factura d, inv_cnv_conversion i
+	where f.fus_id in (1,3)
+	and f.est_id = 1
+	and month(f.fen_fecha_factura) = month($P{FECHA_INI})
+	and year(f.fen_fecha_factura) = year($P{FECHA_INI})
+	and f.fen_id = d.fen_id
+	and d.cnv_id = i.cnv_id
+	and d.art_codigo=art.art_codigo
+	and if($P{SUCURSAL}=-1,1,f.suc_id=$P{SUCURSAL})
+	group by d.art_codigo
+     ),0) AS CANTIDAD_COMPRAS,
+     ifnull((
+	select sum(d.dfa_cantidad * i.cnv_factor) as cantidad_anuladas
+	from fac_fen_factura_encabezado f, fac_dfa_detalle_factura d, inv_cnv_conversion i
+	where f.fus_id in (2,4)
+	and f.est_id = 2
+	and month(f.fen_fecha_factura) = month($P{FECHA_INI})
+	and year(f.fen_fecha_factura) = year($P{FECHA_INI})
+	and f.fen_id = d.fen_id
+	and d.cnv_id = i.cnv_id
+	and d.art_codigo=art.art_codigo
+	and if($P{SUCURSAL}=-1,1,f.suc_id=$P{SUCURSAL})
+	group by d.art_codigo
+     ),0) AS CANTIDAD_ANULADAS,
+     ifnull((
+	select 
+		if(f.fus_id=7,
+			sum(d.dfa_cantidad * i.cnv_factor * -1),
+			sum(d.dfa_cantidad * i.cnv_factor)
+		) as cantidad_ajuste
+	from fac_fen_factura_encabezado f, fac_dfa_detalle_factura d, inv_cnv_conversion i
+	where f.fus_id in (5,7)
+	and f.est_id = 1
+	and month(f.fen_fecha_factura) = month($P{FECHA_INI})
+	and year(f.fen_fecha_factura) = year($P{FECHA_INI})
+	and f.fen_id = d.fen_id
+	and d.cnv_id = i.cnv_id
+	and d.art_codigo=art.art_codigo
+	and if($P{SUCURSAL}=-1,1,f.suc_id=$P{SUCURSAL})
+	group by d.art_codigo
+     ),0) AS CANTIDAD_AJUSTE,
+     ifnull((
+	select sum(d.dfa_cantidad * i.cnv_factor) as cantidad_ajuste
+	from fac_fen_factura_encabezado f, fac_dfa_detalle_factura d, inv_cnv_conversion i
+	where f.fus_id in (2,4)
+	and f.est_id = 1
+	and month(f.fen_fecha_factura) = month($P{FECHA_INI})
+	and year(f.fen_fecha_factura) = year($P{FECHA_INI})
+	and f.fen_id = d.fen_id
+	and d.cnv_id = i.cnv_id
+	and d.art_codigo=art.art_codigo
+	and if($P{SUCURSAL}=-1,1,f.suc_id=$P{SUCURSAL})
+	group by d.art_codigo
+     ),0) AS CANTIDAD_SALIDAS,
+     IFNULL(inv.`SME_COSTO_ART`,0) AS COSTO_PRODUCTO,
+     inv.`SME_SALDO` AS VALOR_INICIAL
+
+FROM
+	inv_sme_saldo_mensual inv,
+`inv_art_articulo` art INNER JOIN `inv_lin_linea` lin ON art.`LIN_ID` = lin.`LIN_ID`
+     LEFT JOIN `fac_dfa_detalle_factura` fac_dfa_detalle_factura ON art.`ART_CODIGO` = fac_dfa_detalle_factura.`ART_CODIGO`
+     LEFT JOIN `fac_fen_factura_encabezado` fac_fen_factura_encabezado ON fac_dfa_detalle_factura.`FEN_ID` = fac_fen_factura_encabezado.`FEN_ID`
+WHERE 
+	inv.art_codigo = art.art_codigo AND 
+	MONTH(inv.`SME_FECHA`)=MONTH($P{FECHA_INI}) AND YEAR(inv.`SME_FECHA`)=YEAR($P{FECHA_FIN})
+
+	
+GROUP BY art.art_codigo
+ORDER BY lin.lin_id,art.art_codigo
+]]>
+	</queryString>
+	<field name="LIN_NOMBRE" class="java.lang.String"/>
+	<field name="ART_CODIGO" class="java.lang.String"/>
+	<field name="ART_NOMBRE" class="java.lang.String"/>
+	<field name="MED_PRESENTACION" class="java.lang.String"/>
+	<field name="CANTIDAD_PRODUCTO" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_COMPRAS" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_ANULADAS" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_AJUSTE" class="java.math.BigDecimal"/>
+	<field name="CANTIDAD_SALIDAS" class="java.math.BigDecimal"/>
+	<field name="COSTO_PRODUCTO" class="java.math.BigDecimal"/>
+	<field name="VALOR_INICIAL" class="java.math.BigDecimal"/>
+	<variable name="FINALES" class="java.lang.Double" resetType="Column">
+		<variableExpression><![CDATA[new Double($F{CANTIDAD_PRODUCTO}.doubleValue()
+	   + $F{CANTIDAD_COMPRAS}.doubleValue()
+	   + $F{CANTIDAD_AJUSTE}.doubleValue()
+	   - ($F{CANTIDAD_ANULADAS}.doubleValue()+$F{CANTIDAD_SALIDAS}.doubleValue()))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="VALORES_FINALES" class="java.lang.Double" resetType="Column">
+		<variableExpression><![CDATA[new Double($F{COSTO_PRODUCTO}.doubleValue()*$V{FINALES}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_CANTIDAD_COMPRAS_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_COMPRAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CANTIDAD_ANULADAS_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_ANULADAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CANTIDAD_SALIDAS_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_SALIDAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_FINALES_1" class="java.lang.Double" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$V{FINALES}]]></variableExpression>
+	</variable>
+	<variable name="SUM_COSTO_PRODUCTO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{COSTO_PRODUCTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VALOR_INICIAL_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR_INICIAL}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VALORES_FINALES_1" class="java.lang.Double" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$V{VALORES_FINALES}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CANTIDAD_COMPRAS_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_COMPRAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CANTIDAD_ANULADAS_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_ANULADAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CANTIDAD_SALIDAS_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_SALIDAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_FINALES_1_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{FINALES}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_COSTO_PRODUCTO_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{COSTO_PRODUCTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_VALOR_INICIAL_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR_INICIAL}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_VALORES_FINALES_1_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{VALORES_FINALES}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CANTIDAD_PRODUCTO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_PRODUCTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CANTIDAD_PRODUCTO_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_PRODUCTO}]]></variableExpression>
+	</variable>
+	<variable name="SUM_CANTIDAD_AJUSTE_1" class="java.math.BigDecimal" resetType="Group" resetGroup="LINEA_DE_PRODUCTOS" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_AJUSTE}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUM_CANTIDAD_AJUSTE_1_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD_AJUSTE}]]></variableExpression>
+	</variable>
+	<group name="LINEA_DE_PRODUCTOS">
+		<groupExpression><![CDATA[$F{LIN_NOMBRE}]]></groupExpression>
+		<groupHeader>
+			<band height="15" splitType="Stretch">
+				<line>
+					<reportElement key="line-40" x="1" y="14" width="735" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-52" mode="Opaque" x="1" y="0" width="43" height="14" forecolor="#000000" backcolor="#CCCCCC"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[Línea]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" mode="Opaque" x="44" y="0" width="693" height="14" forecolor="#000000" backcolor="#CCCCCC"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{LIN_NOMBRE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="41" splitType="Stretch">
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-21" x="241" y="0" width="50" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_PRODUCTO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="292" y="0" width="50" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_COMPRAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="403" y="0" width="44" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_ANULADAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="447" y="0" width="50" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_SALIDAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="498" y="0" width="52" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_FINALES_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="551" y="0" width="52" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COSTO_PRODUCTO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="604" y="0" width="62" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_VALOR_INICIAL_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="669" y="0" width="65" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_VALORES_FINALES_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-56" x="241" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-57" x="291" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-58" x="342" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-59" x="403" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-60" x="498" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-61" x="550" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-62" x="603" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-63" x="666" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-64" x="736" y="0" width="1" height="15"/>
+				</line>
+				<line>
+					<reportElement key="line-65" mode="Opaque" x="241" y="14" width="495" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-44" x="3" y="21" width="71" height="13"/>
+					<textElement/>
+					<text><![CDATA[Sub Total Línea]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="74" y="21" width="169" height="13"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{LIN_NOMBRE}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-6" x="292" y="20" width="50" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_COMPRAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-7" x="403" y="20" width="44" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_ANULADAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-8" x="447" y="20" width="50" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_SALIDAS_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-9" x="497" y="20" width="54" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_FINALES_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-10" x="551" y="20" width="52" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_COSTO_PRODUCTO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-11" x="604" y="20" width="64" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_VALOR_INICIAL_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-12" x="671" y="21" width="65" height="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_VALORES_FINALES_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-66" mode="Opaque" x="242" y="34" width="495" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<line>
+					<reportElement key="line-67" mode="Opaque" x="242" y="36" width="495" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-45" x="121" y="1" width="119" height="13"/>
+					<textElement/>
+					<text><![CDATA[Sub Total Grupo]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="242" y="20" width="49" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_PRODUCTO_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-75" x="447" y="0" width="1" height="15"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="343" y="1" width="60" height="12"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_AJUSTE_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-22" x="342" y="20" width="60" height="14"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_CANTIDAD_AJUSTE_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="124" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="628" y="19" width="45" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Hora   :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-1" x="674" y="2" width="62" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="674" y="19" width="62" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" mode="Opaque" x="180" y="19" width="390" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Reporte Mensual de Unidades y Saldos de Inventario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="579" y="2" width="94" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha de Emisión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="223" y="38" width="108" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Movimientos desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="390" y="38" width="42" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="188" y="54" width="333" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Valores Expresados en Dólares de los Estados Unidos de América]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="331" y="38" width="59" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="432" y="38" width="56" height="17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-31" mode="Opaque" x="549" y="90" width="185" height="18" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[VALORES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-32" mode="Opaque" x="243" y="90" width="306" height="18" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[UNIDADES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-33" mode="Opaque" x="62" y="90" width="145" height="30" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-34" mode="Opaque" x="4" y="90" width="58" height="30" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Código Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-35" mode="Opaque" x="207" y="90" width="36" height="30" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Present]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-41" stretchType="RelativeToBandHeight" x="1" y="87" width="1" height="35" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-42" stretchType="RelativeToBandHeight" mode="Opaque" x="62" y="88" width="1" height="34" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-36" mode="Opaque" x="549" y="107" width="53" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-37" mode="Opaque" x="603" y="107" width="62" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-38" mode="Opaque" x="243" y="107" width="49" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Iniciales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-39" mode="Opaque" x="292" y="107" width="50" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Compras]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-40" mode="Opaque" x="403" y="107" width="43" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Anul]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-41" mode="Opaque" x="447" y="107" width="50" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Salidas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-42" mode="Opaque" x="498" y="107" width="51" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Finales]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-43" mode="Opaque" x="666" y="107" width="68" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Final]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-44" stretchType="RelativeToBandHeight" x="736" y="88" width="1" height="35" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-45" stretchType="RelativeToBandHeight" x="206" y="88" width="1" height="34" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-46" stretchType="RelativeToBandHeight" x="242" y="88" width="1" height="34" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-47" stretchType="RelativeToBandHeight" x="549" y="88" width="1" height="34" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-48" stretchType="RelativeToBandHeight" mode="Opaque" x="666" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-49" stretchType="RelativeToBandHeight" mode="Opaque" x="602" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-50" stretchType="RelativeToBandHeight" mode="Opaque" x="390" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-51" stretchType="RelativeToBandHeight" mode="Opaque" x="447" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-52" stretchType="RelativeToBandHeight" mode="Opaque" x="342" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-53" stretchType="RelativeToBandHeight" mode="Opaque" x="292" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-54" x="2" y="87" width="735" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-51" mode="Opaque" x="343" y="107" width="59" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Ajuste
+]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-72" stretchType="RelativeToBandHeight" mode="Opaque" x="498" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-73" stretchType="RelativeToBandHeight" mode="Opaque" x="403" y="108" width="1" height="14" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-43" mode="Opaque" x="243" y="107" width="490" height="1" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-55" isPrintRepeatedValues="false" x="1" y="122" width="735" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-53" x="191" y="69" width="99" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Sucursal:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-76" x="291" y="81" width="220" height="1"/>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="290" y="69" width="221" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{NOMRE_SUCURSAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" mode="Opaque" x="180" y="2" width="390" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA de R.L.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<line>
+				<reportElement key="line-27" x="1" y="12" width="735" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="242" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_PRODUCTO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="3" y="0" width="56" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ART_CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="63" y="0" width="142" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ART_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="206" y="0" width="35" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MED_PRESENTACION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="448" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_SALIDAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="551" y="0" width="51" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COSTO_PRODUCTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="604" y="0" width="61" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR_INICIAL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-28" x="61" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-29" x="205" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-30" x="241" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-31" x="291" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-32" x="342" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-33" x="447" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-34" x="498" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-35" x="550" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-36" x="603" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-37" x="666" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-38" x="736" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-39" x="1" y="0" width="1" height="13"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="499" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{FINALES}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="668" y="0" width="65" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{VALORES_FINALES}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="292" y="0" width="50" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_COMPRAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="403" y="0" width="44" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_ANULADAS}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-74" x="403" y="0" width="1" height="13"/>
+			</line>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="344" y="0" width="59" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD_AJUSTE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-47" positionType="Float" mode="Opaque" x="1" y="2" width="138" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Reporte de Costo de Inventario]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-13" positionType="Float" mode="Opaque" x="623" y="2" width="74" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-14" positionType="Float" mode="Opaque" x="699" y="2" width="35" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}+""]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-15" x="139" y="2" width="52" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-16" x="233" y="2" width="49" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-48" x="191" y="2" width="42" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-70" x="1" y="1" width="735" height="1"/>
+			</line>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-49" positionType="Float" mode="Opaque" x="0" y="2" width="138" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Reporte de Costo de Inventario]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-17" positionType="Float" mode="Opaque" x="622" y="2" width="74" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-18" positionType="Float" mode="Opaque" x="698" y="2" width="36" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}+""]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-19" x="138" y="2" width="52" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-20" x="232" y="2" width="49" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-50" x="190" y="2" width="42" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-71" x="0" y="1" width="735" height="1"/>
+			</line>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-46" x="112" y="8" width="118" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTALES GENERALES]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-68" mode="Opaque" x="242" y="26" width="494" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-69" mode="Opaque" x="242" y="28" width="494" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+			</line>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="292" y="8" width="50" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CANTIDAD_COMPRAS_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="402" y="7" width="44" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CANTIDAD_ANULADAS_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="446" y="7" width="51" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CANTIDAD_SALIDAS_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="497" y="7" width="51" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_SUM_FINALES_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="550" y="7" width="53" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_COSTO_PRODUCTO_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="604" y="7" width="64" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_VALOR_INICIAL_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="669" y="7" width="68" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_SUM_VALORES_FINALES_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="241" y="8" width="51" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CANTIDAD_PRODUCTO_1_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="342" y="8" width="61" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_SUM_CANTIDAD_AJUSTE_1_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

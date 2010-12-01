@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="reporteForm"
+			type="com.cetia.sicaco.reporte.struts.form.ReporteForm" />
+		<form-bean name="reportesOrdenForm"
+			type="com.cetia.sicaco.reporte.struts.form.ReportesOrdenForm" />
+    <form-bean name="reportesForm" type="com.cetia.sicaco.reporte.struts.form.ReportesForm" />
+    <form-bean name="serviciosForm" type="com.cetia.sicaco.reporte.struts.form.ServiciosForm" />
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+
+	<global-forwards />
+	<action-mappings>
+		<action attribute="reporteForm" name="reporteForm"
+			parameter="accion" path="/reporte" scope="request"
+			type="com.cetia.sicaco.reporte.struts.action.ReportesAction">
+			<forward name="lista" path="pagina-dml.reportes" />
+		</action>
+		
+		<action attribute="reportesOrdenForm" name="reportesOrdenForm"
+			parameter="accion" path="/reportesOrden" scope="request"
+			type="com.cetia.sicaco.reporte.struts.action.ReportesOrdenAction">
+			<forward name="lista" path="pagina-dml.reportesOrden" />
+		</action>
+    <action
+      attribute="reportesForm"
+      input="pagina-dml.reportesGene"
+      name="reportesForm"
+      path="/reportes"
+      scope="request"
+      type="com.cetia.sicaco.struts.BasicReportExporter" />
+      
+    <action forward="pagina-dml.reportesGene" path="/reporteIni" />
+    
+    <action
+      attribute="serviciosForm"
+      name="serviciosForm"
+      parameter="accion"
+      path="/servicios"
+      scope="request"
+      type="com.cetia.sicaco.reporte.struts.action.ServiciosAction"
+      validate="false" />
+      
+    <action 
+    	path="/inicializarReporte" 
+    	parameter="accion"
+    	type="com.cetia.sicaco.reporte.struts.action.InicializarReporteAction"
+    	scope="request" 
+    	validate="false">
+    	<forward name="reporte" path="pagina-dml.reportesGene"></forward>
+    </action>
+
+	</action-mappings>
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-reportes.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+	
+</struts-config>
+

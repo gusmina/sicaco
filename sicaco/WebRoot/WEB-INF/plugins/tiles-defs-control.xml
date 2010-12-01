@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.control.parametros" extends="plantilla">
+		<put name="nombre-pantalla" value="Edicion de Parametros del Sistema"/>
+		<put name="descripcion-pagina"
+			value="Maneja la edicion de parametros del sistema" type="string" />
+		<put name="contenido" value="/control/parametrosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.control.parametros" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Parametros del Sistema"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los parametros que se pueden modificar en el sistema" type="string" />
+		<put name="accion" value="/control/parametros.do?accion=lista" type="string" />
+		<put name="contenido" value="" type="string"/>
+	</definition>
+	
+	<definition name="pagina-lista.control.empresa" extends="plantilla">
+		<put name="nombre-pantalla" value="Empresa"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de la informacion general de la empresa" type="string" />
+		<put name="contenido" value="/control/empresaDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.control.reposFact" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Repositorio de Facturas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion del respositorio de facturas" type="string" />
+		<put name="accion" value="/control/reposFact.do?accion=lista" type="string" />
+		<put name="contenido" value="/control/rfcDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.control.reposFact" extends="plantilla">
+		<put name="nombre-pantalla" value="Repositorio de Facturas"/>
+		<put name="descripcion-pagina"
+			value="Acciones referentes al respositorio" type="string" />
+		<put name="contenido" value="/control/rfcDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.control.controlFactura" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Control De Factura"/>
+		<put name="descripcion-pagina"
+			value="Acciones referentes al control de numeros de factura" type="string" />
+		<put name="contenido" value="/control/cfcDML.jsp" />
+		<put name="accion" value="/control/controlFactura.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.control.controlFactura" extends="plantilla">
+		<put name="nombre-pantalla" value="Control De Factura"/>
+		<put name="descripcion-pagina"
+			value="Acciones referentes al control de numeros de factura" type="string" />
+		<put name="contenido" value="/control/cfcDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.control.usuarioRepositorio" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Asociacion Usuario-Repositorio"/>
+		<put name="descripcion-pagina"
+			value="Acciones referentes a la asociacion Usuario-Repositorio" type="string" />
+		<put name="contenido" value="/control/usuarioRepositorioDML.jsp" />
+		<put name="accion" value="/control/usuarioRepositorio.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.control.usuarioRepositorio" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Asociacion Sucursal-Repositorio"/>
+		<put name="descripcion-pagina"
+			value="Acciones referentes a la asociacion Usuario-Repositorio" type="string" />
+		<put name="contenido" value="/control/usuarioRepositorioDML.jsp" />
+		<put name="accion" value="/control/usuarioRepositorio.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina.verComentarios" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Ver Comentarios"/>
+		<put name="descripcion-pagina">
+			Version 1.0
+			Muestra y filtra los comentarios que los clientes han puesto 
+		</put>
+		<put name="contenido" value="/cliente/verComentarios.jsp" />
+		<put name="accion" value="/control/verComentarios.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina.peticionesCompra" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Peticiones de Ordenes de Compra" />
+		<put name="descripcion-pagina" value="P&amp;aacute;gina utilizada para peticiones de ordenes de compra de asociados" />
+		<put name="contenido" value="/cliente/peticionesCompra.jsp" />
+		<put name="accion" value="/control/peticionesCompra.do?accion=buscar" type="string" />
+		
+	</definition>	
+	
+	<definition name="pagina-lista.control.bancos" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Bancos"/>
+		<put name="descripcion-pagina"
+			value="Lista y guardado de bancos" type="string" />
+		<put name="contenido" value="/control/bancosDML.jsp" />
+		<put name="accion" value="/control/bancos.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.control.pais" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Paises"/>
+		<put name="descripcion-pagina"
+			value="Lista y guardado de paises" type="string" />
+		<put name="contenido" value="/control/paisesDML.jsp" />
+		<put name="accion" value="/control/pais.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.control.controlCheque" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Control de Cheques"/>
+		<put name="descripcion-pagina"
+			value="Lista y guardado de series de Cheques" type="string" />
+		<put name="contenido" value="/control/cckDML.jsp" />
+		<put name="accion" value="/control/controlCheque.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.control.repositorioCheque" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Repositorio de Cheques"/>
+		<put name="descripcion-pagina"
+			value="Lista y guardado de repositorios de cheques" type="string" />
+		<put name="contenido" value="/control/rckDML.jsp" />
+		<put name="accion" value="/control/repositorioCheque.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.orden.compra" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion de Ordenes de compra"/>
+		<put name="descripcion-pagina"
+			value="Acciones posibles para las ordenes de compra" type="string" />
+		<put name="contenido" value="/cliente/ordenCompraDML.jsp"  />
+	</definition>
+	
+</tiles-definitions>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+    <form-bean name="empresaTrabajoForm" type="com.cetia.sicaco.asociados.struts.form.EmpresaTrabajoForm" />
+    <form-bean name="departamentoTrabajoForm" type="com.cetia.sicaco.asociados.struts.form.DepartamentoTrabajoForm" />
+	<form-bean name="tipoTrabajoForm" type="com.cetia.sicaco.asociados.struts.form.TipoTrabajoForm" />
+	<form-bean name="tipoContratoForm" type="com.cetia.sicaco.asociados.struts.form.TipoContratoForm" />
+	<form-bean name="tipoAsociadoForm" type="com.cetia.sicaco.asociados.struts.form.TipoAsociadoForm" />
+	<form-bean name="tipoTransaccionForm" type="com.cetia.sicaco.asociados.struts.form.TipoTransaccionForm" />
+	<form-bean name="tipoComprobanteForm" type="com.cetia.sicaco.asociados.struts.form.TipoComprobanteForm" />
+	<form-bean name="asociadoForm" type="com.cetia.sicaco.asociados.struts.form.AsociadoForm" />
+	<form-bean name="tipoDomicilioForm" type="com.cetia.sicaco.asociados.struts.form.TipoDomicilioForm" />
+	<form-bean name="transaccionAsociadoForm" type="com.cetia.sicaco.asociados.struts.form.TransaccionAsociadoForm" />
+	<form-bean name="cuentaBancariaForm" type="com.cetia.sicaco.asociados.struts.form.CuentaBancariaForm" />
+	<form-bean name="ingresoAsociadoForm" type="com.cetia.sicaco.asociados.struts.form.IngresoAsociadoForm" />
+	<form-bean name="codigosAnterioresForm" type="com.cetia.sicaco.asociados.struts.form.CodigosAnterioresForm" />
+  </form-beans>
+
+  <global-exceptions />
+  <global-forwards >
+    <forward
+      name="toAsociados"
+      path="/asociado.do?accion=lista"
+      module="/asociados" />
+    <forward name="redirectEmpresa" redirect="true" path="/empresaTrabajo.do?accion=lista" module="/asociados"/>
+	<forward name="redirectListaP" redirect="true" path="/persona.do?accion=lista" module="/seguridad"/>
+  </global-forwards>
+
+  <action-mappings >
+    <action
+      attribute="empresaTrabajoForm"
+      input="redirectInvalidData"
+      name="empresaTrabajoForm"
+      parameter="accion"
+      path="/empresaTrabajo"
+      scope="request"
+      validate="true"
+      type="com.cetia.sicaco.asociados.struts.action.EmpresaTrabajoAction">
+      <forward name="lista" path="pagina-lista.asociados.empresaTrabajo" />
+      <forward name="redirectInvalidData" redirect="true" path="/empresaTrabajo.do?accion=redirectInvalidData"/>
+    </action>
+    <action
+      attribute="tipoDomicilioForm"
+      input="redirectInvalidData"
+      name="tipoDomicilioForm"
+      parameter="accion"
+      path="/tipoDomicilio"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoDomicilioAction">
+      <forward name="lista" path="pagina-lista.asociados.tipoDomicilio" />
+      <forward
+        name="redirectInvalidData"
+        path="/tipoDomicilio.do?accion=redirectInvalidData"
+        redirect="true" />
+    </action>
+    <action
+      attribute="departamentoTrabajoForm"
+      input="redirectInvalidData"
+      name="departamentoTrabajoForm"
+      parameter="accion"
+      path="/departamentoTrabajo"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.DepartamentoTrabajoAction">
+      <forward name="lista" path="pagina-lista.asociados.departamentoTrabajo" />
+      <forward
+        name="redirectInvalidData"
+        path="/departamentoTrabajo.do?accion=redirectInvalidData"
+        redirect="true" />
+    </action>
+    
+    <action
+      attribute="tipoContratoForm"
+      input="redirectInvalidData"
+      name="tipoContratoForm"
+      parameter="accion"
+      path="/tipoContrato"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoContratoAction">
+      <forward name="lista" path="pagina-lista.asociados.tipoContrato" />
+      <forward name="redirectInvalidData" path="/invalidTipoContrato.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="tipoAsociadoForm"
+      input="redirectInvalidData"
+      name="tipoAsociadoForm"
+      parameter="accion"
+      path="/tipoAsociado"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoAsociadoAction">
+      <forward name="lista" path="pagina-lista.asociados.tipoAsociado" />
+      <forward
+        name="redirectInvalidData"
+        path="/tipoAsociado.do?accion=redirectInvalidData"
+        redirect="true" />
+    </action>
+    <action
+      attribute="tipoTransaccionForm"
+      input="redirectInvalidData"
+      name="tipoTransaccionForm"
+      parameter="accion"
+      path="/tipoTransaccion"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoTransaccionAction">
+      <forward name="lista" path="pagina-lista.asociados.tipoTransaccion" />
+      <forward name="redirectInvalidData" path="/tipoTransaccion.do?accion=redirectInvalidData" redirect="true"/>
+    </action>
+    <action
+      attribute="tipoComprobanteForm"
+      input="redirectInvalidData"
+      name="tipoComprobanteForm"
+      parameter="accion"
+      path="/tipoComprobante"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoComprobanteAction">
+      <forward name="lista" path="pagina-lista.asociados.tipoComprobante" />
+       <forward name="redirectInvalidData" path="/tipoComprobante.do?accion=redirectInvalidData" redirect="true"/>
+    </action>
+
+	<action
+      attribute="asociadoForm"
+      input="redirectInvalidData"
+      name="asociadoForm"
+      parameter="accion"
+      path="/asociado"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.AsociadoAction">
+      <forward name="asocDML" path="pagina-dml.asociados.nuevoAsociadoFromUser" />
+      <forward name="cuentasBancarias" path="/cuentaBancaria.do?accion=lista" />
+      <forward
+        name="correo"
+        path="/correo.do"
+        module="/seguridad" />
+      <forward name="redirectInvalidData" path="/invalidAsociado.do?accion=redirectInvalidData" />
+      <forward name="listaInactivo" path="pagina-lista.asociados.busquedaAsociadoInactivo" />
+      <forward name="dml" path="pagina-dml.asociados.nuevoAsociado" />
+      <forward
+        name="sesion"
+        path="/sesion.do?accion=listaAsociadoSesion"
+        redirect="true"
+        module="/seguridad" />
+      <forward name="dependientes" path="/dependiente.do?accion=lista" />
+      <forward
+        name="aperturaAportacion"
+        path="/cuentaAportacion.do?accion=lista"
+        module="/cuentaCorriente" />
+      <forward name="ingresos" path="/ingresoAsociado.do?accion=lista" />
+      <forward name="error" path="pagina-dml.asociados.nuevoAsociado" />
+      <forward name="lista" path="pagina-lista.asociados.busquedaAsociado" />
+      <forward name="reingreso" path="pagina-lista.asociados.reingresoAsociado" />
+      <forward name="codigosAnteriores" path="/codigosAnteriores.do?accion=lista" />
+      <forward name="transacciones" path="/transaccionAsociado.do?accion=lista" />
+      <forward
+        name="telefono"
+        path="/telefonos.do"
+        module="/seguridad" />
+    </action>
+    <action
+      attribute="transaccionAsociadoForm"
+      name="transaccionAsociadoForm"
+      parameter="accion"
+      path="/transaccionAsociado"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TransaccionAsociadoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.asociados.transaccionAsociado" />
+      <forward name="dml" path="pagina-lista.asociados.transaccionDML" />
+      <forward name="regresar" path="/asociado.do?accion=lista" />
+    </action>
+    <action
+      attribute="asociadoForm"
+      input="redirectInvalidData"
+      name="asociadoForm"
+      parameter="accion"
+      path="/dependiente"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.DependienteAction">
+      <forward name="dml" path="pagina-dml.asociados.nuevoDependiente" />
+      <forward
+        name="aperturaAportacion"
+        path="/cuentaAportacion.do?accion=lista"
+        module="/cuentaCorriente" />
+      <forward name="lista" path="pagina-lista.asociados.dependientes" />
+      <forward name="vistaDep" path="pagina-dml.asociados.vistaDependientes" />
+      <forward name="redirectInvalidData" path="/invalidDependiente.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="cuentaBancariaForm"
+      input="redirectInvalidData"
+      name="cuentaBancariaForm"
+      parameter="accion"
+      path="/cuentaBancaria"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.CuentaBancariaAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.asociados.cuentasBancarias" />
+    </action>
+    <action
+      attribute="ingresoAsociadoForm"
+      name="ingresoAsociadoForm"
+      parameter="accion"
+      path="/ingresoAsociado"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.IngresoAsociadoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.asociados.ingresosAsociado" />
+    </action>
+    <action
+      attribute="codigosAnterioresForm"
+      name="codigosAnterioresForm"
+      parameter="accion"
+      path="/codigosAnteriores"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.CodigosAnterioresAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.asociados.codigosAnteriores" />
+    </action>
+    
+    <action
+      attribute="asociadoForm"
+      name="asociadoForm"
+      parameter="accion"
+      path="/invalidAsociado"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.AsociadoAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.asociados.nuevoAsociado" />
+      <forward name="asocDML" path="pagina-dml.asociados.nuevoAsociadoFromUser" />
+    </action>
+    <action
+      attribute="tipoContratoForm"
+      name="tipoContratoForm"
+      parameter="accion"
+      path="/invalidTipoContrato"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.TipoContratoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.asociados.tipoContrato" />
+    </action>
+    <action
+      attribute="asociadoForm"
+      name="asociadoForm"
+      parameter="accion"
+      path="/invalidDependiente"
+      scope="request"
+      type="com.cetia.sicaco.asociados.struts.action.DependienteAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.asociados.nuevoDependiente" />
+    </action>
+    
+	
+
+  </action-mappings>
+
+  
+  <controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true"/>
+	
+	</controller>
+
+  <message-resources parameter="com.cetia.sicaco.struts.ApplicationResources" />
+  <message-resources parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+  
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+	<set-property property="definitions-config"
+		value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-asociados.xml" />
+	<set-property property="moduleAware" value="true" />
+	<set-property property="definitions-parse-validate"
+		value="true" />
+  </plug-in>
+  
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property
+		property="pathnames"
+		value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml"/>
+	</plug-in>
+	
+	
+  <plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+  </plug-in>
+  
+  
+</struts-config>
+

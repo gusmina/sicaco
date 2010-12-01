@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="reporte_socios"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="552"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<queryString><![CDATA[SELECT
+     cta_asc_asociado.`ASC_CODIGO` AS cta_asc_asociado_ASC_CODIGO,
+
+(
+case
+when sec_per_persona.`PER_GENERO`='' then 'NO ESPECIFICADO' 
+when sec_per_persona.`PER_GENERO`='F' then 'MUJERES'
+when sec_per_persona.`PER_GENERO`='M' then 'HOMBRES'
+end
+) as genero,
+     concat(sec_per_persona.`PER_PRIMER_NOMBRE`,' ',sec_per_persona.`PER_SEGUNDO_NOMBRE`,' ',sec_per_persona.`PER_TERCER_NOMBRE`,' ',sec_per_persona.`PER_PRIMER_APELLIDO`,' ',sec_per_persona.`PER_SEGUNDO_APELLIDO`) as nombre
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+WHERE
+     cta_asc_asociado.`EST_ID_2` = 0
+ORDER BY
+     sec_per_persona.`PER_GENERO` DESC,cta_asc_asociado.`ASC_CODIGO` ASC]]></queryString>
+
+	<field name="cta_asc_asociado_ASC_CODIGO" class="java.lang.String"/>
+	<field name="genero" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+
+	<variable name="SUM_cta_asc_asociado_ASC_CODIGO_1" class="java.lang.Integer" resetType="Group" resetGroup="SEXO" calculation="Count">
+		<variableExpression><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></variableExpression>
+	</variable>
+
+		<group  name="SEXO" >
+			<groupExpression><![CDATA[$F{genero}]]></groupExpression>
+			<groupHeader>
+			<band height="45"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="0"
+						width="200"
+						height="21"
+						backcolor="#CCCCCC"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="16"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{genero}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="0"
+						y="27"
+						width="100"
+						height="13"
+						key="staticText-1"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[CODIGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="100"
+						y="27"
+						width="100"
+						height="13"
+						key="staticText-2"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+				</staticText>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="22"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="2"
+						y="3"
+						width="36"
+						height="13"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+				</staticText>
+				<elementGroup><!--  Start: 4 !-->
+				<elementGroup><!--  Start: 4.3 !-->
+				<elementGroup><!--  Start: 3.2 !-->
+				<elementGroup><!--  Start: 2.1 !-->
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="40"
+						y="2"
+						width="100"
+						height="17"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{SUM_cta_asc_asociado_ASC_CODIGO_1}]]></textFieldExpression>
+				</textField>
+				</elementGroup><!-- End 4.3.2.1 !-->
+				</elementGroup><!-- End 4.3.2 !-->
+				</elementGroup><!-- End 4.3 !-->
+				</elementGroup><!-- End 4 !-->
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="50"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="8"
+						y="5"
+						width="544"
+						height="23"
+						key="staticText-3"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="18" isBold="true"/>
+					</textElement>
+				<text><![CDATA[REPORTE ASOCIADOS INSAFOCOP]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="100"
+						y="0"
+						width="327"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

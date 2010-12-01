@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="abonosXcaja" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="c1" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="c2" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(9999)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f1" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2010-03-9"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="f2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2010-03-11"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="solicita" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Solicita"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="autoriza" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Autoriza"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="suc_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct
+     sec_per_persona.`PER_PRIMER_NOMBRE` AS sec_per_persona_PER_PRIMER_NOMBRE,
+     sec_per_persona.`PER_SEGUNDO_NOMBRE` AS sec_per_persona_PER_SEGUNDO_NOMBRE,
+     sec_per_persona.`PER_TERCER_NOMBRE` AS sec_per_persona_PER_TERCER_NOMBRE,
+     sec_per_persona.`PER_PRIMER_APELLIDO` AS sec_per_persona_PER_PRIMER_APELLIDO,
+     sec_per_persona.`PER_SEGUNDO_APELLIDO` AS sec_per_persona_PER_SEGUNDO_APELLIDO,
+     sec_per_persona.`PER_APELLIDO_CASADA` AS sec_per_persona_PER_APELLIDO_CASADA,
+     cta_ttr_tipo_transaccion.`TTR_USO` AS cta_ttr_tipo_transaccion_TTR_USO,
+     cta_cas_cuenta_asociado.`ASC_ID` AS cta_cas_cuenta_asociado_ASC_ID,
+     concat(cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE`, ' ') AS cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE,
+     cta_asc_asociado.`ASC_CODIGO` AS cta_asc_asociado_ASC_CODIGO,
+null as ValorCompra,
+null as comp2,
+null as cuota
+FROM
+     `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     INNER JOIN `cta_asc_asociado` cta_asc_asociado ON cta_cas_cuenta_asociado.`ASC_ID` = cta_asc_asociado.`ASC_ID`
+     INNER JOIN `cta_not_notas` cta_not_notas ON cta_asc_asociado.`NOT_ID` = cta_not_notas.`NOT_ID`
+     INNER JOIN `sec_per_persona` sec_per_persona ON cta_asc_asociado.`PER_ID` = sec_per_persona.`PER_ID`
+WHERE
+     cta_ttr_tipo_transaccion.`TTR_USO` = 'A'
+     and cta_ttr_tipo_transaccion.`TTR_ID` in (3,19,33,41,13)
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` IS NOT Null
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` > $P{c1}
+     and cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE` < $P{c2}
+     and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`) between $P{f1}
+     and $P{f2}
+and cta_txa_transaccionxcuenta_asociado.`AUD_USUARIO_CREACION` IN 
+	 (
+		 SELECT
+	  ISE_NOMBRE_USUARIO
+	FROM
+	  sec_ise_inicio_sesion ise,
+	  sec_per_persona per
+
+	WHERE
+	  ise.per_id = per.per_id
+	  and per.suc_id = $P{suc_id}
+	 )
+
+UNION 
+SELECT
+per.per_primer_nombre as sec_per_persona_PER_PRIMER_NOMBRE,
+per.per_segundo_nombre AS sec_per_persona_PER_SEGUNDO_NOMBRE,
+per.per_tercer_nombre AS sec_per_persona_PER_TERCER_NOMBRE,
+per.per_primer_apellido AS sec_per_persona_PER_PRIMER_APELLIDO,
+per.per_segundo_apellido AS sec_per_persona_PER_SEGUNDO_APELLIDO,
+'' AS sec_per_persona_PER_APELLIDO_CASADA,
+'A' AS cta_ttr_tipo_transaccion_TTR_USO,
+aso.asc_codigo_asociado AS cta_cas_cuenta_asociado_ASC_ID,
+concat(f.fen_serie_factura, '-', f.fen_numero_factura) as cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE,
+aso.asc_codigo_asociado AS cta_asc_asociado_ASC_CODIGO,
+concat('$ ', format(f.fen_total_venta,2)) as ValorCompra,
+concat(f.fen_serie_factura, '-', f.fen_numero_factura) as comp2,
+null as cuota
+
+FROM fac_fen_factura_encabezado f,
+cta_asc_asociado aso,
+sec_per_persona per
+
+where f.pro_id is null
+and f.suc_id = $P{suc_id}
+and (f.fen_tipo_factura = 'CO' or f.fen_tipo_factura = 'VC')
+and f.fen_cancelada = 'E'
+and f.est_id = 1
+and  aso.asc_id = f.asc_id
+and aso.per_id = per.per_id
+and date(f.aud_fecha_creacion) between  $P{f1} and $P{f2}
+UNION
+SELECT
+cli.cli_nombre as sec_per_persona_PER_PRIMER_NOMBRE,
+' ' AS sec_per_persona_PER_SEGUNDO_NOMBRE,
+' ' AS sec_per_persona_PER_TERCER_NOMBRE,
+' ' AS sec_per_persona_PER_PRIMER_APELLIDO,
+' ' AS sec_per_persona_PER_SEGUNDO_APELLIDO,
+' ' AS sec_per_persona_PER_APELLIDO_CASADA,
+'A' AS cta_ttr_tipo_transaccion_TTR_USO,
+cli.cli_codigo AS cta_cas_cuenta_asociado_ASC_ID,
+concat(f.fen_serie_factura, '-', f.fen_numero_factura) as cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE,
+cli.cli_codigo AS cta_asc_asociado_ASC_CODIGO,
+concat('$ ', format(f.fen_total_venta,2)) as ValorCompra,
+concat(f.fen_serie_factura, '-', f.fen_numero_factura) as comp2,
+null as cuota
+
+FROM fac_fen_factura_encabezado f,
+fac_cli_cliente cli
+where f.pro_id is null
+and f.suc_id = $P{suc_id}
+and (f.fen_tipo_factura = 'CO' or f.fen_tipo_factura = 'VC')
+and f.fen_cancelada = 'E'
+and f.est_id = 1
+and cli.cli_codigo = f.cli_codigo
+and date(f.aud_fecha_creacion) between  $P{f1} and $P{f2}
+
+UNION
+SELECT
+substring_index(not_campo, ';',1)  as sec_per_persona_PER_PRIMER_NOMBRE,
+' ' AS sec_per_persona_PER_SEGUNDO_NOMBRE,
+' ' AS sec_per_persona_PER_TERCER_NOMBRE,
+' ' AS sec_per_persona_PER_PRIMER_APELLIDO,
+' ' AS sec_per_persona_PER_SEGUNDO_APELLIDO,
+' ' AS sec_per_persona_PER_APELLIDO_CASADA,
+'A' AS cta_ttr_tipo_transaccion_TTR_USO,
+' ' as  cta_cas_cuenta_asociado_ASC_ID,
+not_id as cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE,
+' ' AS cta_asc_asociado_ASC_CODIGO,
+null as ValorCompra,
+null as comp2,
+concat('$',format(not_nota,2)) as cuota
+From
+cta_not_notas c
+where date(not_fecha) between $P{f1} and $P{f2}
+and not_campo like concat("%;",$P{suc_id})]]>
+	</queryString>
+	<field name="sec_per_persona_PER_PRIMER_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sec_per_persona_PER_SEGUNDO_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sec_per_persona_PER_TERCER_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sec_per_persona_PER_PRIMER_APELLIDO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sec_per_persona_PER_SEGUNDO_APELLIDO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sec_per_persona_PER_APELLIDO_CASADA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_ttr_tipo_transaccion_TTR_USO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_cas_cuenta_asociado_ASC_ID" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_asc_asociado_ASC_CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ValorCompra" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="comp2" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuota" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE">
+		<groupExpression><![CDATA[$F{cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE}]]></groupExpression>
+		<groupHeader>
+			<band height="98">
+				<staticText>
+					<reportElement mode="Opaque" x="72" y="0" width="183" height="20" isPrintWhenDetailOverflows="true" backcolor="#F0F0F0"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Comprobante : ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="255" y="0" width="58" height="20" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}==null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="72" y="20" width="183" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Código: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="72" y="40" width="183" height="18" isPrintWhenDetailOverflows="true"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Transacciones: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="255" y="20" width="296" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}+"   "+
+$F{sec_per_persona_PER_PRIMER_NOMBRE}+" "
++$F{sec_per_persona_PER_SEGUNDO_NOMBRE}+" "+
+$F{sec_per_persona_PER_TERCER_NOMBRE}+" "+
+$F{sec_per_persona_PER_PRIMER_APELLIDO}+" "+
+$F{sec_per_persona_PER_SEGUNDO_APELLIDO}+" "+
+$F{sec_per_persona_PER_APELLIDO_CASADA}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="432" y="78" width="119" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ValorCompra}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="313" y="0" width="85" height="20" isPrintWhenDetailOverflows="true"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{comp2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="362" y="78" width="71" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Total Venta:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="255" y="78" width="297" height="1" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null || $F{cuota}!=null)]]></printWhenExpression>
+					</reportElement>
+				</line>
+				<staticText>
+					<reportElement x="255" y="58" width="71" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Total Venta:]]></text>
+				</staticText>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="432" y="58" width="119" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ValorCompra}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="255" y="0" width="58" height="20" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{ValorCompra}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.String"><![CDATA["Factura : "]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="255" y="58" width="107" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{cuota}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Pago Cuota de ingreso :]]></text>
+				</staticText>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="432" y="78" width="119" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{cuota}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cuota}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="362" y="78" width="71" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{cuota}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Total Recibido:]]></text>
+				</staticText>
+				<textField pattern="$ #,##0.00" isBlankWhenNull="true">
+					<reportElement x="432" y="58" width="119" height="20" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true">
+						<printWhenExpression><![CDATA[new Boolean ($F{cuota}!=null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cuota}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="10" splitType="Immediate"/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="111">
+			<textField>
+				<reportElement x="453" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="533" y="0" width="40" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="21" width="572" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Cierre de abonos por caja (Captación de Fondos)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="33" width="73" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sucursal:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="453" y="33" width="36" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="489" y="33" width="77" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="12" splitType="Prevent">
+			<subreport>
+				<reportElement x="-1" y="0" width="574" height="12"/>
+				<subreportParameter name="comprobante">
+					<subreportParameterExpression><![CDATA[$F{cta_txa_transaccionxcuenta_asociado_TXA_COMPROBANTE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/abonosXCaja_sub1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19"/>
+	</columnFooter>
+	<summary>
+		<band height="81" splitType="Prevent">
+			<staticText>
+				<reportElement x="1" y="13" width="572" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTALES POR LIQUIDACIÓN DE REMESA]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="2" y="33" width="571" height="48"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="c1">
+					<subreportParameterExpression><![CDATA[$P{c1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="c2">
+					<subreportParameterExpression><![CDATA[$P{c2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="suc_id">
+					<subreportParameterExpression><![CDATA[$P{suc_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="solicita">
+					<subreportParameterExpression><![CDATA[$P{solicita}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f1">
+					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="autoriza">
+					<subreportParameterExpression><![CDATA[$P{autoriza}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/abonosXCaja_sub2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

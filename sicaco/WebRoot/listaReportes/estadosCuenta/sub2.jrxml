@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub2" pageWidth="255" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="255" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20">
+	<parameter name="ascId" class="java.lang.String"/>
+	<parameter name="fecha1" class="java.util.Date"/>
+	<parameter name="fecha2" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+'Aportaciones y ahorros' as Linea,
+cuenta_nombre as Cuenta,
+saldo as Saldo
+
+ FROM
+(SELECT
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA,
+     	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans,
+	if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,'APORTACIONES',
+		cta_tah_tipo_ahorro.`TAH_NOMBRE`) AS CUENTA_NOMBRE,
+     	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS DESCUENTO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO,
+	if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,0.0,
+		IFNULL(cta_mxa_movimiento_ahorro.`mxa_interes_tran`,0.0)) as INTERES,
+	0.0 AS INTERES_PENDIENTE,
+	0.0 as INTERES_PAGADO,
+	cta_mxa_movimiento_ahorro.`mxa_saldo` AS SALDO,
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`,
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15),
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION,
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO,
+	if(cta_cah_cuenta_ahorro.`tah_id` IS NULL,1,2) AS NUMERO
+FROM
+     	`cta_asc_asociado` cta_asc_asociado
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     	INNER JOIN `cta_mxa_movimiento_ahorro` cta_mxa_movimiento_ahorro
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxa_movimiento_ahorro.`txa_id`
+     	INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro
+	ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+	left outer JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro
+	ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`
+
+WHERE
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId}
+
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<date($P{fecha1})
+	and cta_mxa_movimiento_ahorro.`mxa_saldo` is not null
+
+ order by fecha desc )as ahorro
+
+  group by Cuenta
+UNION
+
+SELECT
+'Seguros' as Linea,
+cuenta_nombre as Cuenta,
+saldo as Saldo
+
+ FROM
+(
+SELECT
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA,
+	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans,
+     	cta_tis_tipo_seguro.`TIS_NOMBRE` AS CUENTA_NOMBRE,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS DESCUENTO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO,
+	0.0 as INTERES,
+	0.0 AS INTERES_PENDIENTE,
+	0.0 as INTERES_PAGADO,
+	cta_mxs_movimiento_seguros.`mxs_saldo` AS SALDO,
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`,
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15),
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION,
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO,
+	3 AS NUMERO
+
+FROM
+    	`cta_asc_asociado` cta_asc_asociado
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     	INNER JOIN `cta_seg_seguros` cta_seg_seguros
+	ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+     	INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro
+	ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`
+ 	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+ 	INNER JOIN `cta_mxs_movimiento_seguros` cta_mxs_movimiento_seguros
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxs_movimiento_seguros.`TXA_ID`
+ 	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+
+WHERE
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId}
+
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<date($P{fecha1})
+
+	and cta_mxs_movimiento_seguros.`mxs_saldo` is not null
+
+ order by fecha desc
+)as seguros
+
+  group by Cuenta
+
+UNION
+
+SELECT
+'Prestamos' as Linea,
+cuenta_nombre as Cuenta,
+saldo as Saldo
+
+ FROM
+(
+SELECT
+	cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS FECHA, 
+	cta_txa_transaccionxcuenta_asociado.`TXA_ID` id_trans, 
+    	cta_tpr_tipo_prestamo.`TPR_NOMBRE` AS CUENTA_NOMBRE,
+     	IF((cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`- IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  -
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0))<0.0,0.0,
+	(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`- IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  -
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0))) AS DESCUENTO,
+	cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TOTAL_DESCUENTO, 
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0)  as INTERES,
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0) as INTERES_PENDIENTE,
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_acumulado`,0.0) + 
+	IFNULL(cta_mxp_movimiento_prestamo.`mxp_interes_pendiente`,0.0) as INTERES_PAGADO,
+	(cta_pre_prestamo.`PRE_MONTO_SOLICITADO` - cta_mxp_movimiento_prestamo.`mxp_saldo_actual`) AS SALDO, 
+	CONCAT_WS(' ',cta_ttr_tipo_transaccion.`TTR_NOMBRE`, 
+		IF(cta_txa_transaccionxcuenta_asociado.`TTR_ID` IN (26,33,15), 
+		   IFNULL(cta_txa_transaccionxcuenta_asociado.`TXA_NOTA`,''),''))  AS DESCRIPCION, 
+	cta_ttr_tipo_transaccion.`TTR_USO` AS TTR_USO, 
+	4 AS NUMERO 
+FROM 
+    	`cta_asc_asociado` cta_asc_asociado 
+	INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+	ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID` 
+     	INNER JOIN `cta_pre_prestamo` cta_pre_prestamo 
+	ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID` 
+     	INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado 
+	ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA` 
+     	INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo 
+	ON cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID`
+     	INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion 
+	ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID` 
+     	LEFT OUTER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo
+	ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+WHERE
+	cta_cas_cuenta_asociado.`ASC_ID` = $P{ascId}
+
+	and date(cta_txa_transaccionxcuenta_asociado.`TXA_FECHA`)<date($P{fecha1})
+	
+	and (cta_pre_prestamo.`PRE_MONTO_SOLICITADO` - cta_mxp_movimiento_prestamo.`mxp_saldo_actual`) is not null
+ order by fecha desc
+)as prestamos
+
+  group by  CUENTA_NOMBRE]]>
+	</queryString>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="linea_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{linea}]]></variableExpression>
+	</variable>
+	<group name="linea">
+		<groupExpression><![CDATA[$F{linea}]]></groupExpression>
+		<groupHeader>
+			<band height="20" splitType="Stretch">
+				<line>
+					<reportElement x="1" y="10" width="1" height="10"/>
+				</line>
+				<textField>
+					<reportElement mode="Opaque" x="2" y="1" width="253" height="9" forecolor="#000000" backcolor="#C8BEBE"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="5" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="0" width="254" height="1"/>
+				</line>
+				<textField>
+					<reportElement x="5" y="10" width="197" height="10"/>
+					<textElement verticalAlignment="Middle">
+						<font size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Cuenta"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="2" y="9" width="253" height="1"/>
+				</line>
+				<line>
+					<reportElement x="1" y="0" width="1" height="10"/>
+				</line>
+				<line>
+					<reportElement x="202" y="10" width="1" height="10"/>
+				</line>
+				<textField>
+					<reportElement x="203" y="10" width="50" height="10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="6" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Saldo Anterior"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="254" y="10" width="1" height="10"/>
+				</line>
+				<line>
+					<reportElement x="1" y="19" width="253" height="1"/>
+				</line>
+				<line>
+					<reportElement x="254" y="1" width="1" height="8" forecolor="#C8BEBE" backcolor="#C8BEBE"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="10">
+				<line>
+					<reportElement x="1" y="0" width="254" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<line>
+				<reportElement x="254" y="0" width="1" height="11"/>
+			</line>
+			<textField pattern="$#,##0.00;(-#,##0.00)">
+				<reportElement x="213" y="0" width="40" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="0" width="197" height="11"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="0" width="1" height="11"/>
+			</line>
+			<line>
+				<reportElement x="202" y="0" width="1" height="11"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>
