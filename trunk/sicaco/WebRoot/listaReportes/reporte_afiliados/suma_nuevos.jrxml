@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="suma_nuevos" pageWidth="551" pageHeight="842" columnWidth="551" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="mes" class="java.lang.Integer"/>
+	<parameter name="ano" class="java.lang.Integer"/>
+	<parameter name="nombreMes" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sum(if((        select count(ina_id) from cta_ina_ingresosxasociado
+               where asc_id=a.asc_id)>1,1,0)) as reingreso,
+       sum(if((select count(ina_id) from cta_ina_ingresosxasociado
+               where asc_id=a.asc_id)=1,1,0)) as nuevoIngreso
+from cta_asc_asociado a, cta_ina_ingresosxasociado i , cta_cas_cuenta_asociado cas
+
+where a.asc_id=i.asc_id and month(i.ina_fecha_ingreso)=$P{mes} and year(i.ina_fecha_ingreso)=$P{ano} 
+and cas.asc_id=a.asc_id and cas.cah_id like 'A%']]>
+	</queryString>
+	<field name="reingreso" class="java.math.BigDecimal"/>
+	<field name="nuevoIngreso" class="java.math.BigDecimal"/>
+	<variable name="suma" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[new java.lang.Integer($F{reingreso}.intValue()+$F{nuevoIngreso}.intValue())]]></variableExpression>
+	</variable>
+	<variable name="porc_nuevos" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{nuevoIngreso}.doubleValue()/$V{suma}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="porc_reingreso" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{reingreso}.doubleValue()/$V{suma}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Opaque" x="91" y="32" width="335" height="14" backcolor="#FAFAFA"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="91" y="16" width="335" height="16" backcolor="#E6E6E6"/>
+			</rectangle>
+			<staticText>
+				<reportElement key="staticText-4" x="318" y="32" width="108" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-1" x="91" y="32" width="107" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NUEVOS]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="91" y="16" width="335" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["RESUMEN DE AFILIADOS DURANTE EL MES DE "+$P{nombreMes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="199" y="32" width="118" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REINGRESO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="198" y="31" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="317" y="31" width="1" height="15"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="114" splitType="Stretch">
+			<rectangle>
+				<reportElement x="91" y="14" width="335" height="14"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="91" y="0" width="335" height="14"/>
+			</rectangle>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField" x="91" y="0" width="107" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{nuevoIngreso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="318" y="0" width="108" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{suma}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-5" x="318" y="14" width="108" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[100%]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="true">
+				<reportElement key="textField" x="91" y="14" width="107" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{porc_nuevos}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="true">
+				<reportElement key="textField" x="199" y="14" width="118" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{porc_reingreso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField" x="199" y="0" width="118" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{reingreso}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="317" y="0" width="1" height="28"/>
+			</line>
+			<line>
+				<reportElement x="198" y="0" width="1" height="28"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

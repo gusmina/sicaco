@@ -1,0 +1,873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/persona.do" location="90,15" dimension="150,91" />
+  <StrutsActivity path="/personaAccion.do" location="90,240" dimension="161,88" />
+  <StrutsActivity path="/correo.do" location="375,15" dimension="166,88" />
+  <StrutsActivity path="/correoAccion.do" location="375,255" dimension="151,88" />
+  <StrutsActivity path="/autenticacion.do" location="750,180" dimension="166,88" />
+  <StrutsActivity path="/cerrarSesion.do" location="930,75" dimension="136,88" />
+  <StrutsActivity path="/perEmergencia.do" location="-195,30" dimension="159,88" />
+  <StrutsActivity path="/perEmergenciaAccion.do" location="-210,270" dimension="181,88" />
+  <StrutsActivity path="/sesion.do" location="75,495" dimension="181,88" />
+  <StrutsActivity path="/invalidSesion.do" location="950,850" dimension="259,104" />
+  <StrutsActivity path="/telefonos.do" location="-210,495" dimension="181,88" />
+  <StrutsActivity path="/telefonosAccion.do" location="-210,690" dimension="181,88" />
+  <StrutsActivity path="/historialSesion.do" location="375,495" dimension="181,88" />
+  <StrutsActivity path="/roles.do" location="345,690" dimension="206,88" />
+  <StrutsActivity path="/rolesAccion.do" location="390,885" dimension="166,88" />
+  <StrutsActivity path="/rolMenu.do" location="1550,250" dimension="309,88" />
+  <StrutsActivity path="/rolMenuAccion.do" location="1250,450" dimension="309,88" />
+  <StrutsActivity path="/activeInactivePersonAction.do" location="1550,1050" dimension="370,88" />
+  <StrutsActivity path="/sucursal.do" location="60,1155" dimension="151,88" />
+  <StrutsActivity path="/zona.do" location="300,1305" dimension="166,88" />
+  <StrutsActivity path="/switch.do" location="1850,450" dimension="229,88" />
+  <StrutsActivity path="/invalidTelefono.do" location="-510,720" dimension="150,100" />
+  <StrutsActivity path="/invalidMail.do" location="586,-101" dimension="150,100" />
+  <StrutsActivity path="/invalidEmergencia.do" location="-510,120" dimension="150,100" />
+  <StrutsActivity path="redirectLista;6" location="885,-180" dimension="160,75" />
+  <StrutsActivity path="redirectInicio;6" location="950,1050" dimension="149,75" />
+  <StrutsActivity path="redirectListaAsoc;6" location="650,750" dimension="213,87" />
+  <StrutsActivity path="pagina-dml.seguridad.persona" location="90,360" dimension="175,49" />
+  <StrutsActivity path="pagina-lista.seguridad.persona" location="75,135" dimension="178,76" />
+  <StrutsActivity path="/cetia_seguridad/asociado.do" location="-120,-240" dimension="181,75" />
+  <StrutsActivity path="redirectInvalidData" location="650,1050" dimension="121,49" />
+  <StrutsActivity path="pagina-dml.seguridad.correo" location="375,405" dimension="167,49" />
+  <StrutsActivity path="pagina-lista.seguridad.correo" location="360,165" dimension="170,49" />
+  <StrutsActivity path="/asociado.do" location="950,550" dimension="99,75" />
+  <StrutsActivity path="pagina.seguridad.autenticacion" location="735,420" dimension="180,49" />
+  <StrutsActivity path="pagina.seguridad.inicio" location="765,75" dimension="139,49" />
+  <StrutsActivity path="error" location="1250,1150" dimension="53,49" />
+  <StrutsActivity path="pagina-dml.seguridad.perEmergencia" location="-225,405" dimension="207,49" />
+  <StrutsActivity path="pagina-lista.seguridad.perEmergencia" location="-225,165" dimension="210,49" />
+  <StrutsActivity path="pagina-dml.seguridad.sesion" location="75,810" dimension="166,49" />
+  <StrutsActivity path="pagina-pwd.seguridad.sesion" location="75,870" dimension="170,49" />
+  <StrutsActivity path="pagina-lista.seguridad.sesion" location="75,675" dimension="169,49" />
+  <StrutsActivity path="pagina-dml.seguridad.phone" location="-210,810" dimension="181,49" />
+  <StrutsActivity path="pagina-lista.seguridad.phone" location="-210,615" dimension="181,49" />
+  <StrutsActivity path="pagina-lista.seguridad.historial" location="270,615" dimension="176,49" />
+  <StrutsActivity path="pagina-buscar.seguridad.historial" location="465,615" dimension="189,49" />
+  <StrutsActivity path="pagina-dml.seguridad.roles" location="390,1005" dimension="159,49" />
+  <StrutsActivity path="pagina-lista.seguridad.roles" location="390,810" dimension="162,49" />
+  <StrutsActivity path="pagina-dml.seguridad.rolMenu" location="1250,750" dimension="174,49" />
+  <StrutsActivity path="pagina-lista.seguridad.rolMenu" location="950,750" dimension="177,49" />
+  <StrutsActivity path="pagina-lista.aipersona.ajax" location="350,1450" dimension="160,49" />
+  <StrutsActivity path="pagina-lista.aipersona" location="50,1450" dimension="135,49" />
+  <StrutsActivity path="pagina-lista.seguridad.sucursal" location="60,1275" dimension="178,49" />
+  <StrutsActivity path="pagina-lista.seguridad.zona" location="495,1365" dimension="162,49" />
+  <StrutsActivity path="pagina-dml.asociados.nuevoAsociadoFromUser" location="1550,750" dimension="255,49" />
+  <StrutsActivity path="/invalidPerEmergencia.do" location="-545,373" dimension="150,100" />
+  <StrutsTransition id="/sesion.do,forwardToShowUsers,/persona.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="75,539" />
+      <AbsolutePoint location="0,539" />
+      <AbsolutePoint location="0,82" />
+      <AbsolutePoint location="90,82" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,dml,pagina-dml.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="170,328" />
+      <AbsolutePoint location="170,360" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidMail.do,lista,pagina-lista.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="661,-103" />
+      <AbsolutePoint location="1145,-667" />
+      <AbsolutePoint location="571,-667" />
+      <AbsolutePoint location="571,195" />
+      <AbsolutePoint location="530,195" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/activeInactivePersonAction.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="762,1099" />
+      <AbsolutePoint location="762,1132" />
+      <AbsolutePoint location="1550,1132" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/activeInactivePersonAction.do,lista,pagina-lista.aipersona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1765,1138" />
+      <AbsolutePoint location="1765,1634" />
+      <AbsolutePoint location="117,1634" />
+      <AbsolutePoint location="117,1499" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/historialSesion.do,lista,pagina-lista.seguridad.historial,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="431,583" />
+      <AbsolutePoint location="431,615" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenu.do,dml,pagina-dml.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1658,338" />
+      <AbsolutePoint location="1658,569" />
+      <AbsolutePoint location="1404,569" />
+      <AbsolutePoint location="1404,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonos.do,redirectInvalidData,/telefonos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-119,495" />
+      <AbsolutePoint location="-119,457" />
+      <AbsolutePoint location="-26,457" />
+      <AbsolutePoint location="-26,509" />
+      <AbsolutePoint location="-29,509" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/autenticacion.do,error,pagina.seguridad.autenticacion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="863,268" />
+      <AbsolutePoint location="863,420" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,sesion,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="90,96" />
+      <AbsolutePoint location="68,96" />
+      <AbsolutePoint location="68,430" />
+      <AbsolutePoint location="143,430" />
+      <AbsolutePoint location="143,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolesAccion.do,redirectInvalidData,/roles.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="556,900" />
+      <AbsolutePoint location="601,900" />
+      <AbsolutePoint location="601,705" />
+      <AbsolutePoint location="551,705" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonos.do,error,pagina-lista.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-89,583" />
+      <AbsolutePoint location="-89,615" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonosAccion.do,lista,pagina-lista.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-129,690" />
+      <AbsolutePoint location="-129,664" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/roles.do,error,pagina-lista.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="478,778" />
+      <AbsolutePoint location="478,810" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,error,pagina-dml.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="200,328" />
+      <AbsolutePoint location="200,360" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,redirectInvalidData,/persona.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="231,15" />
+      <AbsolutePoint location="231,-150" />
+      <AbsolutePoint location="315,-150" />
+      <AbsolutePoint location="315,30" />
+      <AbsolutePoint location="240,30" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolesAccion.do,lista,pagina-lista.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="473,885" />
+      <AbsolutePoint location="473,859" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/zona.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,1096" />
+      <AbsolutePoint location="337,1096" />
+      <AbsolutePoint location="337,1305" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,lista,pagina-lista.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-119,270" />
+      <AbsolutePoint location="-119,214" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,error,pagina-lista.seguridad.sesion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="105,583" />
+      <AbsolutePoint location="105,675" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correoAccion.do,redirectInvalidData,/correo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="375,299" />
+      <AbsolutePoint location="277,299" />
+      <AbsolutePoint location="277,-84" />
+      <AbsolutePoint location="458,-84" />
+      <AbsolutePoint location="458,15" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,lista,pagina-lista.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="165,106" />
+      <AbsolutePoint location="165,135" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/activeInactivePersonAction.do,redirectInvalidData,/activeInactivePersonAction.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1724,1050" />
+      <AbsolutePoint location="1724,1020" />
+      <AbsolutePoint location="2038,1020" />
+      <AbsolutePoint location="2038,1094" />
+      <AbsolutePoint location="1920,1094" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergencia.do,redirectInvalidData,/invalidEmergencia.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-195,44" />
+      <AbsolutePoint location="-435,44" />
+      <AbsolutePoint location="-435,120" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/autenticacion.do,cargar,pagina.seguridad.autenticacion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="833,268" />
+      <AbsolutePoint location="833,420" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,asc,/cetia_seguridad/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="105,15" />
+      <AbsolutePoint location="105,-183" />
+      <AbsolutePoint location="61,-183" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/roles.do,dml,pagina-dml.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="383,778" />
+      <AbsolutePoint location="383,1029" />
+      <AbsolutePoint location="390,1029" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correo.do,dml,pagina-dml.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="541,90" />
+      <AbsolutePoint location="601,90" />
+      <AbsolutePoint location="601,435" />
+      <AbsolutePoint location="542,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/zona.do,lista,pagina-lista.seguridad.zona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="466,1380" />
+      <AbsolutePoint location="495,1380" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/historialSesion.do,buscar,pagina-buscar.seguridad.historial,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="480,583" />
+      <AbsolutePoint location="480,615" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,redirectInvalidData,/perEmergenciaAccion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-97,270" />
+      <AbsolutePoint location="-97,224" />
+      <AbsolutePoint location="-22,224" />
+      <AbsolutePoint location="-22,314" />
+      <AbsolutePoint location="-29,314" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolesAccion.do,error,pagina-dml.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="503,973" />
+      <AbsolutePoint location="503,1005" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenu.do,error,pagina-lista.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1704,338" />
+      <AbsolutePoint location="1704,630" />
+      <AbsolutePoint location="968,630" />
+      <AbsolutePoint location="968,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correoAccion.do,lista,pagina-lista.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="450,255" />
+      <AbsolutePoint location="450,214" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidPerEmergencia.do,lista,pagina-lista.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-545,423" />
+      <AbsolutePoint location="-1008,423" />
+      <AbsolutePoint location="-1008,-24" />
+      <AbsolutePoint location="-210,-24" />
+      <AbsolutePoint location="-210,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,redirectListaAsoc,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-210,344" />
+      <AbsolutePoint location="-522,344" />
+      <AbsolutePoint location="-522,-517" />
+      <AbsolutePoint location="1081,-517" />
+      <AbsolutePoint location="1081,569" />
+      <AbsolutePoint location="1049,569" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/telefonosAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="688,1099" />
+      <AbsolutePoint location="688,1712" />
+      <AbsolutePoint location="-933,1712" />
+      <AbsolutePoint location="-933,713" />
+      <AbsolutePoint location="-210,713" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sucursal.do,lista,pagina-lista.seguridad.sucursal,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,1243" />
+      <AbsolutePoint location="135,1275" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/autenticacion.do,entrar,pagina.seguridad.inicio,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="864,180" />
+      <AbsolutePoint location="864,124" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/correo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="710,1050" />
+      <AbsolutePoint location="710,900" />
+      <AbsolutePoint location="631,900" />
+      <AbsolutePoint location="631,705" />
+      <AbsolutePoint location="710,705" />
+      <AbsolutePoint location="710,60" />
+      <AbsolutePoint location="541,60" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonosAccion.do,dml,pagina-dml.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-119,778" />
+      <AbsolutePoint location="-119,810" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/correoAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="771,1096" />
+      <AbsolutePoint location="945,1096" />
+      <AbsolutePoint location="945,299" />
+      <AbsolutePoint location="526,299" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenuAccion.do,dml,pagina-dml.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1374,538" />
+      <AbsolutePoint location="1374,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/roles.do,lista,pagina-lista.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="448,778" />
+      <AbsolutePoint location="448,810" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,pwd,pagina-pwd.seguridad.sesion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="75,509" />
+      <AbsolutePoint location="75,894" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correo.do,redirectListaAsociados,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="458,59" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/roles.do,redirectInvalidData,/roles.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="167,-44" rDim2="167,-44" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="error,null,/autenticacion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1303,1174" />
+      <AbsolutePoint location="2154,1174" />
+      <AbsolutePoint location="2154,194" />
+      <AbsolutePoint location="916,194" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,redirectInvalidData,/invalidSesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="213,583" />
+      <AbsolutePoint location="213,587" />
+      <AbsolutePoint location="840,587" />
+      <AbsolutePoint location="840,705" />
+      <AbsolutePoint location="1133,705" />
+      <AbsolutePoint location="1133,850" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonos.do,lista,pagina-lista.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-119,583" />
+      <AbsolutePoint location="-119,615" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenuAccion.do,error,pagina-dml.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1337,538" />
+      <AbsolutePoint location="1337,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,redirectInvalidData,/persona.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="251,284" />
+      <AbsolutePoint location="291,284" />
+      <AbsolutePoint location="291,-355" />
+      <AbsolutePoint location="135,-355" />
+      <AbsolutePoint location="135,15" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correoAccion.do,dml,pagina-dml.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="450,343" />
+      <AbsolutePoint location="450,405" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,redirectInvalidData,/perInvalidEmergenciaAccion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-149,358" />
+      <AbsolutePoint location="-149,388" />
+      <AbsolutePoint location="-262,388" />
+      <AbsolutePoint location="-262,-607" />
+      <AbsolutePoint location="1224,-607" />
+      <AbsolutePoint location="1224,893" />
+      <AbsolutePoint location="1550,893" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/sesion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,1064" />
+      <AbsolutePoint location="252,1064" />
+      <AbsolutePoint location="252,583" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,phone,/telefonos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="148,106" />
+      <AbsolutePoint location="148,130" />
+      <AbsolutePoint location="-298,130" />
+      <AbsolutePoint location="-298,517" />
+      <AbsolutePoint location="-210,517" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sucursal.do,redirectInvalidData,/sucursal.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,1155" />
+      <AbsolutePoint location="135,934" />
+      <AbsolutePoint location="226,934" />
+      <AbsolutePoint location="226,1170" />
+      <AbsolutePoint location="211,1170" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/zona.do,redirectInvalidData,/zona.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="112,-59" rDim2="112,-59" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/roles.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,1052" />
+      <AbsolutePoint location="570,1052" />
+      <AbsolutePoint location="570,736" />
+      <AbsolutePoint location="551,736" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,forwardToCliente,/switch.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="188,583" />
+      <AbsolutePoint location="188,605" />
+      <AbsolutePoint location="798,605" />
+      <AbsolutePoint location="798,736" />
+      <AbsolutePoint location="1964,736" />
+      <AbsolutePoint location="1964,538" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,error,pagina-dml.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-89,358" />
+      <AbsolutePoint location="-89,405" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,dml,pagina-dml.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="187,15" />
+      <AbsolutePoint location="187,-285" />
+      <AbsolutePoint location="1385,-285" />
+      <AbsolutePoint location="1385,384" />
+      <AbsolutePoint location="265,384" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/telefonos.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="658,1099" />
+      <AbsolutePoint location="658,1138" />
+      <AbsolutePoint location="-559,1138" />
+      <AbsolutePoint location="-559,539" />
+      <AbsolutePoint location="-210,539" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/rolesAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="771,1052" />
+      <AbsolutePoint location="806,1052" />
+      <AbsolutePoint location="806,929" />
+      <AbsolutePoint location="556,929" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidEmergencia.do,lista,pagina-lista.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-360,180" />
+      <AbsolutePoint location="-225,180" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,lista,pagina-lista.seguridad.sesion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="107,495" />
+      <AbsolutePoint location="107,479" />
+      <AbsolutePoint location="-262,479" />
+      <AbsolutePoint location="-262,799" />
+      <AbsolutePoint location="159,799" />
+      <AbsolutePoint location="159,724" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergencia.do,dml,pagina-dml.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-195,74" />
+      <AbsolutePoint location="-345,74" />
+      <AbsolutePoint location="-345,429" />
+      <AbsolutePoint location="-225,429" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cerrarSesion.do,inicioSesion,/autenticacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="998,163" />
+      <AbsolutePoint location="998,265" />
+      <AbsolutePoint location="916,265" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,entrar,pagina.seguridad.inicio,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,539" />
+      <AbsolutePoint location="315,539" />
+      <AbsolutePoint location="315,150" />
+      <AbsolutePoint location="834,150" />
+      <AbsolutePoint location="834,124" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/perEmergenciaAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="658,1050" />
+      <AbsolutePoint location="658,994" />
+      <AbsolutePoint location="-654,994" />
+      <AbsolutePoint location="-654,314" />
+      <AbsolutePoint location="-210,314" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonosAccion.do,error,pagina-dml.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-89,778" />
+      <AbsolutePoint location="-89,810" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInicio;6,null,pagina.seguridad.inicio,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="950,1066" />
+      <AbsolutePoint location="893,1066" />
+      <AbsolutePoint location="893,510" />
+      <AbsolutePoint location="631,510" />
+      <AbsolutePoint location="631,90" />
+      <AbsolutePoint location="765,90" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,roles,/roles.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,583" />
+      <AbsolutePoint location="135,599" />
+      <AbsolutePoint location="-846,599" />
+      <AbsolutePoint location="-846,1544" />
+      <AbsolutePoint location="1499,1544" />
+      <AbsolutePoint location="1499,704" />
+      <AbsolutePoint location="551,704" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidSesion.do,lista,pagina-lista.seguridad.sesion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1142,954" />
+      <AbsolutePoint location="1142,1880" />
+      <AbsolutePoint location="0,1880" />
+      <AbsolutePoint location="0,705" />
+      <AbsolutePoint location="75,705" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,dml,pagina-dml.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-119,358" />
+      <AbsolutePoint location="-119,405" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/autenticacion.do,forwardToContrasenia,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="750,224" />
+      <AbsolutePoint location="367,224" />
+      <AbsolutePoint location="367,446" />
+      <AbsolutePoint location="195,446" />
+      <AbsolutePoint location="195,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonos.do,dml,pagina-dml.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-210,561" />
+      <AbsolutePoint location="-218,561" />
+      <AbsolutePoint location="-218,834" />
+      <AbsolutePoint location="-210,834" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectListaAsoc;6,null,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="756,750" />
+      <AbsolutePoint location="756,568" />
+      <AbsolutePoint location="950,568" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolesAccion.do,dml,pagina-dml.seguridad.roles,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="473,973" />
+      <AbsolutePoint location="473,1005" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correo.do,redirectInvalidData,/invalidMail.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="541,29" />
+      <AbsolutePoint location="680,29" />
+      <AbsolutePoint location="680,-1" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/telefonosAccion.do,redirectInvalidData,/invalidTelefono.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-210,735" />
+      <AbsolutePoint location="-360,735" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/personaAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="732,1099" />
+      <AbsolutePoint location="732,1790" />
+      <AbsolutePoint location="-696,1790" />
+      <AbsolutePoint location="-696,262" />
+      <AbsolutePoint location="90,262" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/activeInactivePersonAction.do,form,pagina-lista.aipersona.ajax,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1735,1138" />
+      <AbsolutePoint location="1735,1474" />
+      <AbsolutePoint location="510,1474" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/persona.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="710,1050" />
+      <AbsolutePoint location="710,986" />
+      <AbsolutePoint location="2232,986" />
+      <AbsolutePoint location="2232,-754" />
+      <AbsolutePoint location="165,-754" />
+      <AbsolutePoint location="165,15" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/perEmergencia.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="728,1050" />
+      <AbsolutePoint location="728,963" />
+      <AbsolutePoint location="2316,963" />
+      <AbsolutePoint location="2316,-439" />
+      <AbsolutePoint location="-123,-439" />
+      <AbsolutePoint location="-123,30" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correoAccion.do,error,pagina-dml.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="480,343" />
+      <AbsolutePoint location="480,405" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correo.do,lista,pagina-lista.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="458,103" />
+      <AbsolutePoint location="458,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina-dml.seguridad.rolMenu,null,/rolMenuAccion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1307,750" />
+      <AbsolutePoint location="1307,538" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectLista;6,null,/persona.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="885,-128" />
+      <AbsolutePoint location="-85,-128" />
+      <AbsolutePoint location="-85,23" />
+      <AbsolutePoint location="90,23" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/autenticacion.do,forwardToCliente,/switch.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="916,224" />
+      <AbsolutePoint location="1964,224" />
+      <AbsolutePoint location="1964,450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina-lista.seguridad.historial,null,/historialSesion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="291,615" />
+      <AbsolutePoint location="291,509" />
+      <AbsolutePoint location="375,509" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergenciaAccion.do,redirectInvalidData,/invalidPerEmergencia.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-149,358" />
+      <AbsolutePoint location="-149,390" />
+      <AbsolutePoint location="-395,390" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,dml,pagina-dml.seguridad.sesion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="75,569" />
+      <AbsolutePoint location="30,569" />
+      <AbsolutePoint location="30,834" />
+      <AbsolutePoint location="75,834" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,error,pagina-lista.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="195,106" />
+      <AbsolutePoint location="195,135" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidTelefono.do,lista,pagina-lista.seguridad.phone,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-444,720" />
+      <AbsolutePoint location="-444,639" />
+      <AbsolutePoint location="-210,639" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/correo.do,error,pagina-lista.seguridad.correo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="488,103" />
+      <AbsolutePoint location="488,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,sesion,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="90,284" />
+      <AbsolutePoint location="57,284" />
+      <AbsolutePoint location="57,446" />
+      <AbsolutePoint location="129,446" />
+      <AbsolutePoint location="129,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/sucursal.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="710,1099" />
+      <AbsolutePoint location="710,1192" />
+      <AbsolutePoint location="211,1192" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenuAccion.do,lista,pagina-lista.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1250,479" />
+      <AbsolutePoint location="1175,479" />
+      <AbsolutePoint location="1175,774" />
+      <AbsolutePoint location="1127,774" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergencia.do,lista,pagina-lista.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-115,118" />
+      <AbsolutePoint location="-115,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,sesionLista,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="90,298" />
+      <AbsolutePoint location="83,298" />
+      <AbsolutePoint location="83,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/perEmergencia.do,error,pagina-lista.seguridad.perEmergencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-85,118" />
+      <AbsolutePoint location="-85,165" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/sesion.do,historial,/historialSesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="256,569" />
+      <AbsolutePoint location="375,569" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,correo,/correo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="240,60" />
+      <AbsolutePoint location="375,60" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/historialSesion.do,error,pagina-lista.seguridad.historial,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="401,583" />
+      <AbsolutePoint location="401,615" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/rolMenu.do,lista,pagina-lista.seguridad.rolMenu,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1550,265" />
+      <AbsolutePoint location="1081,265" />
+      <AbsolutePoint location="1081,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/personaAccion.do,lista,pagina-lista.seguridad.persona,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="170,240" />
+      <AbsolutePoint location="170,211" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="pagina-lista.seguridad.rolMenu,null,/rolMenu.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1111,750" />
+      <AbsolutePoint location="1111,671" />
+      <AbsolutePoint location="1734,671" />
+      <AbsolutePoint location="1734,338" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,emergencia,/perEmergencia.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="90,60" />
+      <AbsolutePoint location="-36,60" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/persona.do,sesionLista,/sesion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="240,90" />
+      <AbsolutePoint location="345,90" />
+      <AbsolutePoint location="345,484" />
+      <AbsolutePoint location="217,484" />
+      <AbsolutePoint location="217,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

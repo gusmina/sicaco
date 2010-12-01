@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="fenId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="codCli" class="java.lang.String"/>
+	<parameter name="nombreCli" class="java.lang.String"/>
+	<parameter name="municipCli" class="java.lang.String"/>
+	<parameter name="departCli" class="java.lang.String"/>
+	<parameter name="direcCli" class="java.lang.String"/>
+	<parameter name="regisCli" class="java.lang.String"/>
+	<parameter name="giroCli" class="java.lang.String"/>
+	<parameter name="formaPago" class="java.lang.String"/>
+	<parameter name="ivaR" class="java.lang.Double"/>
+	<parameter name="totalFact" class="java.lang.Double" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT
+     fac_dfa_detalle_factura.`ART_CODIGO` AS ART_CODIGO,
+     fac_dfa_detalle_factura.`DFA_CANTIDAD` AS DFA_CANTIDAD,
+     fac_dfa_detalle_factura.`DFA_DESCRIPCION` AS DFA_DESCRIPCION,
+     fac_dfa_detalle_factura.`DFA_PRECIO_UNITARIO` AS DFA_PRECIO_UNITARIO,
+     fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL` AS DFA_PRECIO_TOTAL,
+     fac_dfa_detalle_factura.`DFA_EXENTO` AS ex,
+if(fac_dfa_detalle_factura.`DFA_EXENTO`=0,0,fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`) as exe,
+if(fac_dfa_detalle_factura.`DFA_EXENTO`=0,fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`,0) as grav
+
+FROM
+     `fac_dfa_detalle_factura` fac_dfa_detalle_factura
+WHERE
+     fac_dfa_detalle_factura.`FEN_ID` = $P{fenId}]]>
+	</queryString>
+	<field name="ART_CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DFA_CANTIDAD" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DFA_DESCRIPCION" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DFA_PRECIO_UNITARIO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DFA_PRECIO_TOTAL" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ex" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exe" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="grav" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="DFA_PRECIO_TOTAL_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{DFA_PRECIO_TOTAL}]]></variableExpression>
+	</variable>
+	<variable name="exe_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{exe}]]></variableExpression>
+	</variable>
+	<variable name="grav_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{grav}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="280" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="199" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{codCli}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="407" y="167" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="167" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombreCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="219" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{municipCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="254" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{departCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="226" y="199" width="281" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{direcCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="226" y="219" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{regisCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="234" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{giroCli}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="254" width="100" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{formaPago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="12" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="85" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ART_CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="0" width="25" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{DFA_CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.000">
+				<reportElement x="386" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DFA_PRECIO_UNITARIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="0" width="216" height="20"/>
+				<textElement>
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DFA_DESCRIPCION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.000">
+				<reportElement x="507" y="0" width="48" height="20">
+					<printWhenExpression><![CDATA[new Boolean(!$F{ex}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DFA_PRECIO_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.000">
+				<reportElement x="455" y="0" width="48" height="20">
+					<printWhenExpression><![CDATA[$F{ex}]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DFA_PRECIO_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="179" splitType="Stretch">
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="31" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ivaR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="51" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($P{ivaR}.doubleValue()+$V{grav_1}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="120" width="100" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double($P{ivaR}.doubleValue()+$V{DFA_PRECIO_TOTAL_1}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="68" y="57" width="375" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new Number2Letter().getLetter($P{totalFact}.doubleValue()
+)+" Dólares"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="40" y="57" width="28" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Son:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="11" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{exe_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="507" y="11" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{grav_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="71" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{exe_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

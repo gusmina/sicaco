@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="tipoProveedorForm"
+			type="com.cetia.sicaco.inventario.struts.form.TipoProveedorForm" />
+		<form-bean name="proveedorForm"
+			type="com.cetia.sicaco.inventario.struts.form.ProveedorForm" />
+		<form-bean name="contactoProveedorForm"
+			type="com.cetia.sicaco.inventario.struts.form.ContactoProveedorForm" />
+		<form-bean name="tipoClasificacionForm"
+			type="com.cetia.sicaco.inventario.struts.form.TipoClasificacionForm" />
+		<form-bean name="clasificadoForm"
+			type="com.cetia.sicaco.inventario.struts.form.ClasificadoForm" />
+		<form-bean name="prCuentaBancariaForm"
+			type="com.cetia.sicaco.inventario.struts.form.PrCuentaBancariaForm" />
+		<form-bean name="lineaForm"
+			type="com.cetia.sicaco.inventario.struts.form.LineaForm" />
+		<form-bean name="conversionForm"
+			type="com.cetia.sicaco.inventario.struts.form.ConversionForm" />
+		<form-bean name="bodegasForm"
+			type="com.cetia.sicaco.inventario.struts.form.BodegasForm" />
+		<form-bean name="nivelForm"
+			type="com.cetia.sicaco.inventario.struts.form.NivelForm" />
+		<form-bean name="estantesForm"
+			type="com.cetia.sicaco.inventario.struts.form.EstantesForm" />
+		<form-bean name="tipoArticuloForm"
+			type="com.cetia.sicaco.inventario.struts.form.TipoArticuloForm" />
+		<form-bean name="medidaForm"
+			type="com.cetia.sicaco.inventario.struts.form.MedidaForm" />
+		<form-bean name="medidaTipoForm"
+			type="com.cetia.sicaco.inventario.struts.form.MedidaTipoForm" />
+		<form-bean name="articuloForm"
+			type="com.cetia.sicaco.inventario.struts.form.ArticuloForm" />
+		<form-bean name="capacidadForm"
+			type="com.cetia.sicaco.inventario.struts.form.CapacidadForm" />
+		<form-bean name="reporteForm"
+			type="com.cetia.sicaco.inventario.struts.form.ReporteForm" />
+		<form-bean name="artBodegaForm"
+			type="com.cetia.sicaco.inventario.struts.form.ArtBodegaForm" />
+		<form-bean name="movimientoForm"
+			type="com.cetia.sicaco.inventario.struts.form.MovimientoForm" />
+		<form-bean name="proveedorOrdenForm"
+			type="com.cetia.sicaco.inventario.struts.form.ProveedorOrdenForm" />
+		<form-bean name="articuloTipoPrestamoForm"
+			type="com.cetia.sicaco.inventario.struts.form.ArticuloTipoPrestamoForm" />
+    	<form-bean name="moverInventarioForm" type="com.cetia.sicaco.inventario.struts.form.MoverInventarioForm" />
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+
+	<global-forwards>
+		<forward name="redirectProveedores" redirect="true"
+			path="/proveedor.do?accion=lista" />
+		<forward name="redirectArticulo" redirect="true"
+			path="/articulo.do?accion=lista" />
+		<forward name="redirectEstante" redirect="true"
+			path="/estantes.do?accion=lista" />
+		<forward name="redirectMedida" redirect="true"
+			path="/medida.do?accion=lista" />
+		<forward name="redirectBodega" path="/bodegas.do?accion=lista"
+			redirect="true" module="/inventario" />
+	    <forward
+	      	name="regresarToProveedores"
+	      	path="/proveedor.do?accion=lista"
+	      	module="/inventario" />
+      	<forward name="regresarToTipoArticulos" 
+      		path="/tipoArticulo.do?accion=lista"
+      		module="/inventario" />
+	</global-forwards>
+
+	<action-mappings>
+		<action attribute="tipoProveedorForm"
+			input="redirectInvalidData" name="tipoProveedorForm"
+			parameter="accion" path="/tipoProveedor" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.TipoProveedorAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.tipoProveedor" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/tipoProveedor.do?accion=redirectInvalidData" />
+
+		</action>
+		<action attribute="proveedorForm" input="redirectInvalidData"
+			name="proveedorForm" parameter="accion" path="/proveedor"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.ProveedorAction"
+			validate="true">
+			<forward name="lista"
+				path="pagina-lista.inventario.proveedor" />
+			<forward name="ref" path="/orden/cuentaReferencia.do?accion=lista"/>
+			<forward name="redirectInvalidData"
+				path="/proveedor.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="dml" path="pagina-dml.inventario.proveedor" />
+			<forward name="account" path="/prCuentaBancaria.do?accion=lista"
+				module="/inventario" />
+			<forward name="contactos" path="/contactoProveedor.do"
+				module="/inventario" />
+		</action>
+		<action attribute="contactoProveedorForm"
+			input="redirectInvalidData" name="contactoProveedorForm"
+			parameter="accion" path="/contactoProveedor" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.ContactoProveedorAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.contactoProveedor" />
+			<forward name="dml"
+				path="pagina-dml.inventario.contactoProveedor" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/contactoProveedor.do?accion=redirectInvalidData" />
+
+		</action>
+		<action attribute="tipoClasificacionForm"
+			input="redirectInvalidData" name="tipoClasificacionForm"
+			parameter="accion" path="/tipoClasificacion" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.TipoClasificacionAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.tipoClasificacion" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/tipoClasificacion.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="clasificadoForm" input="redirectInvalidData"
+			name="clasificadoForm" parameter="accion" path="/clasificado"
+			scope="request" validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.ClasificadoAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.clasificado" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/clasificado.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="prCuentaBancariaForm"
+			input="redirectInvalidData" name="prCuentaBancariaForm"
+			parameter="accion" path="/prCuentaBancaria" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.PrCuentaBancariaAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.prCuentaBancaria" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/prCuentaBancaria.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="lineaForm" input="redirectInvalidData"
+			name="lineaForm" parameter="accion" path="/linea" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.LineaAction">
+			<forward name="lista" path="pagina-lista.inventario.linea" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/linea.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="conversionForm" input="redirectInvalidData"
+			name="conversionForm" parameter="accion" path="/conversion"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.ConversionAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.conversion" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/conversion.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="bodegasForm" input="redirectInvalidData"
+			name="bodegasForm" parameter="accion" path="/bodegas" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.BodegasAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.bodegas" />
+			<forward name="dml" path="pagina-dml.inventario.bodegas" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/bodegas.do?accion=redirectInvalidData" />
+			<forward name="exist" path="/artBodega.do"
+				module="/inventario" />
+
+		</action>
+		<action attribute="nivelForm" input="redirectInvalidData"
+			name="nivelForm" parameter="accion" path="/nivel" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.NivelAction">
+			<forward name="lista" path="pagina-lista.inventario.nivel" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/nivel.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="estantesForm" input="redirectInvalidData"
+			name="estantesForm" parameter="accion" path="/estantes"
+			scope="request" validate="true"
+			type="com.cetia.sicaco.inventario.struts.action.EstantesAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.estantes" />
+			<forward name="redirectInvalidData"
+				path="/estantes.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="dml" path="pagina-dml.inventario.estantes" />
+		</action>
+
+		<action attribute="tipoArticuloForm" input="redirectInvalidData"
+			name="tipoArticuloForm" parameter="accion" validate="true"
+			path="/tipoArticulo" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.TipoArticuloAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.tipoarticulo" />
+			<forward name="dml"
+				path="pagina-dml.inventario.tipoarticulo" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/tipoArticulo.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="medidaForm" input="redirectInvalidData"
+			name="medidaForm" parameter="accion" validate="true" path="/medida"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.MedidaAction">
+			<forward name="lista" path="pagina-lista.inventario.medida" />
+			<forward name="dml" path="pagina-dml.inventario.medida" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/medida.do?accion=redirectInvalidData" />
+			<forward name="convert" path="/conversion.do"
+				module="/inventario" />
+		</action>
+
+		<action attribute="medidaTipoForm" input="redirectInvalidData"
+			name="medidaTipoForm" parameter="accion" validate="true"
+			path="/medidaTipo" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.MedidaTipoAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.tme.medida" />
+			<forward name="dml" path="pagina-dml.inventario.tme.medida" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/medidaTipo.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="articuloForm" input="redirectInvalidData"
+			name="articuloForm" parameter="accion" path="/articulo"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.ArticuloAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.articulo" />
+			<forward name="dml" path="pagina-dml.inventario.articulo" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/articulo.do?accion=redirectInvalidData" />
+			<forward name="capacity" path="/capacidad.do"
+				module="/inventario" />
+
+			<forward name="capacity2" redirect="true"
+				path="/capacidad.do?accion=listaCapacidad" module="/inventario" />
+		</action>
+		<action attribute="capacidadForm" input="redirectInvalidData"
+			name="capacidadForm" parameter="accion" path="/capacidad"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.CapacidadAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.capacidad" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/capacidad.do?accion=redirectInvalidData" />
+		</action>
+
+
+		<action attribute="reporteForm" name="reporteForm"
+			parameter="accion" path="/reporte" scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.ReportesAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.reportes" />
+		</action>
+		<action attribute="artBodegaForm" input="redirectInvalidData"
+			name="artBodegaForm" parameter="accion" path="/artBodega"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.ArtBodegaAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.artBodega" />
+			<forward name="mov" path="/movimiento.do?accion=lista"
+				module="/inventario" />
+			<forward name="mover" path="/movBodega.do" />
+		</action>
+		<action attribute="movimientoForm" input="redirectInvalidData"
+			name="movimientoForm" parameter="accion" path="/movimiento"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.MovimientoAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.movimiento" />
+		</action>
+		<action attribute="artBodegaForm" input="redirectInvalidData"
+			name="artBodegaForm" parameter="accion" path="/movBodega"
+			scope="request"
+			type="com.cetia.sicaco.inventario.struts.action.MovBodegaAction">
+			<forward name="lista"
+				path="pagina-lista.inventario.movBodega" />
+		</action>
+    <action
+      attribute="proveedorOrdenForm"
+      name="proveedorOrdenForm"
+      parameter="accion"
+      path="/proveedorOrden"
+      scope="request"
+      type="com.cetia.sicaco.inventario.struts.action.ProveedorOrdenAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.inventario.proveedorOrden" />
+    </action>
+    <action
+      attribute="articuloTipoPrestamoForm"
+      name="articuloTipoPrestamoForm"
+      parameter="accion"
+      path="/articuloTipoPrestamo"
+      scope="request"
+      type="com.cetia.sicaco.inventario.struts.action.ArticuloTipoPrestamoAction"
+      validate="false">
+      <forward name="dml" path="pagina-dml.inventario.articuloTipoPrestamoDML" />
+    </action>
+    <action
+      attribute="moverInventarioForm"
+      input="redirectInvalidData"
+      name="moverInventarioForm"
+      parameter="accion"
+      path="/moverInventario"
+      scope="request"
+      type="com.cetia.sicaco.inventario.struts.action.MoverInventarioAction">
+      <forward name="lista" path="pagina-lista.inventario.moverInventario" />
+    </action>
+
+
+	</action-mappings>
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-inventario.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+	
+	
+</struts-config>
+

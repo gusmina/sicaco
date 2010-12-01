@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="detalle_actualizacion_planilla"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="595"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<queryString><![CDATA[SELECT
+/*
+     cta_asc_asociado.`ASC_CODIGO` AS ASC_CODIGO,
+     concat_ws(' ',sec_per_persona.`PER_PRIMER_NOMBRE`,sec_per_persona.`PER_SEGUNDO_NOMBRE`,sec_per_persona.`PER_TERCER_NOMBRE`,sec_per_persona.`PER_PRIMER_APELLIDO`,sec_per_persona.`PER_SEGUNDO_APELLIDO`)as nombre,
+     cta_etr_empresa_trabajo.`ETR_DESCRIPCION` AS EMPRESA,*/
+     sum(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS TXA_MONTO,
+     (if(cta_tah_tipo_ahorro.`TAH_ID` is null,'APORTACIONES',cta_lah_linea_ahorro.`lah_nombre`)) as TIPO_CUENTA,
+     cta_cah_cuenta_ahorro.`cah_saldo_actual` AS SALDO_ACTUAL,
+sum((cta_cah_cuenta_ahorro.`cah_saldo_actual`-cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`)) as SALDO_ANTERIOR/*,
+     cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` As TXA_FECHA*/
+
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_cah_cuenta_ahorro` cta_cah_cuenta_ahorro ON cta_cas_cuenta_asociado.`cah_id` = cta_cah_cuenta_ahorro.`cah_id`
+     INNER JOIN `cta_mxa_movimiento_ahorro` cta_mxa_movimiento_ahorro ON cta_cah_cuenta_ahorro.`cah_id` = cta_mxa_movimiento_ahorro.`cah_id`
+     INNER JOIN `cta_tah_tipo_ahorro` cta_tah_tipo_ahorro ON cta_cah_cuenta_ahorro.`tah_id` = cta_tah_tipo_ahorro.`TAH_ID`
+     INNER JOIN `cta_lah_linea_ahorro` cta_lah_linea_ahorro ON cta_tah_tipo_ahorro.`LAH_ID` = cta_lah_linea_ahorro.`lah_id`
+     AND cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxa_movimiento_ahorro.`txa_id`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+
+where      cta_ttr_tipo_transaccion.`TTR_ID`=16
+/*ORDER BY*/
+group by     TIPO_CUENTA ASC
+
+union
+
+
+SELECT
+/*
+     cta_asc_asociado.`ASC_CODIGO` AS ASC_CODIGO,
+     concat_ws(' ',sec_per_persona.`PER_PRIMER_NOMBRE`,sec_per_persona.`PER_SEGUNDO_NOMBRE`,sec_per_persona.`PER_TERCER_NOMBRE`,sec_per_persona.`PER_PRIMER_APELLIDO`,sec_per_persona.`PER_SEGUNDO_APELLIDO`)as nombre,
+     cta_etr_empresa_trabajo.`ETR_DESCRIPCION` AS EMPRESA,*/
+     sum(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS TXA_MONTO,     
+     sum(cta_mxp_movimiento_prestamo.`MXP_SALDO_ACTUAL`) AS SALDO_ACTUAL,
+     if(cta_pre_prestamo.`PRE_ID` is null,'CREDITOS',cta_tpr_tipo_prestamo.`TPR_NOMBRE`) AS TIPO_CUENTA,
+sum((cta_mxp_movimiento_prestamo.`MXP_SALDO_ACTUAL`-cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`)) as SALDO_ANTERIOR
+/*     cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS XA_FECHA*/
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_pre_prestamo` cta_pre_prestamo ON cta_cas_cuenta_asociado.`pre_id` = cta_pre_prestamo.`PRE_ID`
+     INNER JOIN `cta_mxp_movimiento_prestamo` cta_mxp_movimiento_prestamo ON cta_pre_prestamo.`PRE_ID` = cta_mxp_movimiento_prestamo.`PRE_ID`
+     INNER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+     AND cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxp_movimiento_prestamo.`TXA_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+
+where      cta_ttr_tipo_transaccion.`TTR_ID`=16
+group by
+     TIPO_CUENTA ASC
+
+union
+
+SELECT
+/*
+     cta_asc_asociado.`ASC_CODIGO` AS ASC_CODIGO,
+     concat_ws(' ',sec_per_persona.`PER_PRIMER_NOMBRE`,sec_per_persona.`PER_SEGUNDO_NOMBRE`,sec_per_persona.`PER_TERCER_NOMBRE`,sec_per_persona.`PER_PRIMER_APELLIDO`,sec_per_persona.`PER_SEGUNDO_APELLIDO`)as nombre,
+     cta_etr_empresa_trabajo.`ETR_DESCRIPCION` AS EMPRESA,*/
+     sum(cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`) AS TXA_MONTO,     
+     sum(cta_seg_seguros.`SEG_SALDO_ACTUAL`) AS SALDO_ACTUAL,
+cta_tis_tipo_seguro.`TIS_NOMBRE` AS TIPO_CUENTA,
+sum((cta_seg_seguros.`SEG_SALDO_ACTUAL`-cta_txa_transaccionxcuenta_asociado.`TXA_MONTO`)) as SALDO_ANTERIOR
+/*cta_txa_transaccionxcuenta_asociado.`TXA_FECHA` AS XA_FECHA*/
+
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_seg_seguros` cta_seg_seguros ON cta_cas_cuenta_asociado.`seg_id` = cta_seg_seguros.`SEG_ID`
+     INNER JOIN `cta_tis_tipo_seguro` cta_tis_tipo_seguro ON cta_seg_seguros.`TIS_ID` = cta_tis_tipo_seguro.`TIS_ID`
+     INNER JOIN `cta_mxs_movimiento_seguros` cta_mxs_movimiento_seguros ON cta_seg_seguros.`SEG_ID` = cta_mxs_movimiento_seguros.`SEG_ID`
+     AND cta_txa_transaccionxcuenta_asociado.`TXA_ID` = cta_mxs_movimiento_seguros.`TXA_ID`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+
+
+where      cta_ttr_tipo_transaccion.`TTR_ID`=16
+group by
+     TIPO_CUENTA ASC]]></queryString>
+
+	<field name="TXA_MONTO" class="java.math.BigDecimal"/>
+	<field name="TIPO_CUENTA" class="java.lang.String"/>
+	<field name="SALDO_ACTUAL" class="java.lang.String"/>
+	<field name="SALDO_ANTERIOR" class="java.math.BigDecimal"/>
+
+	<variable name="total_monto" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{TXA_MONTO}]]></variableExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="30"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="7"
+						width="129"
+						height="19"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<text><![CDATA[TIPO CUENTA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="132"
+						y="7"
+						width="72"
+						height="19"
+						key="staticText-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[CARGO CAPITAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="275"
+						y="7"
+						width="72"
+						height="19"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[ABONO CAPITAL]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="27"
+						width="345"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="5"
+						width="345"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="20"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="129"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{TIPO_CUENTA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="134"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TXA_MONTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="276"
+						y="0"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TXA_MONTO}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="50"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="134"
+						y="6"
+						width="70"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{total_monto}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="275"
+						y="6"
+						width="70"
+						height="18"
+						key="textField-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{total_monto}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="135"
+						y="3"
+						width="66"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="275"
+						y="2"
+						width="69"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</summary>
+</jasperReport>

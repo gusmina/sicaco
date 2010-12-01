@@ -1,0 +1,418 @@
+---------------------
+ACCESO A LA BD
+---------------------
+servidor: SERVERCREA
+base: sicacodb
+usuario: sicaco
+psw: ocacis2008
+---------------------
+
+
+
+carta height 27.940 = 9.313333333*3 = 13.97*2
+
+		new Boolean($F{cliCodigo}!=null)
+--orden compra de asociado
+SELECT oco.OCO_CODIGO ocoCodigo, asoc.asc_codigo ascCodigo,  per.PER_NIT perNit,
+	ctrEmp.emp_nombre empNombre, ctrEmp.emp_nit empNit,
+	oco.OCO_EMISION ocoEmision, invPro.pro_nombre proNombre, oco.oco_monto ocoMonto,
+	asoc.ASC_NOMBRE_NIT ascNombreNit, oco.OCO_ELABORADO ocoElaborado, oco.OCO_VENCIMIENTO ocoVencimiento,
+	ifnull(ref.ref_cuenta,'No Definida') refCuenta
+FROM ord_oco_orden_de_compra oco
+	left join cta_asc_asociado asoc on asoc.asc_id = oco.asc_codigo
+	left join sec_per_persona per on per.per_id = asoc.per_id
+	left join ctr_emp_empresa ctrEmp on ctrEmp.emp_id = 1
+	left join inv_pro_proveedor invPro on invPro.PRO_ID = oco.PRO_ID
+	left join ord_ref_cuenta_referencia ref on ref.REF_ID = oco.REF_ID
+where oco.oco_id = 612
+
+--orden compra de cliente
+SELECT oco.OCO_CODIGO ocoCodigo, cli.CLI_CODIGO cliCodigo,  cli.CLI_CONTRIBUYENTE cliContribuyente,
+	ctrEmp.emp_nombre empNombre, ctrEmp.emp_nit empNit,
+	oco.OCO_EMISION ocoEmision, invPro.pro_nombre proNombre, oco.oco_monto ocoMonto,
+	cli.CLI_NOMBRE cliNombre, oco.OCO_ELABORADO ocoElaborado, oco.OCO_VENCIMIENTO ocoVencimiento,
+	ifnull(ref.ref_cuenta,'No Definida') refCuenta
+FROM ord_oco_orden_de_compra oco
+	left join fac_cli_cliente cli on cli.CLI_CODIGO = oco.CLI_CODIGO
+	left join ctr_emp_empresa ctrEmp on ctrEmp.emp_id = 1
+	left join inv_pro_proveedor invPro on invPro.PRO_ID = oco.PRO_ID
+	left join ord_ref_cuenta_referencia ref on ref.REF_ID = oco.REF_ID
+where oco.oco_id = 612	
+
+
+
+--comprobante retiro ahorro
+select txa.txa_id txaId, mxa.mxa_fecha mxaFecha, ttr.ttr_nombre ttrNombre, 
+	tah.tah_nombre tahNombre, mxa.mxa_monto mxaMonto,
+	cah.cah_saldo_actual cahSaldoActual, asoc.ASC_CODIGO ascCodigo, asoc.ASC_NOMBRE_NIT ascNombreNit
+from cta_mxa_movimiento_ahorro mxa
+	left join cta_txa_transaccionxcuenta_asociado txa on txa.txa_id = mxa.txa_id
+	left join cta_ttr_tipo_transaccion ttr on ttr.TTR_ID = txa.TTR_ID
+	left join cta_cah_cuenta_ahorro cah on cah.cah_id = mxa.cah_id
+	left join cta_tah_tipo_ahorro tah on tah.tah_id = cah.tah_id
+	left join cta_cas_cuenta_asociado cas on cas.CAS_CUENTA = txa.CAS_CUENTA
+	left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+where mxa.mxa_id=$P{mxaId}		
+
+
+--comprobante de ingreso
+select ifnull(ttr.ttr_nombre,'No Definido') ttrNombre, txa.txa_monto txaMonto, 
+	if(cas.cah_id is not null,
+		cah.cah_saldo_actual,
+		if(cas.seg_id is not null,
+			seg.seg_saldo_actual,
+			if(cas.pre_id is not null,
+				pre.PRE_SALDO_ACTUAL_T,
+				0
+			)		
+		)
+	) nuevoSaldo,
+	ttr.ttr_uso ttrUso,
+	
+from cta_txa_transaccionxcuenta_asociado txa
+	left join cta_cas_cuenta_asociado cas on cas.CAS_CUENTA = txa.CAS_CUENTA
+	left join cta_ttr_tipo_transaccion ttr on (ttr.ttr_id = txa.ttr_id and ttr.ttr_uso = 'A')
+	left join cta_cah_cuenta_ahorro cah on cah.cah_id = cas.cah_id	
+	left join cta_seg_seguros seg on seg.seg_id = cas.seg_id
+	left join cta_pre_prestamo pre on pre.pre_id = cas.PRE_ID
+	left join cta_mxp_movimiento_prestamo mxp on mxp.MXP_ID
+where txa.TXA_COMPROBANTE = 1
+
+
+
+-- cuscatlan
+select cba.CBA_CUENTA cbaCuenta, stb.STB_MONTO stbMonto, stb.STB_NOMBRE_ASOCIADO stbNombreAsociado, stb.STB_RAZON stbRazon, stb.STB_ESTADO
+from cta_cba_cuenta_bancaria cba ,cta_stb_sol_trans_banc stb 
+where cba.ban_id = 1 
+	and stb.cba_id = cba.cba_id 
+	and  stb.STB_ESTADO = 'N'
+
+--bagricola
+select @rownum:=@rownum+1 correlativo, cba.CBA_CUENTA cbaCuenta, stb.STB_MONTO stbMonto, stb.STB_NOMBRE_ASOCIADO stbNombreAsociado, stb.STB_RAZON stbRazon, stb.STB_ESTADO stbEstado
+from cta_cba_cuenta_bancaria cba , cta_stb_sol_trans_banc stb,(SELECT @rownum:=0) r
+where cba.ban_id = 1 
+	and stb.cba_id = cba.cba_id 
+	and stb.STB_ESTADO = 'N'
+
+--agricola una sola fila
+select concat(lpad(cba.CBA_CUENTA,11,'0'),' ' ,stb.STB_NOMBRE_ASOCIADO,' ',' ',' ', stb.STB_MONTO,' ', @rownum:=@rownum+1,' ', stb.STB_RAZON) cuenta_asociado_monto_correlativo_razon
+from cta_cba_cuenta_bancaria cba , cta_stb_sol_trans_banc stb,(SELECT @rownum:=0) r
+where cba.ban_id = 1 
+	and stb.cba_id = cba.cba_id 
+	and stb.STB_ESTADO = 'N'
+
+-- retiros ahorro asociados con fecha
+select @rownum:=@rownum+1 correlativo, asoc.asc_codigo ascCodigo, cba.CBA_CUENTA cbaCuenta, stb.STB_MONTO stbMonto, stb.STB_NOMBRE_ASOCIADO stbNombreAsociado, stb.STB_RAZON stbRazon, tah.tah_nombre
+from (SELECT @rownum:=0) r,cta_cba_cuenta_bancaria cba  
+	right join cta_stb_sol_trans_banc stb on (stb.cba_id = cba.cba_id and stb.STB_ESTADO = 'N')
+	
+	left join cta_cah_cuenta_ahorro cah on cah.cah_id = stb.cah_id 
+	left join cta_tah_tipo_ahorro tah on cah.tah_id = tah.tah_id
+	left join cta_cas_cuenta_asociado cas on cas.cas_cuenta = cba.cba_cuenta
+	left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+where cba.ban_id = 1 
+	
+--cheques
+select cue.cue_codigo_cuenta cueCodigoCuenta, 
+	(if(trim(dpa.dpa_otro_concepto) = '' or dpa.dpa_otro_concepto is null,
+		cpa.cpa_concepto,
+		dpa.dpa_otro_concepto)
+	)concepto,
+	dpa.dpa_valor_debe dpaValorDebe, dpa.dpa_valor_haber dpaValorHaber
+from con_dpa_detalle_partida dpa
+	left join con_cue_cuenta cue on cue.cue_id = dpa.cue_id
+	left join con_cpa_concepto_partida cpa on cpa.cpa_id = dpa.cpa_id
+where dpa.pco_id = 1
+
+
+
+--dividendos
+select asoc.asc_codigo ascCodigo, asoc.asc_nombre_nit ascNombreNit, 
+	(SELECT sum(sma2.sma_saldo_acum)
+        FROM cta_sma_saldosxmes_activo sma2, cta_cas_cuenta_asociado cas2, cta_cah_cuenta_ahorro cah2,
+		cta_asc_asociado asoc2
+	where 
+		asoc2.asc_id = asoc.asc_id
+		and asoc2.asc_id = cas2.asc_id
+		and cas2.cah_id = cah2.cah_id	
+		and cah2.cah_id like 'A%'	
+		and sma2.cah_id = cah2.cah_id
+	)totalAportaciones
+from cta_sma_saldosxmes_activo sma
+	left join cta_cah_cuenta_ahorro cah on cah.cah_id = sma.cah_id
+	left join cta_cas_cuenta_asociado cas on cas.cah_id = cah.cah_id
+	left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+where sma.sma_fecha between (SELECT TIMESTAMP('2008-12-19 17:30:55')) 
+			and (SELECT TIMESTAMP('2008-12-19 17:30:55')) 
+		and cah.cah_id like 'A%'
+
+--
+SELECT cue.cue_id cueId, cue.CUE_CODIGO_CUENTA cueCodigoCuenta, cue.cue_nombre cueNombre, cue.CUE_POSTEABLE    cuePosteable,   sac.SAC_SALDO_A_LA_FECHA saldoAnterior, 
+if(cue.CUE_POSTEABLE=0,
+	ifnull(dpa.DPA_VALOR_DEBE,0), /*saco directamente el valor del hijo*/
+	
+	ifnull(
+	(
+	select sum(ifnull(dpa2.DPA_VALOR_debe,0)) sumHaberHijos /*sumHaberHijos ya ke es un papa*/
+	FROM con_cue_cuenta cue2, con_dpa_detalle_partida dpa2, con_pco_partida_contable pco2
+	where cue2.CUE_CUENTA_PADRE =cue.cue_id
+		and if(cue2.CUE_POSTEABLE=0,
+				(dpa2.cue_id = cue2.cue_id
+				and pco2.PCO_ID = dpa2.pco_id
+				and month(pco2.PCO_FECHA_INGRESO_PARTIDA)=12
+				and year(pco2.PCO_FECHA_INGRESO_PARTIDA)=2008
+				),
+				1=1
+			)
+),0)
+		
+) debe, /*si devuelve null es porke no tiene padre*/
+if(cue.CUE_POSTEABLE=0,
+	ifnull(dpa.DPA_VALOR_HABER,0), /*saco directamente el valor del hijo*/
+	ifnull(
+	(
+	select sum(ifnull(dpa3.DPA_VALOR_debe,0)) sumHaberHijos /*sumHaberHijos ya ke es un papa*/
+	FROM con_cue_cuenta cue3, con_dpa_detalle_partida dpa3, con_pco_partida_contable pco3
+	where cue3.CUE_CUENTA_PADRE =cue.cue_id
+		and if(cue3.CUE_POSTEABLE=0,
+				(dpa3.cue_id = cue3.cue_id
+				and pco3.PCO_ID = dpa3.pco_id
+				and month(pco3.PCO_FECHA_INGRESO_PARTIDA)=12
+				and year(pco3.PCO_FECHA_INGRESO_PARTIDA)=2008
+				),
+				1=1
+			)
+	),0)
+) haber, /*si devuelve null es porke no tiene padre*/
+if(cue.CUE_POSTEABLE=0,
+	((ifnull(dpa.DPA_VALOR_DEBE,0)-ifnull(dpa.DPA_VALOR_HABER,0))+sac.SAC_SALDO_A_LA_FECHA),/*ES HIJO*/
+	null /*ES PAPA*/
+)saldoActual, month(pco.PCO_FECHA_INGRESO_PARTIDA) mes, year(pco.PCO_FECHA_INGRESO_PARTIDA) anio,pco.PCO_FECHA_INGRESO_PARTIDA ingFecha
+FROM con_cue_cuenta cue
+left join con_sac_saldos_anteriores_cuenta sac on sac.cue_id = cue.cue_id
+left join con_dpa_detalle_partida dpa on dpa.cue_id = cue.cue_id
+left join con_pco_partida_contable pco on pco.PCO_ID = dpa.pco_id
+where cue.cue_estado = 1
+	and if(cue.CUE_POSTEABLE=0,(month(pco.PCO_FECHA_INGRESO_PARTIDA)=12
+				and year(pco.PCO_FECHA_INGRESO_PARTIDA)=2008),1=1)
+group by cue.CUE_CODIGO_CUENTA
+
+
+
+
+
+
+
+
+--debe
+select sum(ifnull(dpa3.DPA_VALOR_debe,0)) sumHaberHijos /*sumHaberHijos ya ke es un papa*/
+	FROM con_cue_cuenta cue3, con_dpa_detalle_partida dpa3, con_pco_partida_contable pco3
+	where cue3.CUE_CUENTA_PADRE =2066
+		and if(cue3.CUE_POSTEABLE=0,
+				(dpa3.cue_id = cue3.cue_id
+				and pco3.PCO_ID = dpa3.pco_id
+				and month(pco3.PCO_FECHA_INGRESO_PARTIDA)=12
+				and year(pco3.PCO_FECHA_INGRESO_PARTIDA)=2008
+				),
+				1=1
+			)
+
+
+
+
+
+
+
+
+
+
+
+/*
+PASOS PARA EJECUTAR REPORTE DE BALANZA DE COMPROBACION
+
+primer paso:  CALL `sicacodb`.`obtenerBalanceInicial`(01,2009)
+
+segundo paso: CALL `sicacodb`.`balanceComprobacion`()
+			se hace interno: { CALL `sicacodb`.`actualizarPadres`(papa,debe,haber) }
+
+tercer paso:  halar los datos de la tabla SELECT * FROM d_balance_comprobacion d los cuales seran mostados en el reporte
+
+
+*/
+
+
+cueId int(11)
+cueCodigoCuenta varchar(15)
+cueNombre varchar(100)
+cuePosteable tinyint(1)
+salAnterior decimal(15,5)
+debe decimal(15,5)
+haber decimal(15,5)
+saldoActual decimal(15,5)
+cueIdPadre int(11)
+
+
+
+
+,
+	cueCodigoCuenta varchar(15), cueNombre varchar(100),
+	cuePosteable tinyint(1),
+	salAnterior decimal(15,5),
+	debe decimal(15,5),
+	haber decimal(15,5),
+	saldoActual decimal(15,5),
+	cueIdPadre int(11) 
+
+
+obtenerCuentaHija
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`obtenerCuentaHija`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `obtenerCuentaHija`(cueIdPadre int)
+BEGIN
+	select cue.cue_id, cue.CUE_CODIGO_CUENTA, cue.cue_nombre, cue.CUE_POSTEABLE
+	FROM con_cue_cuenta cue
+	where cue.CUE_CUENTA_PADRE= cueIdPadre;
+END$$
+
+DELIMITER ;
+
+/*-----------------------------*/
+obtenerBalanceInicial
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`obtenerBalanceInicial`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `obtenerBalanceInicial`(mes int, anio int)
+BEGIN
+
+	truncate d_balance_comprobacion2;
+/*INICIO DE INSERTAR EN LA TABLA DUMMY LOS REGISTROS INICIALES*/
+	insert into d_balance_comprobacion2 
+	(SELECT cue.cue_id cueId, cue.CUE_CODIGO_CUENTA cueCodigoCuenta, cue.cue_nombre cueNombre, cue.CUE_POSTEABLE    cuePosteable,   sac.SAC_SALDO_A_LA_FECHA saldoAnterior, 
+if(cue.CUE_POSTEABLE=0,
+	ifnull(dpa.DPA_VALOR_DEBE,0), /*saco directamente el valor del hijo*/
+	
+	ifnull((0),0)
+		
+) debe, /*si devuelve null es porke no tiene padre*/
+if(cue.CUE_POSTEABLE=0,
+	ifnull(dpa.DPA_VALOR_HABER,0), /*saco directamente el valor del hijo*/
+	ifnull((0),0)
+) haber, /*si devuelve null es porke no tiene padre*/
+if(cue.CUE_POSTEABLE=0,
+	((ifnull(dpa.DPA_VALOR_DEBE,0)-ifnull(dpa.DPA_VALOR_HABER,0))+sac.SAC_SALDO_A_LA_FECHA),/*ES HIJO*/
+	null /*ES PAPA*/
+)saldoActual, cue.CUE_CUENTA_PADRE cueIdPadre
+FROM con_cue_cuenta cue
+left join con_sac_saldos_anteriores_cuenta sac on sac.cue_id = cue.cue_id
+left join con_dpa_detalle_partida dpa on dpa.cue_id = cue.cue_id
+left join con_pco_partida_contable pco on pco.PCO_ID = dpa.pco_id
+where cue.cue_estado = 1
+	and if(cue.CUE_POSTEABLE=0,(month(pco.PCO_FECHA_INGRESO_PARTIDA)=mes
+				and year(pco.PCO_FECHA_INGRESO_PARTIDA)=anio),1=1)
+group by cue.CUE_CODIGO_CUENTA
+
+
+	);
+
+	/*FIN DE INSERTAR EN LA TABLA DUMMY LOS REGISTROS INICIALES*/
+
+
+END$$
+
+DELIMITER ;
+
+
+
+
+
+/*-----------------------------*/
+
+
+
+
+/*********************************************************************************/
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`balanceComprobacion`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `balanceComprobacion`()
+BEGIN
+	DECLARE cueId int(11) default -1;
+	DECLARE cueCodigoCuenta varchar(15); 
+	DECLARE cueNombre varchar(100);
+	DECLARE cuePosteable tinyint(1);
+	DECLARE salAnterior decimal(15,5);
+	DECLARE debeL decimal(15,5);
+	DECLARE haberL decimal(15,5);
+	DECLARE saldoActual decimal(15,5);
+	DECLARE cueIdPadreL int(11);
+
+	DECLARE done, ih int default 0;
+	
+	
+	DECLARE cCuentasHojas CURSOR FOR 
+		select *
+ 		  from d_balance_comprobacion2 where cue_posteable=0;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+
+	
+	
+	OPEN cCuentasHojas;  
+	loopHojas:LOOP 
+    	FETCH cCuentasHojas INTO cueId,cueCodigoCuenta,cueNombre,cuePosteable,salAnterior,
+		debeL,haberL,saldoActual,cueIdPadreL;
+		IF  done=1 THEN LEAVE loopHojas; END IF;
+		set ih=ih+1; 
+		CALL `sicacodb`.`actualizarPadres`(cueIdPadreL,debeL, haberL);		
+		
+	END LOOP loopHojas; 
+	CLOSE cCuentasHojas;
+	
+	select ih,cueIdPadreL,debeL, haberL;
+	 
+END$$
+
+DELIMITER ;
+
+
+/*********************************************************************************/
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`actualizarPadres`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `actualizarPadres`(cueIdPadre int(11), debeHoja decimal(15,5), haberHoja decimal(15,5))
+BEGIN
+	declare cueIdL int default 0;
+	declare cueIdPadreL int default 0;
+	declare cueIdPadreLAux int default 0;
+	declare debeL decimal(15,5);
+	declare haberL decimal(15,5);
+	set cueIdPadreL=cueIdPadre;
+	papasL:loop
+		set cueIdPadreLAux=cueIdPadreL;	
+			
+		select db.cue_id, ifnull(db.cue_id_padre,-1) , db.debe, db.haber 
+			into cueIdL, cueIdPadreL, debeL, haberL
+		from d_balance_comprobacion2 db 
+		where db.cue_id = cueIdPadreLAux;
+
+		UPDATE d_balance_comprobacion2
+		SET debe=debeHoja+debeL, haber=haberHoja+haberL 
+		WHERE cue_id=cueIdPadreLAux;	
+		
+		
+		if cueIdPadreL = -1 then leave papasL; end if;
+		
+	end loop;
+END$$
+
+DELIMITER ;
+
+
+
+
+/*******/
+
+

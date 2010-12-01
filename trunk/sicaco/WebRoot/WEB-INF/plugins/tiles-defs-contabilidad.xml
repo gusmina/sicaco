@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.contabilidad.cueCuenta" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Catalogo de Cuentas"/>
+		<put name="descripcion-pagina"
+			value="Planilla" type="string" />
+		<put name="accion" value="/contabilidad/cueCuenta.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/cueCuentaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.procesosEspeciales.planilla" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Verificacion de saldo retornado por planilla"/>
+		<put name="descripcion-pagina"
+			value="Pantalla de verificacion de saldo retornado por planilla" type="string" />
+		<put name="accion" value="/procesosEspeciales/planilla.do?accion=cargar" type="string" />
+		<put name="contenido" value="/procesosEspeciales/verPlanilla.jsp"  />
+	</definition>
+	
+	<definition name="pagina-lista.contabilidad.partidaContableDML" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Partida Contable"/>
+		<put name="descripcion-pagina"
+			value="Planilla" type="string" />
+		<put name="accion" value="/contabilidad/partidaContable.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/partidaContableDML.jsp" />
+	</definition>
+	
+		<definition name="pagina-lista.contabilidad.tipoCuentaContable" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Rubros de Cuenta Contable"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento rubros de cuenta contables" type="string" />
+		<put name="accion" value="/contabilidad/tipoCuentaContable.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/tipoCuentaContableDML.jsp" />
+	</definition>
+	
+			<definition name="pagina-lista.contabilidad.conceptoPartida" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Concepto de Partida Contable y Libro Auxiliar"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para el catalogo de conceptos de partidas contables" type="string" />
+		<put name="accion" value="/contabilidad/conceptoPartida.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/conceptoPartidaDML.jsp" />
+	</definition>
+	
+				<definition name="pagina-lista.contabilidad.unionCuentaCorriente" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Relacion Cuenta Corriente - Contabilidad"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para relacionar las cuentas corrientes con las cuentas de contabilidad" type="string" />
+		<put name="accion" value="/contabilidad/relacionCuentaCorriente.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/unionCuentaCorriente.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.contabilidad.listaPartidas" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Partidas Contables"/>
+		<put name="descripcion-pagina"
+			value="Busqueda de partidas contables" type="string" />
+		<put name="accion" value="/contabilidad/busquedaPartida.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/listaPartidas.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.contabilidad.unionInventario" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Relacion Inventario - Contabilidad"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para relacionar el inventario con las cuentas de contabilidad" type="string" />
+		<put name="accion" value="/contabilidad/relacionInventario.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/unionInventario.jsp" />
+	</definition>
+	
+		<definition name="pagina-lista.contabilidad.unionOrdenPago" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Relacion Orden de Pago - Contabilidad"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para relacionar la orden de pago con las cuentas de contabilidad" type="string" />
+		<put name="accion" value="/contabilidad/relacionOrdenPago.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/unionOrdenPago.jsp" />
+	</definition>
+	
+	
+			<definition name="pagina-lista.contabilidad.unionOrdenCompra" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Relacion Orden de Compra - Contabilidad"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para relacionar la orden de compra con las cuentas de contabilidad" type="string" />
+		<put name="accion" value="/contabilidad/relacionOrdenCompra.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/unionOrdenCompra.jsp" />
+		</definition>
+		
+			<definition name="pagina-dml.contabilidad.cierreMensual" extends="plantilla">
+		<put name="nombre-pantalla" value="Cierre Mensual" />
+		<put name="descripcion-pagina" value="Pagina para realizar el proceso de cierre mensual y Estado Financiero" />
+		<put name="contenido" value="/contabilidad/cierreMensual.jsp" />
+	</definition>
+	
+				<definition name="pagina-dml.contabilidad.configEstado" extends="plantilla">
+		<put name="nombre-pantalla" value="Configuracion del Estado de Resultados" />
+		<put name="descripcion-pagina" value="Pagina para la configuracion del las cuentas que apareceran en el estado de resultados" />
+		<put name="contenido" value="/contabilidad/estadoConf.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.contabilidad.configBalance" extends="plantilla">
+		<put name="nombre-pantalla" value="Configuracion del Balance General" />
+		<put name="descripcion-pagina" value="Pagina para la configuracion del las cuentas que apareceran en el balance general" />
+		<put name="contenido" value="/contabilidad/estadoConf.jsp" />
+	</definition>
+	
+		<definition name="pagina-dml.contabilidad.configCuentas" extends="plantilla">
+		<put name="nombre-pantalla" value="Configuracion de Cuentas Especiales" />
+		<put name="descripcion-pagina" value="Pagina para la configuracion de las cuentas que se utilizaran para un fin determinado" />
+		<put name="contenido" value="/contabilidad/cuentasEspeciales.jsp" />
+	</definition>
+
+	<definition name="pagina-dml.contabilidad.cierreAnual" extends="plantilla">
+		<put name="nombre-pantalla" value="Cierre Anual" />
+		<put name="descripcion-pagina" value="Pagina utilizada para realizar el cierre mensual" />
+		<put name="contenido" value="/contabilidad/cierreAnual.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.contabilidad.fondosOficina" extends="plantilla">
+		<put name="nombre-pantalla" value="Liquidaci&amp;oacute;n de fondos de oficina" />
+		<put name="descripcion-pagina" value="P&amp;aacute;gina utilizada para la liquidación de fondos de oficina" />
+		<put name="contenido" value="/contabilidad/liquidacionFondosOficina.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.contabilidad.desembolsoDeFondos" extends="plantilla">
+		<put name="nombre-pantalla" value="Proceso de desembolso de fondos" />
+		<put name="descripcion-pagina" value="P&amp;aacute;gina utilizada para el proceso de desembolso de fondos" />
+		<put name="contenido" value="/contabilidad/desembolsoDeFondos.jsp" />
+	</definition>
+	
+	
+	<definition name="pagina-dml.contabilidad.impresionCheque" extends="plantilla">
+		<put name="nombre-pantalla" value="Impresi&amp;oacute;n Cheques" />
+		<put name="descripcion-pagina" value="Pagina utilizada la impresion de cheques" />
+		<put name="contenido" value="/contabilidad/impresionCheques.jsp" />
+	</definition>
+	
+				<definition name="pagina-lista.contabilidad.unionProcesosEspeciales" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Relacion Procesos Especiales - Contabilidad"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para relacionar los procesos especiales y la contabilidad" type="string" />
+		<put name="accion" value="/contabilidad/relacionProcesosEspeciales.do?accion=lista" type="string" />
+		<put name="contenido" value="/contabilidad/unionProcesosEspeciales.jsp" />
+		</definition>
+
+</tiles-definitions>

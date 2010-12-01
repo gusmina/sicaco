@@ -1,0 +1,47 @@
+
+SEGURIDAD
+
+HistorialSesionAction - lista
+PersonaAction - lista
+activeInactivePersonAction - lista
+correoAction - lista ( no puse comentario al dar commit)
+perEmergenciaAction - lista
+secRolRoles - lista 
+sucursal-action
+
+ ASOCIADOS
+ 
+ AsociadosAction - lista
+ codigosAnterioresAction - lista ( no puse comentario al dar commit)
+ cuentaBancariaAction - lista
+ departamentoTrabajoAction - lista
+ dependienteAction - lista
+ EmpresaTrabajoAction - lista
+ ingresoAsociadoAction - lista
+ TipoAsociadoAction - lista
+ TipoContratoAction - lista
+ TipoDomicilioAction - lista
+ TipoTransaccionAction - lista
+ TransaccionAsociadoAction - lista
+ 
+ CUENTA CORRIENTE
+ 
+ BuscarAsociadoAction - lista
+ BeneficiariosAction - lista
+ 
+ INVENTARIO
+ 
+ ArtBodegaAction - lista
+ ArticuloAction - lista
+ LineaAction - lista
+ BodegasAction - lista
+ ProveedorAction - lista
+ EstantesAction - lista
+ MovimientoAction - lista
+ 
+ CONTROL
+ 
+ ParametrosAction - lista
+ 
+ 
+ 

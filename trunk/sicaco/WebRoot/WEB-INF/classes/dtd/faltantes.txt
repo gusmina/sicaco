@@ -1,0 +1,17 @@
+2009-03-02
+-	En el reporte de ordenes verificar porque se pasa de la linea de corte existente en el papel, es decir,
+	esta abarcando mas espacio que lo que deberia de abarcar.
+-	Necesito mostrar en los reportes de ordenes a las de donacion con su respectiva letra D al inicio para
+	que estas puedan ser distinguidas en ellos.
+-	En algun lugar tengo que cambiar fecha de utilizacion por fecha de emision
+-	Modificar las leyendas que aparecen al final de los reportes de ordenes por los codigos utilizados
+	realmente dentro del sistema.
+-	Orden de compra que solo ha sido asignada a una orden de pago aparece como pagada lo cual es
+	incorrecto.
+-	Revisar que saldrá mejor, cargar todas las ordenes de un proveedor hacia el frente en una sola jmesa
+	o usando ajax con cada vez que se elija alguno esta se vaya uniendo compra con pago
+	
+	
+2009-03-12
+-	Mostrar el nombre del Asociado en el comprobante de ahorro
+-	Mostrar tambien el codigo del Asociado en el comprobante

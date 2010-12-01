@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/cuentaReferencia.do" location="45,45" dimension="181,91" />
+  <StrutsActivity path="/ordenCompra.do" location="645,45" dimension="181,88" />
+  <StrutsActivity path="/ordenPago.do" location="300,300" dimension="181,88" />
+  <StrutsActivity path="/detalleOrden.do" location="585,300" dimension="166,88" />
+  <StrutsActivity path="/listaOrdenPago.do" location="840,300" dimension="151,88" />
+  <StrutsActivity path="redirectProveedor;6" location="45,255" dimension="150,100" />
+  <StrutsActivity path="pagina-lista.orden.cuentaReferencia" location="45,180" dimension="166,61" />
+  <StrutsActivity path="pagina-dml.orden.cuentaReferencia" location="225,180" dimension="151,61" />
+  <StrutsActivity path="redirectInvalidData" location="435,45" dimension="121,49" />
+  <StrutsActivity path="pagina-lista.orden.compra" location="600,195" dimension="155,49" />
+  <StrutsActivity path="pagina-lista.orden.listaMasiva" location="50,550" dimension="223,53" />
+  <StrutsActivity path="pagina-dml.orden.compra" location="765,195" dimension="152,49" />
+  <StrutsActivity path="pagina-lista.orden.pago" location="405,435" dimension="144,49" />
+  <StrutsActivity path="pagina-dml.orden.pago" location="240,435" dimension="141,49" />
+  <StrutsActivity path="pagina-lista.orden.detalleOrden" location="585,435" dimension="166,61" />
+  <StrutsActivity path="pagina-lista.orden.listaPago" location="945,435" dimension="163,49" />
+  <StrutsActivity path="pagina-dml.orden.dmlPago" location="780,435" dimension="157,49" />
+  <StrutsActivity path="/proveedor.do" location="45,375" dimension="109,75" />
+  <StrutsActivity path="pagina-lista.orden.busquedaOrden" location="350,550" dimension="214,51" />
+  <StrutsTransition id="/ordenPago.do,fill,/detalleOrden.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="150,16" rDim2="-128,16" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cuentaReferencia.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="435,69" />
+      <AbsolutePoint location="226,69" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectProveedor;6,null,/proveedor.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="120,355" />
+      <AbsolutePoint location="120,375" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenCompra.do,listaMasiva,pagina-lista.orden.listaMasiva,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="645,109" />
+      <AbsolutePoint location="526,109" />
+      <AbsolutePoint location="526,403" />
+      <AbsolutePoint location="169,403" />
+      <AbsolutePoint location="169,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenPago.do,redirectInvalidData,/ordenPago.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="105,-59" rDim2="105,-59" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/detalleOrden.do,regresar,/ordenPago.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="-128,-14" rDim2="150,-14" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenCompra.do,redirectInvalidData,/ordenCompra.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="105,-59" rDim2="105,-59" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenPago.do,lista,pagina-lista.orden.pago,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="420,388" />
+      <AbsolutePoint location="420,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/listaOrdenPago.do,lista,pagina-lista.orden.listaPago,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="960,388" />
+      <AbsolutePoint location="960,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenPago.do,dmlListaPago,/listaOrdenPago.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="391,300" />
+      <AbsolutePoint location="391,-30" />
+      <AbsolutePoint location="932,-30" />
+      <AbsolutePoint location="932,300" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaReferencia.do,lista,pagina-lista.orden.cuentaReferencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="135,136" />
+      <AbsolutePoint location="135,180" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenCompra.do,busq,pagina-lista.orden.busquedaOrden,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="826,89" />
+      <AbsolutePoint location="1183,89" />
+      <AbsolutePoint location="1183,575" />
+      <AbsolutePoint location="564,575" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/listaOrdenPago.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="496,94" />
+      <AbsolutePoint location="496,270" />
+      <AbsolutePoint location="902,270" />
+      <AbsolutePoint location="902,300" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/detalleOrden.do,lista,pagina-lista.orden.detalleOrden,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="698,388" />
+      <AbsolutePoint location="698,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/ordenCompra.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="556,69" />
+      <AbsolutePoint location="645,69" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaReferencia.do,redirectInvalidData,/cuentaReferencia.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="120,-60" rDim2="120,-60" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenCompra.do,dml,pagina-dml.orden.compra,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="780,133" />
+      <AbsolutePoint location="780,195" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/detalleOrden.do,2" routingType="1">
+    <Bendpoints>
+      <Point rDim1="60,201" rDim2="-113,-74" />
+      <Point rDim1="135,201" rDim2="-38,-74" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/ordenPago.do,2" routingType="1">
+    <Bendpoints>
+      <Point rDim1="-60,126" rDim2="45,-149" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenPago.do,dml,pagina-dml.orden.pago,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="366,388" />
+      <AbsolutePoint location="366,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/listaOrdenPago.do,dml,pagina-dml.orden.dmlPago,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="915,388" />
+      <AbsolutePoint location="915,435" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaReferencia.do,dml,pagina-dml.orden.cuentaReferencia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="226,109" />
+      <AbsolutePoint location="300,109" />
+      <AbsolutePoint location="300,180" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/ordenCompra.do,lista,pagina-lista.orden.compra,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="735,133" />
+      <AbsolutePoint location="735,195" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!-- <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd"> -->
+<jasperReport
+		 name="reporteImpresionLiquidacionSocio"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="552"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="70"
+		 bottomMargin="20"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isFloatColumnFooter="true"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="txaComprobante" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="nombreLinea" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="plazoMeses" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="valorCuota" isForPrompting="true" class="java.lang.Double"/>
+	<queryString><![CDATA[SELECT
+     CONCAT_WS(' ',sec_per_persona.`PER_PRIMER_NOMBRE`, sec_per_persona.`PER_SEGUNDO_NOMBRE`, 		sec_per_persona.`PER_TERCER_NOMBRE`, sec_per_persona.`PER_PRIMER_APELLIDO`, 		sec_per_persona.`PER_SEGUNDO_APELLIDO`, sec_per_persona.`PER_APELLIDO_CASADA`) AS nombreCompletoAsociado,
+     cta_asc_asociado.`ASC_CODIGO_ASOCIADO` AS CODIGO_ASOCIADO,
+     cta_txa_transaccionxcuenta_asociado.`TXA_MONTO` AS TXA_MONTO,
+IF (cta_cas_cuenta_asociado.`CAH_ID` IS NOT NULL,
+	(SELECT tah.`TAH_NOMBRE` 
+	FROM `cta_cah_cuenta_ahorro` ah 
+	INNER JOIN `cta_cas_cuenta_asociado` cas ON ah.`cah_id` =  cas.`cah_id`
+     	LEFT JOIN `cta_tah_tipo_ahorro` tah ON ah.`tah_id` = tah.`TAH_ID`
+	WHERE cta_txa_transaccionxcuenta_asociado.`cas_cuenta`=cas.`cas_cuenta`), 
+IF (cta_cas_cuenta_asociado.`pre_id` IS NOT NULL, 
+	(SELECT tpr.`TPR_NOMBRE` 
+	FROM  `cta_pre_prestamo` pre 
+	INNER JOIN `cta_cas_cuenta_asociado` cas1 ON pre.`PRE_ID` = cas1.`pre_id` 
+	INNER JOIN `cta_tpr_tipo_prestamo` tpr ON pre.`TPR_ID` = tpr.`TPR_ID`
+	WHERE  cta_txa_transaccionxcuenta_asociado.`cas_cuenta`=cas1.`cas_cuenta`),
+	(SELECT tis.`TIS_NOMBRE`
+	FROM 	`cta_seg_seguros` seg 
+	INNER JOIN `cta_cas_cuenta_asociado` cas2 ON seg.`SEG_ID` = cas2.`seg_id`
+     	INNER JOIN `cta_tis_tipo_seguro` tis ON seg.`TIS_ID` = tis.`TIS_ID`
+	WHERE cta_txa_transaccionxcuenta_asociado.`cas_cuenta`=cas2.`cas_cuenta`))) as nombreCuenta,
+    cta_ttr_tipo_transaccion.`ttr_uso` as uso
+     
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_asc_asociado.`ASC_ID` = cta_cas_cuenta_asociado.`ASC_ID`
+     INNER JOIN `cta_txa_transaccionxcuenta_asociado` cta_txa_transaccionxcuenta_asociado ON cta_cas_cuenta_asociado.`CAS_CUENTA` = cta_txa_transaccionxcuenta_asociado.`CAS_CUENTA`
+     INNER JOIN `cta_ttr_tipo_transaccion` cta_ttr_tipo_transaccion ON cta_txa_transaccionxcuenta_asociado.`TTR_ID` = cta_ttr_tipo_transaccion.`TTR_ID`
+
+WHERE
+    cta_txa_transaccionxcuenta_asociado.`TXA_COMPROBANTE`=$P{txaComprobante}]]></queryString>
+
+	<field name="nombreCompletoAsociado" class="java.lang.String"/>
+	<field name="CODIGO_ASOCIADO" class="java.lang.String"/>
+	<field name="TXA_MONTO" class="java.math.BigDecimal"/>
+	<field name="nombreCuenta" class="java.lang.String"/>
+	<field name="uso" class="java.lang.String"/>
+
+	<variable name="SUM_TXA_MONTO_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{TXA_MONTO}]]></variableExpression>
+	</variable>
+	<variable name="liquido" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new java.math.BigDecimal($F{TXA_MONTO}.doubleValue()-$V{SUM_TXA_MONTO_1}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="montoLetras" class="java.lang.String" resetType="Report" calculation="Nothing">
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="25"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="9"
+						y="0"
+						width="543"
+						height="25"
+						key="staticText-1"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font fontName="Serif" pdfFontName="Helvetica-Bold" size="16" isBold="true" isUnderline="true" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[C E T I A   D E    R. L.]]></text>
+				</staticText>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="40"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="202"
+						y="5"
+						width="166"
+						height="19"
+						key="staticText-2"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[LIQUIDACIÓN DE PRÉSTAMO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="10"
+						y="26"
+						width="111"
+						height="14"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Calligraphy" size="9" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Datos del Préstamo]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="86"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="7"
+						y="0"
+						width="105"
+						height="14"
+						key="staticText-4"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[ Nombre del Asociado: ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="10"
+						y="14"
+						width="50"
+						height="14"
+						key="staticText-5"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Línea:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="9"
+						y="28"
+						width="50"
+						height="14"
+						key="staticText-6"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Monto:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="354"
+						y="0"
+						width="67"
+						height="14"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Código:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="354"
+						y="14"
+						width="67"
+						height="14"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Plazo (meses):]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="354"
+						y="28"
+						width="67"
+						height="14"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Valor Cuota:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="9"
+						y="72"
+						width="111"
+						height="14"
+						key="staticText-12"/>
+					<box></box>
+					<textElement>
+						<font fontName="Lucida Calligraphy" size="9" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[Deducciones:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="9"
+						y="42"
+						width="50"
+						height="14"
+						key="staticText-13"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Dólares:]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="106"
+						y="13"
+						width="221"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="60"
+						y="27"
+						width="221"
+						height="0"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="60"
+						y="41"
+						width="221"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="60"
+						y="55"
+						width="221"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="420"
+						y="13"
+						width="132"
+						height="0"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="420"
+						y="27"
+						width="132"
+						height="0"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="420"
+						y="41"
+						width="132"
+						height="0"
+						key="line-7"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="121"
+						y="0"
+						width="206"
+						height="14"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombreCompletoAsociado}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="421"
+						y="0"
+						width="100"
+						height="14"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODIGO_ASOCIADO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="60"
+						y="42"
+						width="100"
+						height="13"
+						key="textField">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{uso}.equals( "C" ))]]></printWhenExpression>
+						</reportElement>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TXA_MONTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="60"
+						y="28"
+						width="100"
+						height="14"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new Number2Letter().getLetter($F{TXA_MONTO}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="421"
+						y="14"
+						width="100"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$P{plazoMeses}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="60"
+						y="14"
+						width="100"
+						height="14"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{nombreLinea}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="421"
+						y="28"
+						width="100"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{valorCuota}]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="21"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="348"
+						y="0"
+						width="100"
+						height="18"
+						key="textField">
+							<printWhenExpression><![CDATA[new java.lang.Boolean($F{uso}.equals( "A" ))]]></printWhenExpression>
+						</reportElement>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TXA_MONTO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="11"
+						y="1"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{nombreCuenta}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="225"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="230"
+						y="0"
+						width="118"
+						height="14"
+						key="staticText-10"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Total Deducciones......:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="230"
+						y="15"
+						width="118"
+						height="16"
+						key="staticText-11"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[Líquido a Recibir.......:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="11"
+						y="47"
+						width="529"
+						height="49"
+						key="staticText-14"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9"/>
+					</textElement>
+				<text><![CDATA[He recibido a mi entera satisfacción, lo arriba descrito, en fe de lo cual   firmo en la ciudad de San Salvador, a las                                                                                                                                            _____________________ horas del día  ____________________________________.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="52"
+						y="179"
+						width="97"
+						height="19"
+						key="staticText-15"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Elaborado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="230"
+						y="123"
+						width="124"
+						height="14"
+						key="staticText-16"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Tahoma" size="9" isUnderline="true"/>
+					</textElement>
+				<text><![CDATA[f)                                  .]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="179"
+						y="179"
+						width="97"
+						height="19"
+						key="staticText-17"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Revisado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="431"
+						y="179"
+						width="97"
+						height="19"
+						key="staticText-18"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Procesado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="310"
+						y="179"
+						width="97"
+						height="19"
+						key="staticText-19"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font fontName="Tahoma" pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Entregado]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="348"
+						y="1"
+						width="132"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="348"
+						y="15"
+						width="132"
+						height="0"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="348"
+						y="31"
+						width="132"
+						height="0"
+						key="line-10"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+</graphicElement>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="348"
+						y="34"
+						width="132"
+						height="0"
+						key="line-11"/>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.5" lineStyle="Dashed"/>
+</graphicElement>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="52"
+						y="179"
+						width="97"
+						height="0"
+						key="line-12"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="179"
+						y="179"
+						width="97"
+						height="0"
+						key="line-13"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="310"
+						y="179"
+						width="97"
+						height="0"
+						key="line-14"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="431"
+						y="179"
+						width="97"
+						height="0"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="HH.mm.ss" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="17"
+						y="70"
+						width="100"
+						height="11"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="EEEEE dd MMMMM yyyy" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="185"
+						y="70"
+						width="178"
+						height="11"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="348"
+						y="1"
+						width="100"
+						height="13"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SUM_TXA_MONTO_1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="349"
+						y="20"
+						width="100"
+						height="11"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{liquido}]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

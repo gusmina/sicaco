@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="comentariosForm"
+			type="com.cetia.sicaco.cliente.struts.form.ComentariosForm" />
+		<form-bean name="reporteClienteForm"
+			type="com.cetia.sicaco.cliente.struts.form.ReporteClienteForm" />
+		<form-bean name="solicitudesForm" 
+			type="com.cetia.sicaco.cliente.struts.form.SolicitudesForm"/>
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="homeCliente" path="/iniciocliente.do" />
+
+	</global-forwards>
+
+	<action-mappings>
+		<action forward="plantilla" path="/iniciocliente" />
+		<action attribute="comentariosForm" input="verLista"
+			name="comentariosForm" parameter="accion" path="/comentarios"
+			scope="request"
+			type="com.cetia.sicaco.cliente.struts.action.ComentariosAction">
+			<forward name="verLista" path="pagina.comentarios" />
+		</action>
+		<action forward="pagina.comentarios"
+			path="/ingresarComentarios" />
+    <action
+      attribute="reporteClienteForm"
+      name="reporteClienteForm"
+      parameter="accion"
+      path="/reporteCliente"
+      scope="request"
+      type="com.cetia.sicaco.cliente.struts.action.ReporteClienteAction">
+      <forward name="dml" path="pagina.estadoCuenta" />
+    </action>
+    
+    <action
+    	attribute="solicitudesForm"
+    	name="solicitudesForm"
+    	parameter="accion" 
+    	path="/solicitudes"
+    	scope="request"
+    	type="com.cetia.sicaco.cliente.struts.action.SolicitudesAction">
+    	<forward name="dml" path="pagina.solicitudes"/>
+    </action>
+    
+	</action-mappings>
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResourcesCliente" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResourcesCliente"
+		key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs-cliente.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+	
+</struts-config>
+

@@ -1,0 +1,53 @@
+/************************************************
+*	Step by step wizard						*
+************************************************/
+.floatLeft { float: left; }
+.floatRight { float: right; }
+.clearBoth { clear: both; }
+.showCurrentStepNmbrDIV {
+	color: #000000;
+	border-bottom: 3px double #999;
+	font-weight: bold;
+	font-size: 13px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 5px 0px;
+	width: 90%;
+	height: 14px;
+	background-color: #CEE1EF;
+	border-top: 1px solid #999;
+}
+ 
+.stepByStepWizard {
+	padding: 10px;
+	border-bottom: 1px solid #999;
+	background-color:inherit;
+}
+ 
+.stepByStepWizardNavigation {
+	color: red;
+	border-bottom: 3px double #999;
+	font-weight:  bold;
+	font-size: 13px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 5px 0px;
+	width: 10%;
+	height: 14px;
+	background-color: #CEE1EF;
+	border-top: 1px solid #999;
+}
+ 
+.stepByStepWizard_goto {
+	width: 20px;
+}
+ 
+.showNavigationLinksForwardDIV {
+	cursor: pointer;
+	float: right;
+	width: 15px;
+}
+ 
+.showNavigationLinksBackDIV {
+	cursor: pointer;
+	float: left;
+	width: 15px;
+}

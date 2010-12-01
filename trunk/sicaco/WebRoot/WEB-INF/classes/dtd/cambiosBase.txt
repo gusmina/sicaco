@@ -1,0 +1,1315 @@
+ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: A,C,P,D,S,R,E ES DECIR:  ANULADO, CARGADO, PAGADO(PROV), DEBE,COBRADO(ASOCYPROV), COBRADO(ASOC), EMITIDA';
+
+ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: A,C,P,D,S,R,E,F,G ES DECIR:  ANULADO, CARGADO, PAGADO(PROV), DEBE,COBRADO(ASOCYPROV), COBRADO(ASOC), EMITIDA, EN COBRO, EN COBRO(PAGA ASOC)';
+
+ALTER TABLE `sicacodb`.`ord_oco_orden_de_compra` MODIFY COLUMN `OCO_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'ESTADOS: (A)ANULADO, (C)CARGADO, (P)PAGADO(PROV), (D)DEBE, (S)COBRADO(ASOCYPROV), (R)COBRADO(ASOC), (E)EMITIDA, (F)EN COBRO, (G)EN COBRO(PAGA ASOC)';
+
+ALTER TABLE `sicacodb`.`fac_fen_factura_encabezado` ADD COLUMN `FEN_DESCRIPCION` VARCHAR(1000)  AFTER `SUC_ID`;
+
+delete FROM sec_mop_menu_opcion where mop_name like 'ajustem'
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('MANUAL', 'FACTURACION', 'Factura Manual', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', null, '/facturacion', 10, 'A')
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_CO', 'MANUAL', 'Consumidor Final', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=v&tf=CO', 
+	'/facturacion', 1, 'A')
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_VC', 'MANUAL', 'Venta a Contribuyentes', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=v&tf=VC', 
+	'/facturacion', 2, 'A')
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_CR', 'MANUAL', 'Compra a Proveedor', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', '/facturaManual?accion=lista&ack=c', 
+	'/facturacion', 3, 'A')
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_L_V', 'MANUAL', 'Lista de ventas', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 'facturaManual?accion=ventas', 
+	'/facturacion', 4, 'A')
+
+insert into sec_mop_menu_opcion (MOP_NAME,MOP_PARENT_NAME,MOP_TITLE, 
+	MOP_DESCRIPTION, MOP_TOOLTIP, MOP_ACTION, MOP_MODULE, MOP_ORDEN, 
+	MOP_TIPO_SESION) 
+	VALUES ('M_L_C', 'MANUAL', 'Lista de compras', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 
+	'LISTA Y CREACION DE FACTURAS MANUALES', 'facturaManual?accion=compras', 
+	'/facturacion', 5, 'A')
+
+	
+
+insert into cta_ttr_tipo_transaccion 
+	values (44, "Cargo por Prestamo Automatico", "Cargo por Prestamo Automatico", "C")
+
+	
+
+insert into ctr_est_estado values (23,'PREST','CARGADO A FIADORES')
+
+
+
+ALTER TABLE `sicacodb`.`cta_cas_cuenta_asociado` 
+	ADD COLUMN `CAS_PRESTAMO_PAGA` BIGINT(20)  
+	COMMENT 'CAMPO PARA GUARDAR EL CAS CUENTA DE UN PRESTAMO QUE ES PAGADO POR FIADORES EMPLEADOS O ASOCIADOS' AFTER `PXT_ID`;
+
+	
+
+update CTR_PAR_PARAMETROS 
+	SET par_descripcion = 'LA PORCENTAJE QUE RECIBIRA EL ABOGADO POR SUS SERVICIOS A LA HORA DEL EMBARGO, ESTA CANTIDAD NO ENTRA EN LAS CUENTAS DE CETIA PUES VA DIRECTO AL ABOGADO AUNQUE SE PAGE A TRAVES DE ELLOS.' 
+	where par_nombre like 'pago_abogado'
+
+INSERT INTO ctr_par_parametros 
+	VALUES ('MESES_PAGO_ABOGADO', 'CANTIDAD DE MESES PARA QUE SE INDIQUE LA CANTIDAD A PAGAR AL ABOGADO EN UNA NOTA', 
+	'2009-03-30', NULL, 4.0, NULL, 'ADMIN', '2009-03-30', '2009-03-30', 'ADMIN', 'P')
+
+insert into ctr_est_estado values(24, 'PREST', 'ESPERA DESEMBOLSO')
+
+	
+
+update sec_mop_menu_opcion  mop_orden=1 where mop_title='Catalogo de cuentas'
+
+update sec_mop_menu_opcion  mop_orden=2 where mop_title='Movimientos en cuentas contables'
+
+update sec_mop_menu_opcion  mop_orden=3 where mop_title='Estado de Resultados'
+
+update sec_mop_menu_opcion  mop_orden=4 where mop_title='Balance General'
+
+update sec_mop_menu_opcion  mop_orden=5 where mop_title='Libro Mayor'
+
+update sec_mop_menu_opcion  mop_orden=6 where mop_title='Balanza General de Comprobacion'
+
+update sec_mop_menu_opcion  mop_orden=7 where mop_title='Reporte Libro Auxiliar Mayor'
+
+-- procedure
+
+DELIMITER $
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_REPORTE_DIVIDENDOS`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_REPORTE_DIVIDENDOS`(ANIO INT)
+BEGIN
+
+	DECLARE done INT DEFAULT 0;
+	DECLARE ID_ASOC1 CHAR(12);
+	DECLARE CODIGO_SOCIO1 VARCHAR(50);
+	DECLARE NOMBRE_SOCIO1 VARCHAR(1200);
+        DECLARE TOTAL_APORTACIONES1 DECIMAL(13,5);
+	DECLARE INTERESES_PAGADOS1 DECIMAL(13,5);
+        DECLARE DIVIDENDOS_APORTACIONES1 DECIMAL(13,5); 
+	DECLARE DIVIDENDOS_INTERESES1 DECIMAL(13,5);
+	DECLARE MESES_ACTIVO1 INTEGER;
+	DECLARE NOMBRE_EMPRESA1 VARCHAR(1000);
+	DECLARE ESTADO_ASOCIADO1 VARCHAR(2);
+
+	DECLARE DIVIDENDOS_CUR CURSOR FOR
+		select  distinct asoc.asc_id, 
+	
+			asoc.asc_codigo ascCodigo, 
+	
+			concat(ifnull(per.PER_PRIMER_NOMBRE,''),' ', ifnull(per.PER_SEGUNDO_NOMBRE,''),' ',
+				ifnull(per.PER_PRIMER_APELLIDO,''),' ', ifnull(per.PER_SEGUNDO_APELLIDO,'')) nombrePersonaAsoc, 
+	
+			(SELECT sum(txa.txa_Monto) 
+				FROM Cta_Ttr_Tipo_Transaccion ttr INNER JOIN Cta_Txa_Transaccionxcuenta_Asociado txa ON 	
+				ttr.ttr_Id = 	txa.ttr_Id INNER JOIN Cta_Cas_Cuenta_Asociado cas1 ON txa.cas_Cuenta = cas1.cas_Cuenta
+			where ttr.ttr_Uso='A' and cas1.cah_Id is not null and cas1.cah_Id like 'A%' and year(txa_Fecha)=ANIO
+					and cas1.asc_id=asoc.asc_id
+			group by cas1.asc_Id)	totalAportaciones,
+	
+			ifnull((
+				select SUM(mxp4.mxp_interes_acumulado + mxp4.mxp_interes_pendiente)
+				from cta_cas_cuenta_asociado cas4, cta_pre_prestamo pre4, cta_mxp_movimiento_prestamo mxp4
+				where cas4.pre_id = pre4.pre_id 
+					AND pre4.pre_id=mxp4.pre_id 
+					AND YEAR(mxp4.mxp_fecha)=ANIO
+					AND (mxp4.mxp_interes_acumulado >0 OR mxp4.mxp_interes_pendiente>0)
+					and cas4.asc_id = asoc.asc_id
+	 		GROUP BY cas4.asc_id),0)interesesPagados,
+	
+			ifnull(asoc.asc_dividendo_aportaciones,0) ascDividendoAportaciones,
+	
+			ifnull(asoc.asc_dividendo_prestamo,0) ascDividendoPrestamo,
+	
+			(SELECT 
+				sum(period_diff(date_format(ifnull(i.ina_fecha_salida,curdate()),'%Y%m'),
+	    			if(year(i.ina_fecha_ingreso)<ANIO, concat(ANIO,'01'),date_format(i.ina_fecha_ingreso,'%Y%m'))))	 as meses_diferencia
+ 			FROM cta_ina_ingresosxasociado i where i.asc_id=asoc.asc_id
+
+			group by asc_id)mesesActivo, 
+	
+			IFNULL(etr.ETR_NOMBRE ,'N/D') as etrNombre,
+	 
+			if(asoc.EST_ID_2=0,'A',if(asoc.EST_ID_2=6,'I','ND')) estadoAsoc
+
+
+		from    cta_cah_cuenta_ahorro cah 
+			left join cta_cas_cuenta_asociado cas on cas.cah_id = cah.cah_id
+			left join cta_asc_asociado asoc on asoc.asc_id = cas.asc_id
+			INNER join sec_per_persona per on per.per_id = asoc.per_id
+			left join cta_dpt_departamento_trabajo dpt on dpt.dpt_id = asoc.dpt_id
+			INNER join cta_etr_empresa_trabajo etr on etr.etr_id = dpt.etr_id
+	
+		where cah.cah_id like 'A%' and asoc.asc_estado_distribucion != 'P'
+		order by asoc.EST_ID_2, etr.ETR_NOMBRE asc;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	
+	DROP TABLE IF EXISTS TABLA_REPORTE_D;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_REPORTE_D
+	(ID_ASOC CHAR(12),
+	ascCodigo VARCHAR(50),
+	nombrePersonaAsoc VARCHAR(1200),
+        totalAportaciones DECIMAL(13,5),
+	interesesPagados DECIMAL(13,5),
+        ascDividendoAportaciones DECIMAL(13,5), 
+	ascDividendoPrestamo DECIMAL(13,5),
+	mesesActivo INTEGER,
+	etrNombre VARCHAR(1000),
+	estadoAsoc VARCHAR(2));
+
+	OPEN DIVIDENDOS_CUR;
+	
+	DIVIDENDOS_LOOP: LOOP
+            FETCH DIVIDENDOS_CUR INTO ID_ASOC1,CODIGO_SOCIO1,NOMBRE_SOCIO1,TOTAL_APORTACIONES1,INTERESES_PAGADOS1,
+					DIVIDENDOS_APORTACIONES1, DIVIDENDOS_INTERESES1,MESES_ACTIVO1,NOMBRE_EMPRESA1,
+					ESTADO_ASOCIADO1;
+            IF done=1 THEN
+               LEAVE DIVIDENDOS_LOOP;
+            END IF;
+	    IF MESES_ACTIVO1 > 0 THEN
+		   INSERT INTO TABLA_REPORTE_D
+		  	(ID_ASOC,ascCodigo,nombrePersonaAsoc,totalAportaciones,interesesPagados,
+			ascDividendoAportaciones, ascDividendoPrestamo,mesesActivo,etrNombre,estadoAsoc)
+			VALUES(ID_ASOC1,CODIGO_SOCIO1,NOMBRE_SOCIO1,TOTAL_APORTACIONES1,INTERESES_PAGADOS1,
+					DIVIDENDOS_APORTACIONES1, DIVIDENDOS_INTERESES1,MESES_ACTIVO1,NOMBRE_EMPRESA1,
+					ESTADO_ASOCIADO1);
+	   END IF;
+	END LOOP DIVIDENDOS_LOOP;
+     	CLOSE DIVIDENDOS_CUR;
+
+	SELECT * FROM  TABLA_REPORTE_D;
+END$$
+
+DELIMITER ;
+
+
+-- Delete
+
+delete from cta_mxa_movimiento_ahorro where mxa_id between 3091 and 4112
+
+delete from cta_txa_transaccionxcuenta_asociado where ttr_id=15
+
+ALTER TABLE `sicacodb`.`cta_stb_sol_trans_banc` ADD COLUMN `OPA_ID` INTEGER  COMMENT 'ID DE LA ORDEN DE PAGO DE ESTA TRANSFERENCIA' AFTER `PCB_NUMERO_CUENTA`;
+	
+
+-- nueva tabla
+
+CREATE TABLE  `sicacodb`.`cta_las_liquidar_asociado` (
+  `LAS_ID` int(11) NOT NULL,
+  `LAS_NOMBRE_CUENTA` varchar(300) NOT NULL,
+  `LAS_SALDO` double NOT NULL,
+  `LAS_INTERES` double default NULL,
+  `LAS_OTRAS_DEDUCCIONES` double default NULL,
+  `LAS_FAVOR_CONTRA` int(11) NOT NULL COMMENT 'indica si el registro debe ser tomado como saldo a favor o coo deuda (en contra) del asociado',
+  `LAS_ASC_ID` char(12) NOT NULL COMMENT 'id del asociado al que se esta liquidando'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+
+-- Alter
+
+ALTER TABLE `sicacodb`.`cta_stb_sol_trans_banc` ADD COLUMN `PRE_ID` VARCHAR(15)  COMMENT 'ID DEL PRESTAMO PARA EL CUAL SE HACE LA TRANSFERENCIA' AFTER `OPA_ID`;
+
+	
+
+
+ALTER TABLE `sicacodb`.`ord_opa_orden_de_pago` MODIFY COLUMN `OPA_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'I' COMMENT 'I IMPRESA, A ANULADA, P PAGADA, D PENDIENTE';
+	
+
+
+
+update sec_mop_menu_opcion set mop_action = '/reporteIni?p76e3123r=report_planilla_empresa&m009o8765d=Reporte_PlanillasXEmpresa' 
+	where mop_name = 'REP_PLAN_EMP'
+	
+
+
+
+
+ALTER TABLE `sicacodb`.`sec_mop_menu_opcion` MODIFY COLUMN `MOP_TITLE` VARCHAR(80)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Reporte de cuentas Inactivas de Asociados',
+	mop_description='Reporte de cuentas Inactivas de Asociados',
+	mop_tooltip='Reporte de cuentas Inactivas de Asociados' 
+where mop_title='Reporte cuentas Clientes Inactivos'
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Clientes de Cuentas Inactivos Resumen',
+	mop_description='Cuadro Resumen de Cuentas de Asociados Inactivos',
+	mop_tooltip='Cuadro Resumen de Cuentas de Asociados Inactivos' 
+where mop_title='Cuadro Resumen de Cuentas de Asociados Inactivos'
+
+
+delete FROM sec_rop_rol_menu where mop_name='REP_CU_INAC_CLI'
+
+delete from sec_mop_menu_opcion where mop_name='REP_CU_INAC_CLI'
+
+
+update 	sec_mop_menu_opcion 
+set 	mop_title='Reporte de Prestamos Cancelados en el mes',
+	mop_description='Reporte de Prestamos Cancelados en el mes',
+	mop_tooltip='Reporte de Prestamos Cancelados en el mes' 
+where mop_name='REP_CRE_CAN_MES'
+
+
+-- procedure
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_CUENTAS_INACTIVAS_SOCIOS`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_CUENTAS_INACTIVAS_SOCIOS` ()
+BEGIN
+	DECLARE done INT DEFAULT 0;
+	DECLARE CODIGO_CUENTA BIGINT(20);
+	
+	EMPRESA1 VARCHAR(2000);
+	CODIGO1 BIGINT(20);
+	NOMBRE_SOCIO1 VARCHAR(1200);
+        FECHA_UT1 DATE;
+	MONTO_TRANS1 DECIMAL(13,5);
+	FECHA_AP1 DATE;
+        NOMBRE_CUENTA1 VARCHAR(2000); 
+	SALDO1 DECIMAL(13,5);
+	CUOTA1 DECIMAL(13,5);
+	INTERES_ACUMULADO1 DECIMAL(13,5);
+	ABONO_CAPITAL_PRES1 DECIMAL(13,5);
+
+	DECLARE CURSOR_CUENTAS CURSOR FOR
+		SELECT a1.CODIGO FROM
+			(
+			SELECT
+    		 cas.`cas_cuenta` AS CODIGO,
+     		IF(MAX(txa.`TXA_FECHA`)<=SUBDATE(CURDATE(),INTERVAL 10 day),
+			MAX(txa.`TXA_FECHA`),NULL) AS FECHA
+     
+		FROM
+     			`cta_cas_cuenta_asociado` cas 
+			INNER JOIN `cta_txa_transaccionxcuenta_asociado` txa ON cas.`CAS_CUENTA` = txa.`CAS_CUENTA`
+			INNER JOIN `cta_ttr_tipo_transaccion` ttr ON txa.`TTR_ID` = ttr.`TTR_ID`
+    		 	INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    		 	LEFT OUTER JOIN `cta_tah_tipo_ahorro` tah ON cah.`tah_id` = tah.`TAH_ID`
+		WHERE
+			ttr.`TTR_USO`='A' AND cas.`cah_id` IS NOT NULL
+		GROUP BY CODIGO
+		) a1  WHERE a1.FECHA IS NOT NULL;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	
+	DROP TABLE IF EXISTS TABLA_CUENTAS_INACTIVAS;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_CUENTAS_INACTIVAS
+	(EMPRESA VARCHAR(2000),
+	CODIGO BIGINT(20),
+	NOMBRE_SOCIO VARCHAR(1200),
+        FECHA_UT DATE,
+	MONTO_TRANS DECIMAL(13,5),
+	FECHA_AP DATE,
+        NOMBRE_CUENTA VARCHAR(2000), 
+	SALDO DECIMAL(13,5),
+	CUOTA DECIMAL(13,5),
+	INTERES_ACUMULADO DECIMAL(13,5),
+	ABONO_CAPITAL_PRES DECIMAL(13,5));
+END$$
+
+DELIMITER ;
+
+
+-- NUEVOS CAMBIOS
+
+ALTER TABLE `sicacodb`.`ord_opa_orden_de_pago` MODIFY COLUMN `OPA_ESTADO` CHAR(1)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'I' COMMENT 'I IMPRESA, A ANULADA, P PAGADA, N NO EXISTENTE';
+
+update sec_mop_menu_opcion set mop_action='/reporteIni?p76e3123r=renta_asociados&m009o8765d=renta_asociados&numR=16'
+where mop_action like '%renta_asociados%'
+
+update sec_mop_menu_opcion set mop_title= 'Reporte Registro de Asociados' 
+where mop_name = 'REP_ASOCIADO'
+
+
+--2009/04/14
+
+ALTER TABLE `sicacodb`.`ord_opa_orden_de_pago` MODIFY COLUMN `OPA_TOTAL` DECIMAL(13,5)  NOT NULL COMMENT 'TOTAL, A PARTIR DE LOS CAMBIOS HECHOS EN LAS ORDENES DE COMPRA AL INGRESARSE EN LA ORDEN DE PAGO, ESTE ES EL TOTAL SIN DESCUENTO DADO POR EL PROVEEDOR',
+ MODIFY COLUMN `OPA_DESCUENTO` DECIMAL(13,5)  NOT NULL COMMENT 'PORCENTAJE DE DESCUENTO OTORGADO POR EL PROVEEDOR A LA HORA DE REALIZAR EL PAGO';
+
+
+--2009/04/16
+
+update ctr_est_estado
+set est_nombre = 'ACTIVO'
+where tus_CODIGO = 'ACTIV'
+AND EST_NOMBRE  = 'ACTIVA'
+
+//**************************************/
+Cambios base a partir de 25/04/2009  PENDIENTES!!!
+
+ALTER TABLE `sicacodb`.`fac_fus_factura_uso`
+insert into fac_fus_factura_uso values 
+	(6,'Salida Manual','Salida Manual','v'),
+	(8,'Entrada Manual','Entrada Manual','c')
+	
+
+	
+UPDATE sec_mop_menu_opcion SET mop_title='Detalle de Ventas del Dia',mop_description='REPORTE DE DETALLE DE VENTAS DEL DIA',mop_tooltip='REPORTE DE DETALLE DE VENTAS DEL DIA'
+WHERE mop_parent_name='R_VENTA_COSTO' and mop_orden=5
+
+insert into ctr_par_parametros values
+	('MAIL_RETIRO_AHORRO','UTILIZADO PARA INDICAR EL MENSAJE QUE SE LE ADJUNTARA AL ASOCIADO INDICANDOLE QUE DEBE RETIRAR SUS AHORROS','2009-05-02 00:00:00','Buen dia. Comienza en 7 dias el periodo para retiro de ahorros. ',NULL,NULL,'ADMIN','2009-05-02 00:00:00','2009-05-02 00:00:00','ADMIN','G')
+	
+INSERT INTO `sicacodb`.`sec_mop_menu_opcion` VALUES ('REPOAHOCONTA','REP_AHOR_APOR','Movimientos por cuenta contable','REPORTE DE MOVIMIENTOS POR CUENTA CONTABLE',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'REPORTE POR MOVIMIENTOS CUENTA CONTABLE',NULL,NULL,NULL,'/reporteIni?p76e3123r=reporteMovPorCttaContable&m009o8765d=reporteMovPorCttaContable','/reporte',5,'A')
+
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_CUENTAS_INACTIVAS_SOCIOS`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_CUENTAS_INACTIVAS_SOCIOS` ()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE CODIGO_CUENTA BIGINT(20);
+   
+    DECLARE EMPRESA1 VARCHAR(2000);
+    DECLARE CODIGO1 BIGINT(20);
+    DECLARE NOMBRE_SOCIO1 VARCHAR(1200);
+           DECLARE  FECHA_UT1 DATE;
+    DECLARE MONTO_TRANS1 DECIMAL(13,5) DEFAULT 0.0;
+    DECLARE FECHA_AP1 DATE;
+        DECLARE NOMBRE_CUENTA1 VARCHAR(2000);
+    DECLARE SALDO1 DECIMAL(13,5) DEFAULT 0.0;
+    DECLARE CUOTA1 DECIMAL(13,5) DEFAULT 0.0;
+    DECLARE INTERES_ACUMULADO1 DECIMAL(13,5) DEFAULT 0.0;
+    DECLARE ABONO_CAPITAL_PRES1 DECIMAL(13,5) DEFAULT 0.0;
+    DECLARE tipoC INT DEFAULT 0;
+
+    DECLARE CURSOR_CUENTAS CURSOR FOR
+        SELECT a1.CODIGO FROM
+            (
+            SELECT
+             cas.`cas_cuenta` AS CODIGO,
+             IF(MAX(txa.`TXA_FECHA`)<=SUBDATE(CURDATE(),INTERVAL 1 month),
+            MAX(txa.`TXA_FECHA`),NULL) AS FECHA
+    
+        FROM
+                 `cta_cas_cuenta_asociado` cas
+            INNER JOIN `cta_txa_transaccionxcuenta_asociado` txa ON cas.`CAS_CUENTA` = txa.`CAS_CUENTA`
+            INNER JOIN `cta_ttr_tipo_transaccion` ttr ON txa.`TTR_ID` = ttr.`TTR_ID`
+                 INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+                 LEFT OUTER JOIN `cta_tah_tipo_ahorro` tah ON cah.`tah_id` = tah.`TAH_ID`
+        WHERE
+            ttr.`TTR_USO`='A' AND cas.`cah_id` IS NOT NULL
+        GROUP BY CODIGO
+        ) a1  WHERE a1.FECHA IS NOT NULL;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+   
+    DROP TABLE IF EXISTS TABLA_CUENTAS_INACTIVAS;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_CUENTAS_INACTIVAS
+    (NombreEmpresa VARCHAR(2000),
+    CODIGO BIGINT(20),
+    nombreCompleto VARCHAR(1200),
+        FECHA DATE,
+    monto DECIMAL(13,5),
+    FechaApertura DATE,
+        CUENTA_NOMBRE VARCHAR(2000),
+    SALDO DECIMAL(13,5),
+    cuota DECIMAL(13,5),
+    IntAlaFecha DECIMAL(13,5),
+    AbonoACapital DECIMAL(13,5));
+
+    OPEN CURSOR_CUENTAS;
+
+    CURSOR_CUENTAS_LOOP: LOOP
+        FETCH CURSOR_CUENTAS INTO CODIGO_CUENTA;
+        IF done=1 THEN
+                       LEAVE CURSOR_CUENTAS_LOOP;
+                END IF;
+
+        SET EMPRESA1 = (SELECT  IF(a.`DPT_ID` IS NULL,' ',etr.etr_nombre)
+                from    `cta_asc_asociado` a LEFT OUTER JOIN `cta_dpt_departamento_trabajo` dpt
+                    ON a.`DPT_ID` = dpt.`DPT_ID`
+                         INNER JOIN `cta_etr_empresa_trabajo` etr
+                    ON dpt.`ETR_ID` = etr.`ETR_ID`
+                    INNER JOIN `cta_cas_cuenta_asociado` cas
+                    ON a.`ASC_ID` = cas.`ASC_ID`
+                where    cas.`CAS_CUENTA`=CODIGO_CUENTA);
+        SET CODIGO1 = CODIGO_CUENTA;
+        SET NOMBRE_SOCIO1 = (SELECT CONCAT_WS(' ',
+                        per.`PER_PRIMER_NOMBRE`,per.`PER_SEGUNDO_NOMBRE`,
+                        per.`PER_TERCER_NOMBRE`,per.`PER_PRIMER_APELLIDO`,
+                        per.`PER_SEGUNDO_APELLIDO`,per.`PER_APELLIDO_CASADA`)
+                     FROM `cta_asc_asociado` a INNER JOIN `sec_per_persona` per
+                       ON a.`PER_ID`=per.`PER_ID`
+                       INNER JOIN `cta_cas_cuenta_asociado` cas
+                       ON a.`ASC_ID` = cas.`ASC_ID`
+                     where    cas.`CAS_CUENTA`=CODIGO_CUENTA);
+        SET FECHA_UT1 = (select MAX(t.`TXA_FECHA`) AS FECHA
+                from cta_txa_transaccionxcuenta_asociado t
+                  where t.`CAS_CUENTA`=CODIGO_CUENTA);
+        SET MONTO_TRANS1 = (select t1.txa_monto
+                    from cta_txa_transaccionxcuenta_asociado t1
+                    where t1.txa_id = (select max(txa.txa_id)
+                            from cta_txa_transaccionxcuenta_asociado txa
+                            where txa.txa_fecha=FECHA_UT1 and txa.cas_cuenta=CODIGO_CUENTA
+                            group by txa.cas_cuenta));
+        SET FECHA_AP1 = (select cas.cas_fecha_apertura
+                from cta_cas_cuenta_asociado cas where cas.cas_cuenta=CODIGO_CUENTA);
+        CASE
+            WHEN (select cas.cah_id    from cta_cas_cuenta_asociado cas where cas.cas_cuenta=CODIGO_CUENTA) is not null THEN
+                SET tipoC = 1;
+                SET NOMBRE_CUENTA1 = (select if(tah.tah_id is null, 'APORTACIONES',tah.tah_nombre)
+                     from      cta_cas_cuenta_asociado cas INNER JOIN `cta_cah_cuenta_ahorro` cah
+                    ON cas.`cah_id` = cah.`cah_id`
+                         LEFT OUTER JOIN `cta_tah_tipo_ahorro` tah ON cah.`tah_id` = tah.`TAH_ID`
+                where cas.cas_cuenta=CODIGO_CUENTA);
+                SET SALDO1 = (select cah.cah_saldo_actual
+                          from   cta_cas_cuenta_asociado cas INNER JOIN `cta_cah_cuenta_ahorro` cah
+                             ON cas.`cah_id` = cah.`cah_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET CUOTA1 = (select cah.cah_cuota
+                          from   cta_cas_cuenta_asociado cas INNER JOIN `cta_cah_cuenta_ahorro` cah
+                             ON cas.`cah_id` = cah.`cah_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET INTERES_ACUMULADO1 = 0.0;
+
+                SET ABONO_CAPITAL_PRES1 = 0.0;
+
+            WHEN (select cas.pre_id    from cta_cas_cuenta_asociado cas where cas.cas_cuenta=CODIGO_CUENTA) is not null THEN
+                SET tipoC = 2;
+                SET NOMBRE_CUENTA1= (select tpr.tpr_nombre
+                     from      cta_cas_cuenta_asociado cas INNER JOIN `cta_pre_prestamo` pre
+                        ON cas.`pre_id` = pre.`pre_id`
+                             inner JOIN `cta_tpr_tipo_prestamo` tpr ON pre.`tpr_id` = tpr.`tpr_id`
+                    where cas.cas_cuenta=CODIGO_CUENTA);
+                SET SALDO1 = (select pre.pre_saldo_actual_t
+                          from   cta_cas_cuenta_asociado cas INNER JOIN cta_pre_prestamo pre
+                             ON cas.`pre_id` = pre.`pre_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET CUOTA1 = (select pre.pre_CUOTA
+                          from   cta_cas_cuenta_asociado cas INNER JOIN cta_pre_prestamo pre
+                             ON cas.`pre_id` = pre.`pre_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET INTERES_ACUMULADO1 = (select ifnull(pre.pre_pend_mov,0.0)+
+                                 ifnull(pre.pre_mora_mov,0.0)+
+                                 ifnull(pre.pre_acum_mov,0.0) as interes
+                          from   cta_cas_cuenta_asociado cas INNER JOIN cta_pre_prestamo pre
+                             ON cas.`pre_id` = pre.`pre_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET ABONO_CAPITAL_PRES1 = (select t1.txa_monto - (mxp.mxp_interes_pendiente + mxp.mxp_interes_acumulado)
+                                  from  cta_txa_transaccionxcuenta_asociado t1 inner join
+                                cta_mxp_movimiento_prestamo mxp on mxp.txa_id=t1.txa_id
+                               
+                                 where t1.txa_id = (select max(txa.txa_id)
+                                        from cta_txa_transaccionxcuenta_asociado txa
+                                        where txa.txa_fecha=FECHA_UT1 AND txa.cas_cuenta=CODIGO_CUENTA
+                                        group by txa.cas_cuenta));
+
+            WHEN (select cas.seg_id    from cta_cas_cuenta_asociado cas where cas.cas_cuenta=CODIGO_CUENTA) is not null THEN
+                SET tipoC = 3;
+                SET NOMBRE_CUENTA1= (select tis.tis_nombre
+                     from      cta_cas_cuenta_asociado cas INNER JOIN `cta_seg_seguros` seg
+                        ON cas.`seg_id` = seg.`seg_id`
+                        inner JOIN `cta_tis_tipo_seguro` tis ON tis.`tis_id` = tis.`tis_id`
+                    where cas.cas_cuenta=CODIGO_CUENTA);
+                SET SALDO1 = (select seg.seg_saldo_actual
+                          from   cta_cas_cuenta_asociado cas INNER JOIN cta_seg_seguro seg
+                             ON cas.`seg_id` = seg.`seg_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);
+                SET CUOTA1 = (select seg.seg_cuota
+                          from   cta_cas_cuenta_asociado cas INNER JOIN cta_seg_seguro seg
+                             ON cas.`seg_id` = seg.`seg_id`
+                          where  cas.cas_cuenta=CODIGO_CUENTA);           
+                SET INTERES_ACUMULADO1 = 0.0;
+
+                SET ABONO_CAPITAL_PRES1 = 0.0;
+
+            ELSE SET NOMBRE_CUENTA1='  ';
+                 SET SALDO1 = 0.0;
+                 SET CUOTA1 = 0.0;
+                 SET INTERES_ACUMULADO1=0.0;
+                 SET ABONO_CAPITAL_PRES1 = 0.0;
+        END CASE;
+
+        INSERT INTO TABLA_CUENTAS_INACTIVAS
+              (NombreEmpresa,CODIGO,nombreCompleto,FECHA,monto,
+            FechaApertura, CUENTA_NOMBRE,SALDO,cuota,IntAlaFecha,AbonoACapital)
+            VALUES(EMPRESA1,CODIGO1,NOMBRE_SOCIO1,FECHA_UT1,MONTO_TRANS1,
+            FECHA_AP1, NOMBRE_CUENTA1,SALDO1,CUOTA1,INTERES_ACUMULADO1,ABONO_CAPITAL_PRES1);
+    END LOOP CURSOR_CUENTAS_LOOP;
+         CLOSE CURSOR_CUENTAS;
+
+    SELECT * FROM  TABLA_CUENTAS_INACTIVAS
+    ORDER BY NombreEmpresa,CODIGO;
+END$$
+
+DELIMITER ;
+
+/*MIercoles 13 de mayo*/ Ingresados de aqui para abajo el dia 20/may/2009
+
+UPDATE cta_asc_asociado SET asc_pagara_padre='N' where asc_pagara_padre IS NULL
+
+
+/*QUERY DE PLANILLA*/
+
+SELECT
+     asc1.`ASC_CODIGO` AS ASC_CODIGO,
+     cta_etr_empresa_trabajo.`ETR_NOMBRE` AS EMPRESA,
+     CONCAT( per.`PER_PRIMER_APELLIDO`,', ',
+             per.`PER_PRIMER_NOMBRE`) AS NOMBRE,
+    IF(asc1.asc_pago_ingreso = 'S', 0.0, 2) AS VALOR_INSCRIPCION,
+    (SELECT  SUM(IFNULL(cah.`cah_cuota`,0)) AS cuota
+     FROM
+         	`cta_asc_asociado` asoc 
+		INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID` 
+		INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    WHERE
+        	cas.`EST_ID`=9 AND cah.`cah_id` LIKE 'A%' AND asoc.`ASC_ID`=asc1.`ASC_ID`
+     )/2 AS TOTAL_APORTACION,
+    (SELECT SUM(IFNULL(cah.`cah_cuota`,0)) AS cuota
+     FROM
+       		`cta_asc_asociado` asoc    
+		INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID`
+       		INNER JOIN `cta_cah_cuenta_ahorro` cah  ON cas.`cah_id` = cah.`cah_id`
+    WHERE
+        cas.`EST_ID`=9 AND   cah.`cah_id` LIKE 'B%' AND asoc.`ASC_ID`=asc1.`ASC_ID`)/2  AS TOTAL_AHORRO,
+    IFNULL(  
+		(SELECT    SUM(IFNULL(pre.`pre_cuota` ,0)) AS cuota
+	     	FROM
+	       		`cta_asc_asociado` asoc   INNER JOIN `cta_cas_cuenta_asociado` cas
+	       		ON asoc.`ASC_ID` = cas.`ASC_ID`
+	       		INNER JOIN `cta_pre_prestamo` pre ON cas.`pre_id` = pre.`pre_id`
+	    	WHERE
+	        	cas.`EST_ID`=13 AND	pre.`pre_saldo_actual_t` > 0 AND  asoc.`ASC_ID`=asc1.`ASC_ID`),0.0
+    )/2 AS TOTAL_PRESTAMO,
+    
+    IFNULL((
+		SELECT SUM(IFNULL(seg.`seg_cuota`,0)) AS cuota
+     		FROM
+       			`cta_asc_asociado` asoc  INNER JOIN `cta_cas_cuenta_asociado` cas
+       			ON asoc.`ASC_ID` = cas.`ASC_ID` INNER JOIN `cta_seg_seguros` seg  ON cas.`seg_id` = seg.`seg_id`
+    		WHERE
+        		cas.`EST_ID`=11 AND seg.`seg_saldo_actual`>0 AND asoc.`ASC_ID`=asc1.`ASC_ID`),
+		0.0)/2  AS TOTAL_SEGURO
+FROM
+     `sec_per_persona` per INNER JOIN `cta_asc_asociado` asc1
+     ON per.`PER_ID` = asc1.`PER_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo  
+     ON cta_dpt_departamento_trabajo.`DPT_ID` = asc1.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+	ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+WHERE
+     asc1.`EST_ID_2`=0 AND (asc1.`EST_ID`=0 OR asc1.`EST_ID` = 21) AND asc1.`ASC_ASOCIADO_PADRE` IS NULL 
+    AND if(1=-1,1=1,cta_etr_empresa_trabajo.`ETR_ID`=1) AND asc1.`ASC_PAGARA_PADRE`='N'
+
+ORDER BY EMPRESA, ASC_CODIGO
+
+
+/*         14/05/2009			*/
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_PLANILLA_E`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `sicacodb`.`SP_PLANILLA_E` (DIVISOR INT, VALOR_DESC NUMERIC(13,5),EMP_ID INT)
+BEGIN
+	DECLARE done INT DEFAULT 0;
+	DECLARE ID_A CHAR(12);
+	DECLARE CODIGO_A varchar(50);
+      	DECLARE NOMBRE_A varchar(600);
+	DECLARE NOMBRE_E varchar(2000);
+      	DECLARE VALOR_INSCRIPCION  NUMERIC(13,5);
+	DECLARE TOTAL_APORT NUMERIC(13,5);
+      	DECLARE TOTAL_AHORR NUMERIC(13,5);
+      	DECLARE TOTAL_PRES NUMERIC(13,5);
+      	DECLARE TOTAL_SEG NUMERIC(13,5);
+      	DECLARE PAGARA_PA CHAR(1);
+
+	DECLARE BANDA INT DEFAULT 0;
+	DECLARE ACREE_DEUDO INT DEFAULT 0;
+
+	DECLARE PLANILLA2_CUR CURSOR FOR
+              	SELECT
+			asc1.`ASC_ID` AS ID_A,
+     			asc1.`ASC_CODIGO` AS ASC_CODIGO,
+     			cta_etr_empresa_trabajo.`ETR_NOMBRE` AS EMPRESA,
+     			CONCAT( per.`PER_PRIMER_APELLIDO`,', ',
+             			per.`PER_PRIMER_NOMBRE`) AS NOMBRE,
+    			IF(asc1.asc_pago_ingreso = 'S', 0.0, VALOR_DESC) AS VALOR_INSCRIPCION,
+			IFNULL(ASC1.`ASC_PAGARA_PADRE`,'N') AS PAGARA_PADR
+		FROM
+     			`sec_per_persona` per INNER JOIN `cta_asc_asociado` asc1
+     			ON per.`PER_ID` = asc1.`PER_ID`
+     			INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo  
+     			ON cta_dpt_departamento_trabajo.`DPT_ID` = asc1.`DPT_ID`
+     			INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+			ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+		WHERE
+     			asc1.`EST_ID_2`=0 AND (asc1.`EST_ID`=0 OR asc1.`EST_ID` = 21) AND asc1.`ASC_ASOCIADO_PADRE` IS NULL 
+   			AND if(EMP_ID=-1,1=1,cta_etr_empresa_trabajo.`ETR_ID`=EMP_ID)
+		ORDER BY EMPRESA, PAGARA_PADR DESC, ASC_CODIGO;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	DROP TABLE IF EXISTS TABLA_PLANILLA2;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_PLANILLA2
+	(ASC_CODIGO VARCHAR(50),
+	 NOMBRE VARCHAR(600),
+	 EMPRESA VARCHAR(600),
+         VALOR_INSCRIPCION DECIMAL(13,5),
+         TOTAL_APORTACION DECIMAL(13,5),
+	 TOTAL_AHORRO DECIMAL(13,5),
+	 TOTAL_PRESTAMO DECIMAL(13,5),
+	 TOTAL_SEGURO DECIMAL(13,5));
+	
+	OPEN PLANILLA2_CUR;
+	PLANILLA2_LOOP: LOOP
+            FETCH PLANILLA2_CUR INTO ID_A,CODIGO_A,NOMBRE_E,NOMBRE_A,VALOR_INSCRIPCION,PAGARA_PA;
+            IF done=1 THEN
+               LEAVE PLANILLA2_LOOP;
+            END IF;
+	    SET TOTAL_APORT = (SELECT  SUM(IFNULL(cah.`cah_cuota`,0))
+     				FROM
+         				`cta_asc_asociado` asoc 
+					INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID` 
+					INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    				WHERE
+        				cas.`EST_ID`=9 AND cah.`cah_id` LIKE 'A%' 
+					AND asoc.`ASC_ID`IN 
+		 			(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    					WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+     					)/DIVISOR;
+	    SET TOTAL_AHORR = (SELECT SUM(IFNULL(cah.`cah_cuota`,0))
+    	 			FROM
+       					`cta_asc_asociado` asoc    
+					INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID`
+       					INNER JOIN `cta_cah_cuenta_ahorro` cah  ON cas.`cah_id` = cah.`cah_id`
+    				WHERE
+        				cas.`EST_ID`=9 AND   cah.`cah_id` LIKE 'B%' AND asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+				)/DIVISOR;
+	   SET TOTAL_PRES = IFNULL(  
+				(SELECT    SUM(IFNULL(pre.`pre_cuota` ,0))
+	     			 FROM
+	       				`cta_asc_asociado` asoc   INNER JOIN `cta_cas_cuenta_asociado` cas
+	       				ON asoc.`ASC_ID` = cas.`ASC_ID`
+	       				INNER JOIN `cta_pre_prestamo` pre ON cas.`pre_id` = pre.`pre_id`
+	    			 WHERE
+	        			cas.`EST_ID`=13 AND pre.`pre_saldo_actual_t` > 0 AND  asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+    				,0.0)/DIVISOR;
+	  SET TOTAL_SEG = IFNULL(
+				(SELECT SUM(IFNULL(seg.`seg_cuota`,0))
+     				FROM
+       					`cta_asc_asociado` asoc  INNER JOIN `cta_cas_cuenta_asociado` cas
+       					ON asoc.`ASC_ID` = cas.`ASC_ID` INNER JOIN `cta_seg_seguros` seg  ON cas.`seg_id` = seg.`seg_id`
+    				WHERE
+        				cas.`EST_ID`=11 AND seg.`seg_saldo_actual`>0 AND asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+				,0.0)/DIVISOR;
+	   INSERT INTO TABLA_PLANILLA2
+			(ASC_CODIGO,NOMBRE,EMPRESA,VALOR_INSCRIPCION,
+			TOTAL_APORTACION,TOTAL_AHORRO,TOTAL_PRESTAMO,
+	 		TOTAL_SEGURO)
+		 VALUES (CODIGO_A,NOMBRE_A,NOMBRE_E,VALOR_INSCRIPCION,
+			TOTAL_APORT,TOTAL_AHORR,TOTAL_PRES,TOTAL_SEG);
+	   
+	END LOOP PLANILLA2_LOOP;
+	CLOSE PLANILLA2_CUR;
+
+	SELECT * FROM TABLA_PLANILLA2;
+END$$
+
+DELIMITER ;
+
+
+/*18 DE MAYO 16.10*/
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_PLANILLA3`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `sicacodb`.`SP_PLANILLA3` (DIVISOR INT, VALOR_DESC NUMERIC(13,5),EMP_ID INT, CUENTA INT)
+BEGIN
+	DECLARE done INT DEFAULT 0;
+	DECLARE ID_A CHAR(12);
+	DECLARE CODIGO_A varchar(50);
+	DECLARE NOMBRE_E varchar(2000);
+      	DECLARE VALOR_INSCRIPCION  NUMERIC(13,5);
+	DECLARE TOTAL_CUENTA NUMERIC(13,5);
+
+	DECLARE BANDA INT DEFAULT 0;
+
+	DECLARE PLANILLA3_CUR CURSOR FOR
+              	SELECT
+			asc1.`ASC_ID` AS ID_A,
+     			asc1.`ASC_CODIGO` AS ASC_CODIGO,
+     			cta_etr_empresa_trabajo.`ETR_NOMBRE` AS EMPRESA,
+     			IF(asc1.asc_pago_ingreso = 'S', 0.0, VALOR_DESC) AS VALOR_INSCRIPCION
+		FROM
+     			`cta_asc_asociado` asc1
+     			INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo  
+     			ON cta_dpt_departamento_trabajo.`DPT_ID` = asc1.`DPT_ID`
+     			INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+			ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+		WHERE
+     			asc1.`EST_ID_2`=0 AND (asc1.`EST_ID`=0 OR asc1.`EST_ID` = 21) AND asc1.`ASC_ASOCIADO_PADRE` IS NULL 
+   			AND if(EMP_ID=-1,1=1,cta_etr_empresa_trabajo.`ETR_ID`=EMP_ID)
+		ORDER BY EMPRESA, ASC_CODIGO;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	DROP TABLE IF EXISTS TABLA_PLANILLA3;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_PLANILLA3
+	(ASC_CODIGO VARCHAR(50),TOTAL_CUENTA DECIMAL(13,5));	
+	
+        CASE CUENTA
+		WHEN 1 THEN
+			OPEN PLANILLA3_CUR;
+			PLANILLA3_LOOP: LOOP
+            			FETCH PLANILLA3_CUR INTO ID_A,CODIGO_A,NOMBRE_E,VALOR_INSCRIPCION;
+            			IF done=1 THEN
+               				LEAVE PLANILLA3_LOOP;
+            			END IF;
+				SET TOTAL_CUENTA = (SELECT  SUM(IFNULL(cah.`cah_cuota`,0))
+     							FROM
+         						`cta_asc_asociado` asoc 
+							INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID` 
+							INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    						    WHERE
+        						cas.`EST_ID`=9 AND cah.`cah_id` LIKE 'A%' 
+							AND asoc.`ASC_ID`IN 
+		 					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		 						WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+     						   )/DIVISOR;
+				INSERT INTO TABLA_PLANILLA2
+					(ASC_CODIGO,TOTAL_CUENTA)
+		 			VALUES (CODIGO_A,TOTAL_CUENTA);
+	   
+			END LOOP PLANILLA3_LOOP;
+			CLOSE PLANILLA3_CUR;
+		WHEN 2 THEN
+			OPEN PLANILLA3_CUR;
+			PLANILLA3_LOOP: LOOP
+            			FETCH PLANILLA3_CUR INTO ID_A,CODIGO_A,NOMBRE_E,VALOR_INSCRIPCION;
+            			IF done=1 THEN
+               				LEAVE PLANILLA3_LOOP;
+            			END IF;
+	       			SET TOTAL_CUENTA = (SELECT SUM(IFNULL(cah.`cah_cuota`,0))
+    	 					    FROM
+       							`cta_asc_asociado` asoc    
+							INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID`
+       							INNER JOIN `cta_cah_cuenta_ahorro` cah  ON cas.`cah_id` = cah.`cah_id`
+    						    WHERE
+        						cas.`EST_ID`=9 AND   cah.`cah_id` LIKE 'B%' AND asoc.`ASC_ID` IN
+							(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    						WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+						    )/DIVISOR;
+
+			INSERT INTO TABLA_PLANILLA3
+					(ASC_CODIGO,TOTAL_CUENTA)
+		 			VALUES (CODIGO_A,TOTAL_CUENTA);
+	   
+			END LOOP PLANILLA3_LOOP;
+			CLOSE PLANILLA3_CUR;
+		WHEN 3 THEN
+			OPEN PLANILLA3_CUR;
+			PLANILLA3_LOOP: LOOP
+            			FETCH PLANILLA3_CUR INTO ID_A,CODIGO_A,NOMBRE_E,VALOR_INSCRIPCION;
+            			IF done=1 THEN
+               				LEAVE PLANILLA3_LOOP;
+            			END IF;
+	       			SET TOTAL_CUENTA = IFNULL(  
+						(SELECT    SUM(IFNULL(pre.`pre_cuota` ,0))
+	     			 		 FROM
+	       						`cta_asc_asociado` asoc   INNER JOIN `cta_cas_cuenta_asociado` cas
+	       						ON asoc.`ASC_ID` = cas.`ASC_ID`
+	       						INNER JOIN `cta_pre_prestamo` pre ON cas.`pre_id` = pre.`pre_id`
+	    			 		WHERE
+	        					cas.`EST_ID`=13 AND pre.`pre_saldo_actual_t` > 0 AND  asoc.`ASC_ID` IN
+							(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    						WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+    						,0.0)/DIVISOR;
+				SET TOTAL_CUENTA = TOTAL_CUENTA + VALOR_INSCRIPCION;
+				INSERT INTO TABLA_PLANILLA3
+					(ASC_CODIGO,TOTAL_CUENTA)
+		 			VALUES (CODIGO_A,TOTAL_CUENTA);
+	   
+			END LOOP PLANILLA3_LOOP;
+			CLOSE PLANILLA3_CUR;
+		WHEN 4 THEN
+			OPEN PLANILLA3_CUR;
+			PLANILLA3_LOOP: LOOP
+            			FETCH PLANILLA3_CUR INTO ID_A,CODIGO_A,NOMBRE_E,VALOR_INSCRIPCION;
+            			IF done=1 THEN
+               				LEAVE PLANILLA3_LOOP;
+            			END IF;
+	       			SET TOTAL_CUENTA = IFNULL(
+						(SELECT SUM(IFNULL(seg.`seg_cuota`,0))
+     						 FROM
+       							`cta_asc_asociado` asoc  INNER JOIN `cta_cas_cuenta_asociado` cas
+       							ON asoc.`ASC_ID` = cas.`ASC_ID` INNER JOIN `cta_seg_seguros` seg  ON cas.`seg_id` = seg.`seg_id`
+    						WHERE
+        						cas.`EST_ID`=11 AND seg.`seg_saldo_actual`>0 AND asoc.`ASC_ID` IN
+							(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    						WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+						,0.0)/DIVISOR;
+				INSERT INTO TABLA_PLANILLA3
+					(ASC_CODIGO,TOTAL_CUENTA)
+		 			VALUES (CODIGO_A,TOTAL_CUENTA);
+	   
+			END LOOP PLANILLA3_LOOP;
+			CLOSE PLANILLA3_CUR;
+	END CASE;
+	SELECT * FROM TABLA_PLANILLA3;
+END$$
+
+DELIMITER ;
+
+15/MAY/09
+
+ALTER TABLE cta_mxp_movimiento_prestamo ADD MXP_SALDO DECIMAL(13,5) AFTER MXP_SALDO_ACTUAL
+
+/*Hasta aqui se ha actualizado... en la base final llamada 'SICACO_FINAL_AL_20090520_1129'*/
+
+/*Updates en la base de datos que hacen falta, jueves 28/05/2008.  */
+INSERT INTO sec_rop_rol_menu VALUES('ADMINISTRADOR','MOV_BODEGAS','2009-05-26 14:07:04','ADMIN','2009-05-26 14:07:04','ADMIN')
+
+update sec_mop_menu_opcion set mop_action='/lineaPrestamo.do?accion=lista' where mop_title='Linea Prestamo'
+
+ALTER TABLE `sicacodb`.`con_cue_cuenta` MODIFY COLUMN `CUE_TIPO_CUENTA` TINYINT(1) NOT NULL COMMENT 'INDICA SI ES NORMAL-NINGUNA (0), RETROACTIVA (1) O DE RESERVAS(2)';
+
+
+/*DELETES NECESARIOS PARA LIMPIAR BASE 13/06/2009*/
+
+//Para eliminar todas las relaciones de la Cuenta Contable PRESTAMOS COMERCIALES en OC y OP
+DELETE FROM con_mxc_modulox_cuentacontable WHERE CUE_ID=50 AND 
+	SUBSTRING_INDEX(CXC_PARAMETROS_UNION, ';', 1) IN ('4','3')
+
+	
+	
+//Para actualizar el string de parametros colocando -1 al final  de cada relacion, en cuentas corrientes cuando no sean de planilla
+
+
+
+/***  Para limpiar la Base de asociados, dejando unicamente 20 de prueba.  ***/
+
+/*ASOCIADOS A UTILIZAR PARA PRUEBAS*/
+
+/*IDENTIFICADORES DE ASOCIADOS QUE DEBEN PERMANECER EN BASE PARA PRUEBAS:*/
+'200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+'200901141848','200901141909','200901142092'
+/*Pendiente 1 ----->   017333*/
+
+
+/*Seleccion de 20 asociados*/
+SELECT ASC_ID
+FROM cta_asc_asociado 
+WHERE ASC_CODIGO IN 
+	('8611006','8623307','86946JR','8606094','8619099','02014JG',
+	 '02014JG','02050JC','02056CR','02072LE','02074SF','02070CP','02062YG','02034JB','01313PA',
+	 '005444','017333','009196','009675','013004','163906')
+ORDER BY ASC_CODIGO
+
+
+
+/*Script de eliminacion de asociados*/
+
+
+
+/* Eliminando Beneficiarios por cuenta*/
+DELETE FROM cta_bxc_beneficiarios_cuenta 
+WHERE BEN_ID IN (SELECT BEN_ID FROM cta_ben_beneficiarios 
+				where asc_id not in('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092'));
+
+
+/* Eliminando Beneficiarios*/
+DELETE FROM cta_ben_beneficiarios 
+where asc_id not in('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092');
+
+
+/*Seteando notas a null de las tablas que se eliminaran*/
+update cta_txa_transaccionxcuenta_asociado set not_id = null 
+WHERE CAS_CUENTA IN (SELECT CAS_CUENTA FROM cta_cas_cuenta_asociado 
+		     WHERE  ASC_ID NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+'200901141848','200901141909','200901142092'));
+
+
+update cta_ina_ingresosxasociado set not_id = null 
+WHERE ASC_ID NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092');
+
+
+update cta_asc_asociado set not_id = null 
+WHERE ASC_ID NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092');
+
+
+
+/* Eliminando notas que hagan referencia a alguna cuenta de asociados*/
+DELETE FROM cta_not_notas where cas_cuenta is not null and
+cas_cuenta in (select cas_cuenta FROM cta_cas_cuenta_asociado where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+				'200901141848','200901141909','200901142092'));
+
+
+
+/* Eliminando Movimientos de ahorro*/
+DELETE FROM cta_mxa_movimiento_ahorro 
+WHERE CAH_ID IN (SELECT CAH_ID FROM cta_cas_cuenta_asociado 
+				Where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092') AND CAH_ID IS NOT NULL);
+
+
+/* Eliminando Movimientos de prestamo*/
+DELETE FROM cta_mxp_movimiento_prestamo 
+WHERE PRE_ID IN (SELECT PRE_ID FROM cta_cas_cuenta_asociado 
+				where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092') AND PRE_ID IS NOT NULL);
+
+/* Eliminando Movimientos de seguros*/
+DELETE FROM cta_mxs_movimiento_seguros 
+WHERE SEG_ID IN (SELECT SEG_ID FROM cta_cas_cuenta_asociado 
+				where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092') AND SEG_ID IS NOT NULL)
+
+
+/* Eliminando Transacciones por cuentas de asociados*/
+DELETE FROM cta_txa_transaccionxcuenta_asociado 
+WHERE CAS_CUENTA IN (SELECT CAS_CUENTA FROM cta_cas_cuenta_asociado 
+					where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092'));
+
+
+/* Eliminando Cuentas de asociados*/
+DELETE FROM cta_cas_cuenta_asociado where asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092');
+
+
+/* Eliminando ingresos por asociado*/												
+delete from cta_ina_ingresosxasociado 
+WHERE asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092');
+
+
+/* Eliminando fiadores por prestamo  OPCION A*/
+DELETE FROM cta_fxp_fiador_prestamo 
+WHERE asc_id NOT IN('200901140297','200901140502','200901140523','200901140687',
+				'200901142215','200901140999','200901142249','200901142250',
+				'200901142251','200901142252','200901142253','200901142254',
+				'200901142255','200901142256','200901141559','200901141656',
+				'200901141848','200901141909','200901142092') 
+		AND asc_id is not null;
+
+
+/* Eliminando cuentas de prestamo OPCION B*/
+DELETE FROM cta_fxp_fiador_prestamo 
+WHERE pre_id NOT IN(SELECT pre_id
+					FROM cta_cas_cuenta_asociado 
+					WHERE asc_id IN('200901140297','200901140502','200901140523','200901140687',
+								'200901142215','200901140999','200901142249','200901142250',
+								'200901142251','200901142252','200901142253','200901142254',
+								'200901142255','200901142256','200901141559','200901141656',
+								'200901141848','200901141909','200901142092')
+						AND pre_id is not null);
+
+/* Eliminando cuentas de ahorro*/
+DELETE FROM    cta_cah_cuenta_ahorro
+WHERE cah_id not in (SELECT cah_id
+					FROM cta_cas_cuenta_asociado 
+					WHERE asc_id IN('200901140297','200901140502','200901140523','200901140687',
+								'200901142215','200901140999','200901142249','200901142250',
+								'200901142251','200901142252','200901142253','200901142254',
+								'200901142255','200901142256','200901141559','200901141656',
+								'200901141848','200901141909','200901142092')
+						AND cah_id is not null);
+						
+
+/* Eliminando cuentas de prestamo*/
+DELETE FROM    cta_pre_prestamo
+WHERE pre_id not in (SELECT pre_id
+					FROM cta_cas_cuenta_asociado 
+					WHERE asc_id IN('200901140297','200901140502','200901140523','200901140687',
+								'200901142215','200901140999','200901142249','200901142250',
+								'200901142251','200901142252','200901142253','200901142254',
+								'200901142255','200901142256','200901141559','200901141656',
+								'200901141848','200901141909','200901142092')
+						AND pre_id is not null);
+
+
+
+
+/* Eliminando cuentas de seguro*/
+DELETE FROM    cta_seg_seguros
+WHERE seg_id not in (SELECT seg_id
+					FROM cta_cas_cuenta_asociado 
+					WHERE asc_id IN('200901140297','200901140502','200901140523','200901140687',
+								'200901142215','200901140999','200901142249','200901142250',
+								'200901142251','200901142252','200901142253','200901142254',
+								'200901142255','200901142256','200901141559','200901141656',
+								'200901141848','200901141909','200901142092')
+						AND seg_id is not null);
+
+
+/* Eliminando cuentas bancarias*/
+DELETE FROM    cta_cba_cuenta_bancaria
+WHERE cba_id not in (SELECT cba_id
+					FROM cta_cas_cuenta_asociado 
+					WHERE asc_id IN('200901140297','200901140502','200901140523','200901140687',
+								'200901142215','200901140999','200901142249','200901142250',
+								'200901142251','200901142252','200901142253','200901142254',
+								'200901142255','200901142256','200901141559','200901141656',
+								'200901141848','200901141909','200901142092')
+						AND cba_id is not null);
+
+
+/* Eliminando detalle de facturas de asociados*/
+DELETE FROM fac_dfa_detalle_factura 
+WHERE FEN_ID IN (SELECT FEN_ID FROM fac_fen_factura_encabezado 
+				 WHERE asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092')
+		AND asc_id IS NOT NULL);
+
+
+/* Eliminando facturas de asociados*/
+DELETE FROM fac_fen_factura_encabezado 
+WHERE asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+									'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+									'200901141848','200901141909','200901142092')
+		AND asc_id IS NOT NULL;
+
+
+
+/* Eliminando asociados*/
+DELETE FROM cta_asc_asociado 
+WHERE asc_id NOT IN('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092');
+
+
+
+/*delete from ctr_ure_usuario_repositorio;  no hay usuario por repositorio*/
+
+
+/* Eliminando correo electronico de personas que eran asociados*/
+DELETE from sec_cel_correo_electronico
+WHERE USU_ID NOT IN ('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092');
+
+
+
+/*delete from cli_com_comentario;    no existen comentarios por eso se omite*/
+
+
+/*delete from sec_hse_historial_sesion; no existen registros de sesion de estos asociados*/
+
+
+
+delete FROM sec_ise_inicio_sesion
+where per_id NOT IN ('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092','000000000000');
+
+
+/*delete from sec_pem_persona_emergencia;  no existen registros en la tabla actualmente*/
+
+
+
+/*delete from sec_tel_telefono;  no existen registros en la tabla actualmente*/
+
+
+
+
+/* Eliminando Personas*/
+delete from sec_per_persona 
+where per_id NOT IN ('200901140297','200901140502','200901140523','200901140687','200901142215','200901140999','200901142249','200901142250',
+					'200901142251','200901142252','200901142253','200901142254','200901142255','200901142256','200901141559','200901141656',
+					'200901141848','200901141909','200901142092','000000000000');
+
+/********************************************************************************/
+
+
+
+/*Query para validar que otros usuarios no visualicen opciones de menu a las que no tienen acceso*/
+select distinct substring_index(mop.mop_action,'?',1) 
+from sec_ise_inicio_sesion ses, sec_rol_roles rol, sec_rop_rol_menu rop, sec_mop_menu_opcion mop
+where 	ses.rol_nombre=rol.rol_nombre and rol.rol_nombre=rop.rol_nombre and rop.mop_name=mop.mop_name
+	and ses.ise_nombre_usuario = 'ADMIN' and mop.mop_action is not null
+	
+	
+/******************************************************************************/
+
+/*Cambios necesarios de realizar en la base final Sicaco 01/07/2009	*/
+ALTER TABLE `sicacodb`.`ctr_cfc_control_facturacion` MODIFY COLUMN `CFC_SERIE` CHAR(50)  CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+ALTER TABLE `sicacodb`.`ctr_rfc_repositorio_facturas` MODIFY COLUMN `CFC_SERIE` CHAR(50)  CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL;
+
+
+
+/*cambios 22/07/2009*/
+/*antes: /reporteIni?p76e3123r=Reporte_BeneficiariosXAsociados&m009o8765d=Reporte_BeneficiariosXAsociado*/
+update sec_mop_menu_opcion set mop_action='/reporte?numR=20&accion=lista'  where mop_title like 'Beneficiarios por %'
+
+/*CAMBIO EN PROCEDURE PARA AGREGAR UNA VALIDACION 24/07/2009*/
+DROP PROCEDURE IF EXISTS `sicacodb`.`SP_PLANILLA_E`$$
+CREATE DEFINER=`sicaco`@`%` PROCEDURE `SP_PLANILLA_E`(DIVISOR INT, VALOR_DESC NUMERIC(13,5),EMP_ID INT)
+BEGIN
+	DECLARE done INT DEFAULT 0;
+	DECLARE ID_A CHAR(12);
+	DECLARE CODIGO_A varchar(50);
+      	DECLARE NOMBRE_A varchar(600);
+	DECLARE NOMBRE_E varchar(2000);
+      	DECLARE VALOR_INSCRIPCION  NUMERIC(13,5);
+	DECLARE TOTAL_APORT NUMERIC(13,5);
+      	DECLARE TOTAL_AHORR NUMERIC(13,5);
+      	DECLARE TOTAL_PRES NUMERIC(13,5);
+      	DECLARE TOTAL_SEG NUMERIC(13,5);
+      	DECLARE PAGARA_PA CHAR(1);
+
+	DECLARE BANDA INT DEFAULT 0;
+	DECLARE ACREE_DEUDO INT DEFAULT 0;
+
+	DECLARE PLANILLA2_CUR CURSOR FOR
+              	SELECT
+			asc1.`ASC_ID` AS ID_A,
+     			asc1.`ASC_CODIGO` AS ASC_CODIGO,
+     			cta_etr_empresa_trabajo.`ETR_NOMBRE` AS EMPRESA,
+     			CONCAT( per.`PER_PRIMER_APELLIDO`,', ',
+             			per.`PER_PRIMER_NOMBRE`) AS NOMBRE,
+    			IF(asc1.asc_pago_ingreso = 'S', 0.0, VALOR_DESC) AS VALOR_INSCRIPCION,
+			IFNULL(ASC1.`ASC_PAGARA_PADRE`,'N') AS PAGARA_PADR
+		FROM
+     			`sec_per_persona` per INNER JOIN `cta_asc_asociado` asc1
+     			ON per.`PER_ID` = asc1.`PER_ID`
+     			INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo  
+     			ON cta_dpt_departamento_trabajo.`DPT_ID` = asc1.`DPT_ID`
+     			INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo 
+			ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+		WHERE
+     			asc1.`EST_ID_2`=0 AND (asc1.`EST_ID`=0 OR asc1.`EST_ID` = 21) AND asc1.`ASC_ASOCIADO_PADRE` IS NULL 
+   			AND if(EMP_ID=-1,1=1,cta_etr_empresa_trabajo.`ETR_ID`=EMP_ID)
+		ORDER BY EMPRESA, PAGARA_PADR DESC, ASC_CODIGO;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+	DROP TABLE IF EXISTS TABLA_PLANILLA2;
+
+	CREATE TEMPORARY TABLE IF NOT EXISTS TABLA_PLANILLA2
+	(ASC_CODIGO VARCHAR(50),
+	 NOMBRE VARCHAR(600),
+	 EMPRESA VARCHAR(600),
+         VALOR_INSCRIPCION DECIMAL(13,5),
+         TOTAL_APORTACION DECIMAL(13,5),
+	 TOTAL_AHORRO DECIMAL(13,5),
+	 TOTAL_PRESTAMO DECIMAL(13,5),
+	 TOTAL_SEGURO DECIMAL(13,5));
+	
+	OPEN PLANILLA2_CUR;
+	PLANILLA2_LOOP: LOOP
+            FETCH PLANILLA2_CUR INTO ID_A,CODIGO_A,NOMBRE_E,NOMBRE_A,VALOR_INSCRIPCION,PAGARA_PA;
+            IF done=1 THEN
+               LEAVE PLANILLA2_LOOP;
+            END IF;
+	    SET TOTAL_APORT = (SELECT  SUM(IFNULL(cah.`cah_cuota`,0))
+     				FROM
+         				`cta_asc_asociado` asoc 
+					INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID` 
+					INNER JOIN `cta_cah_cuenta_ahorro` cah ON cas.`cah_id` = cah.`cah_id`
+    				WHERE
+        				cas.`EST_ID`=9 AND cah.`cah_id` LIKE 'A%' 
+					AND asoc.`ASC_ID`IN 
+		 			(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    					WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+     					)/DIVISOR;
+	    SET TOTAL_AHORR = (SELECT SUM(IFNULL(cah.`cah_cuota`,0))
+    	 			FROM
+       					`cta_asc_asociado` asoc    
+					INNER JOIN `cta_cas_cuenta_asociado` cas ON asoc.`ASC_ID` = cas.`ASC_ID`
+       					INNER JOIN `cta_cah_cuenta_ahorro` cah  ON cas.`cah_id` = cah.`cah_id`
+    				WHERE
+        				cas.`EST_ID`=9 AND   cah.`cah_id` LIKE 'B%' AND asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S'))
+				)/DIVISOR;
+	   SET TOTAL_PRES = IFNULL(  
+				(SELECT    SUM(IFNULL(pre.`pre_cuota` ,0))
+	     			 FROM
+	       				`cta_asc_asociado` asoc   INNER JOIN `cta_cas_cuenta_asociado` cas
+	       				ON asoc.`ASC_ID` = cas.`ASC_ID`
+	       				INNER JOIN `cta_pre_prestamo` pre ON cas.`pre_id` = pre.`pre_id`
+	    			 WHERE
+	        			cas.`EST_ID`=13 AND pre.`pre_saldo_actual_t` > 0 AND  asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+    				,0.0)/DIVISOR;
+	  SET TOTAL_SEG = IFNULL(
+				(SELECT SUM(IFNULL(seg.`seg_cuota`,0))
+     				FROM
+       					`cta_asc_asociado` asoc  INNER JOIN `cta_cas_cuenta_asociado` cas
+       					ON asoc.`ASC_ID` = cas.`ASC_ID` INNER JOIN `cta_seg_seguros` seg  ON cas.`seg_id` = seg.`seg_id`
+    				WHERE
+        				cas.`EST_ID`=11 AND seg.`seg_saldo_actual`>0 AND asoc.`ASC_ID` IN
+					(ID_A,(SELECT a.`ASC_ID` FROM cta_asc_asociado a
+		    				WHERE a.`ASC_ASOCIADO_PADRE`=ID_A AND a.`ASC_PAGARA_PADRE`='S')))
+				,0.0)/DIVISOR;
+	 IF (TOTAL_APORT+TOTAL_AHORR+TOTAL_PRES+TOTAL_SEG)>0 THEN
+	   	INSERT INTO TABLA_PLANILLA2
+			(ASC_CODIGO,NOMBRE,EMPRESA,VALOR_INSCRIPCION,
+			TOTAL_APORTACION,TOTAL_AHORRO,TOTAL_PRESTAMO,
+	 		TOTAL_SEGURO)
+		 VALUES (CODIGO_A,NOMBRE_A,NOMBRE_E,VALOR_INSCRIPCION,
+			TOTAL_APORT,TOTAL_AHORR,TOTAL_PRES,TOTAL_SEG);
+	END IF;
+	END LOOP PLANILLA2_LOOP;
+	CLOSE PLANILLA2_CUR;
+
+	SELECT * FROM TABLA_PLANILLA2;
+END$$
+
+DELIMITER ;
+
+
+/***************************/
+
+
+update sec_mop_menu_opcion set mop_action='/reporte?p76e3123r=reporte_deduccion_quincenal&accion=lista&numR=21' WHERE MOP_TITLE LIKE 'Reporte Deducccion%'
+update sec_mop_menu_opcion set mop_action='/reporte?accion=lista&numR=22' WHERE MOP_TITLE LIKE 'Actualizacion de planilla%'
+update sec_mop_menu_opcion set mop_action='/reporte?accion=lista&numR=23' WHERE MOP_TITLE LIKE 'Saldo Aportaciones%'
+
+
+/*Cambio necesario en la base sicacodb, 28/07/2009*/
+truncate inv_cnv_conversion
+ALTER TABLE `sicacodb`.`inv_cnv_conversion` MODIFY COLUMN `CNV_ID` INTEGER  NOT NULL DEFAULT NULL;
+/*Hacer en base final*/

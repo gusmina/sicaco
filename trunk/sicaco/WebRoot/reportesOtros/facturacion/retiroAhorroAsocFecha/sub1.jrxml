@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub1" pageWidth="403" pageHeight="200" columnWidth="403" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="banId" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     ctr_ban_banco.`BAN_NOMBRE` AS banco,
+     ctr_ban_banco.`BAN_ID` AS banId,
+     IFNULL(cta_stb_sol_trans_banc.`stb_razon`,'Deposito Pago Prestamo Electronico') AS razon,
+     IFNULL( SUM(cta_stb_sol_trans_banc.`stb_monto`), 0.00)  AS monto
+FROM `cta_cba_cuenta_bancaria` cta_cba_cuenta_bancaria INNER JOIN `cta_stb_sol_trans_banc` cta_stb_sol_trans_banc ON cta_cba_cuenta_bancaria.`CBA_ID` = cta_stb_sol_trans_banc.`cba_id`     INNER JOIN `ctr_ban_banco` ctr_ban_banco ON cta_cba_cuenta_bancaria.`BAN_ID` = ctr_ban_banco.`BAN_ID`
+WHERE cta_stb_sol_trans_banc.`stb_razon` = 'Deposito Pago Prestamo Electronico' and  ctr_ban_banco.`BAN_ID`= $P{banId} AND STB_ESTADO = 'N'
+Group by ctr_ban_banco.`BAN_ID`
+UNION
+SELECT
+     ctr_ban_banco.`BAN_NOMBRE` AS banco,
+     ctr_ban_banco.`BAN_ID` AS banId,
+	 IFNULL(cta_stb_sol_trans_banc.`stb_razon`,'Deposito pago ahorros electronicos' ) AS razon,
+
+     IFNULL( SUM(cta_stb_sol_trans_banc.`stb_monto`), 0.00)  AS monto
+FROM `cta_cba_cuenta_bancaria` cta_cba_cuenta_bancaria INNER JOIN `cta_stb_sol_trans_banc` cta_stb_sol_trans_banc ON cta_cba_cuenta_bancaria.`CBA_ID` = cta_stb_sol_trans_banc.`cba_id`     INNER JOIN `ctr_ban_banco` ctr_ban_banco ON cta_cba_cuenta_bancaria.`BAN_ID` = ctr_ban_banco.`BAN_ID`
+WHERE cta_stb_sol_trans_banc.`stb_razon` = 'Deposito pago ahorros electronicos' and  ctr_ban_banco.`BAN_ID` = $P{banId} AND STB_ESTADO = 'N'
+Group by cta_stb_sol_trans_banc.`stb_razon`
+UNION
+SELECT
+  'banco' as banco,
+     '0' AS banId,
+  'Deposito pago Proveedores electronico ' As razon,
+  IFNULL(sum(stb_monto), 0.00)  AS monto
+FROM `cta_stb_sol_trans_banc` cta_stb_sol_trans_banc
+where `BAN_ID`  = $P{banId}  AND STB_ESTADO = 'N' and cta_stb_sol_trans_banc.`PRO_ID` is not null
+group by banco]]>
+	</queryString>
+	<field name="banco" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="banId" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="razon" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="monto_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{monto}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="33" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="13" width="401" height="20" forecolor="#000000" backcolor="#F0F0F0"/>
+			</rectangle>
+			<line>
+				<reportElement x="277" y="13" width="1" height="20"/>
+			</line>
+			<textField>
+				<reportElement x="290" y="16" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="16" width="239" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Rubro"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="0" width="401" height="20"/>
+			</rectangle>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="290" y="4" width="100" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="4" width="239" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{razon}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="277" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<rectangle>
+				<reportElement x="1" y="0" width="401" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement x="27" y="4" width="239" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total en todos los rubros: "]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="277" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="289" y="4" width="100" height="16"/>
+				<textElement textAlignment="Right">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{monto_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

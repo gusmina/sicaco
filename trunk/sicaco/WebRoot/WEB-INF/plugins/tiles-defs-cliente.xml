@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla-cliente.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Bienvenido"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu-cliente.jsp" />
+		<put name="contenido" value="/plantilla/inicio-cliente.jsp" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina.comentarios" extends="plantilla">
+		<put name="nombre-pantalla" value="Ingreso Cometario"/>
+		<put name="descripcion-pagina">
+			Version 1.0
+			Guarda los comentarios de los usuarios
+		</put>
+		<put name="contenido" value="/cliente/comentarios.jsp"/>
+	</definition>
+	
+		<definition name="pagina.estadoCuenta" extends="plantilla">
+		<put name="nombre-pantalla" value="Estado de Cuenta"/>
+		<put name="descripcion-pagina">
+			Genera estados de cuenta
+		</put>
+		<put name="contenido" value="/cliente/estadoCuenta.jsp"/>
+	</definition>
+	
+	<definition name="pagina.solicitudes" extends="plantilla">
+		<put name="nombre-pantalla" value="Solicitudes en linea"/>
+		<put name="descripcion-pagina">
+			Realiza solicitudes de asociados en linea
+		</put>
+		<put name="contenido" value="/cliente/solicitudes.jsp"/>
+	</definition>
+</tiles-definitions>

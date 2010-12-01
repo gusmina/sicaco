@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.planilla" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Planilla - Generar por Asociado"/>
+		<put name="descripcion-pagina"
+			value="Planilla" type="string" />
+		<put name="accion" value="/procesosEspeciales/planilla.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/planillaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.procesosEspeciales.planilla" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Verificacion de saldo retornado por planilla"/>
+		<put name="descripcion-pagina"
+			value="Pantalla de verificacion de saldo retornado por planilla" type="string" />
+		<put name="accion" value="/procesosEspeciales/planilla.do?accion=cargar" type="string" />
+		<put name="contenido" value="/procesosEspeciales/verPlanilla.jsp"  />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.cambioCodEmpleado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cambio Automatico de Codigos de Empleado"/>
+		<put name="descripcion-pagina"
+			value="Cambio Automatico de Codigos de Empleado" type="string" />
+		<put name="accion" value="/procesosEspeciales/cambioCodEmpleado.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cambiarCodEmpleadoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.cargaAutomaticaPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Carga Automatica de Prestamos a Asociados desde Archivo"/>
+		<put name="descripcion-pagina"
+			value="Carga automatica de prestamos a Asociados desde archivo" type="string" />
+		<put name="accion" value="/procesosEspeciales/cargaAutomaticaPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cargaAutomaticaPrestamoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.cargaAutoSinExcel" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Carga Automatica de Prestamos a Asociados sin archivo"/>
+		<put name="descripcion-pagina"
+			value="Carga automatica de prestamos a Asociados sin archivo" type="string" />
+		<put name="accion" value="/procesosEspeciales/cargaAutomaticaPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cargaSinArchivoPrestamoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.cargoFiadores" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cargo a Fiadores"/>
+		<put name="descripcion-pagina"
+			value="Cargo a Fiadores" type="string" />
+		<put name="accion" value="/procesosEspeciales/cargoFiadores.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cargoFiadoresDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.lfiadores" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cargo a Fiadores"/>
+		<put name="descripcion-pagina"
+			value="Cargo a Fiadores" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cargoFiadores2DML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.cargaAutomaticaSeguros" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cargo Automatica de Seguros"/>
+		<put name="descripcion-pagina"
+			value="Carga automatica de Seguros" type="string" />
+		<put name="contenido" value="/procesosEspeciales/cargaSegurosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.pagaNetBanking" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Pago Electronico"/>
+		<put name="descripcion-pagina"
+			value="Pago Electronico" type="string" />
+		<put name="accion" value="/procesosEspeciales/pagaNetBanking.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/netBankingDML.jsp" />
+	</definition>
+	
+		<definition name="pagina-lista.procesosEspeciales.liquidacionAsociados" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Asociados a Liquidar"/>
+		<put name="descripcion-pagina"
+			value="Busqueda de asociados a liquidar" type="string" />
+		<put name="accion" value="/procesosEspeciales/liquidacionAsociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/busquedaAsociado.jsp" />
+	</definition>
+	
+	<definition name="pagina.dml.procesosEspeciales.liquidarAsociado" extends="plantilla">
+		<put name="nombre-pantalla" value="Liquidacion de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para desplegar la informacion del asociado a liquidar" type="string" />
+		<put name="contenido" value="/procesosEspeciales/liquidarAsociado.jsp" />
+	</definition>
+	
+	
+	<definition name="pagina.dml.procesosEspeciales.forwardToProyeccionLiquidacion" extends="plantilla">
+		<put name="nombre-pantalla" value="Proyeccion de Liquidacion de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para proyeccion por liquidacion" type="string" />
+		<put name="contenido" value="/procesosEspeciales/proyectarliquidacionAsociado.jsp" />
+	</definition>
+	
+	<definition name="pagina.dml.procesosEspeciales.capitalizacionAhorro" extends="plantilla">
+		<put name="nombre-pantalla" value="Capitalizacion Ahorro"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para poder disparar el proceso de capitalizacion de ahorro" type="string" />
+		<put name="contenido" value="/procesosEspeciales/capitalizacionAhorro.jsp" />
+	</definition>
+	
+	<definition name="pagina.dml.procesosEspeciales.distribucionDividendos" extends="plantilla">
+		<put name="nombre-pantalla" value="Distribución de Dividendos"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para poder disparar el proceso de Distribución de Dividendos" type="string" />
+		<put name="contenido" value="/procesosEspeciales/distribucionDividendos.jsp" />
+	</definition>
+	
+	<definition name="pagina.dml.procesosEspeciales.EnvioCorreoRetiroAhorro" extends="plantilla">
+		<put name="nombre-pantalla" value="Envio de Correos por Retiro de Ahorros"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para poder enviar correos por retiro de ahorros" type="string" />
+		<put name="contenido" value="/procesosEspeciales/envioCorreoRetiroAhorro.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.correccionCapital" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Transferencia y Correccion de Capital"/>
+		<put name="descripcion-pagina"
+			value="Correccion de Capital" type="string" />
+		<put name="accion" value="/procesosEspeciales/correccionCapital.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/correccionCapitalDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.listaDistribuidos" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Asociados sin Distribuir"/>
+		<put name="descripcion-pagina"
+			value="Lista los asociados a quienes no se les ha efectuado distribucion de dividendos" type="string" />
+		<put name="accion" value="/procesosEspeciales/listaDistribuidos.do?accion=lista" type="string" />
+		<put name="contenido" value="/procesosEspeciales/listaDistribuidos.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.procesosEspeciales.transaccionFecha" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Transaccion Electronica con Fecha"/>
+		<put name="descripcion-pagina"
+			value="Pagina para transacciones con fecha manual" type="string" />
+		<put name="contenido" value="/procesosEspeciales/transaccionFechaDML.jsp" />
+	</definition>
+</tiles-definitions>

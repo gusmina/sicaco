@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.departamentoTrabajo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Departamentos"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los Departamentos de las empresas principales de Taca" type="string" />
+		<put name="accion" value="/asociados/departamentoTrabajo.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/departamentoTrabajoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.empresaTrabajo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Empresas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las empresas principales de Taca" type="string" />
+		<put name="accion" value="/asociados/empresaTrabajo.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/empresaTrabajoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.tipoContrato" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Contrato"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los tipos de contrato de los asociados" type="string" />
+		<put name="accion" value="/asociados/tipoContrato.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/tipoContratoDML.jsp" />
+		</definition>
+		
+	<definition name="pagina-lista.asociados.tipoAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Asociado"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los tipos de asociado" type="string" />
+		<put name="accion" value="/asociados/tipoAsociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/tipoAsociadoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.tipoTransaccion" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Transaccion"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los tipos de transaccion" type="string" />
+		<put name="accion" value="/asociados/tipoTransaccion.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/tipoTransaccionDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.tipoComprobante" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Comprobante"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los tipos de comprobante" type="string" />
+		<put name="accion" value="/asociados/tipoComprobante.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/tipoComprobanteDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.tipoDomicilio" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Domicilio"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los tipos de domicilio" type="string" />
+		<put name="accion" value="/asociados/tipoDomicilio.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/tipoDomicilioDML.jsp" />
+	</definition>
+	
+	
+	<definition name="pagina-lista.asociados.busquedaAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Busqueda de asociados" type="string" />
+		<put name="accion" value="/asociados/asociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/busquedaAsociado.jsp" />
+	</definition>
+	
+		<definition name="pagina-dml.asociados.nuevoAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Asociado"/>
+		<put name="descripcion-pagina"
+			value="Ingreso y Modificacion de Asociados" type="string" />
+			
+		<put name="contenido" value="/asociados/asociadoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.asociados.nuevoDependiente" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Dependientes de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Ingreso y Modificacion de Dependientes" type="string" />
+			
+		<put name="contenido" value="/asociados/dependienteDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.transaccionAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Transacciones"/>
+		<put name="descripcion-pagina"
+			value="Muestra las transacciones realizadas por el asociado" type="string" />
+		<put name="accion" value="/asociados/transaccionAsociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/transaccionesAsociado.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.transaccionDML" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Transacciones"/>
+		<put name="descripcion-pagina"
+			value="Creacion de nuevas transacciones" type="string" />
+		<put name="accion" value="/asociados/transaccionAsociado.do?accion=dml" type="string" />
+		<put name="contenido" value="/asociados/transaccionesDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.asociados.dependientes" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Dependientes de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Muestra los dependientes de un asociado" type="string" />
+		<put name="accion" value="/asociados/dependiente.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/asociadoDependientes.jsp" />
+	</definition>
+	
+		<definition name="pagina-dml.asociados.vistaDependientes" extends="plantilla">
+		<put name="nombre-pantalla" value="Informacion Dependiente"/>
+		<put name="descripcion-pagina"
+			value="Permite visualizar la informacion de los dependientes" type="string" />
+		<put name="contenido" value="/asociados/dependienteVista.jsp" />
+	</definition>
+	
+		<definition name="pagina-lista.asociados.ingresosAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Ingresos A Cooperativa"/>
+		<put name="descripcion-pagina"
+			value="Muestra los ingresos de un asociado a cooperativa" type="string" />
+		<put name="accion" value="/asociados/ingresoAsociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/ingresoAsociado.jsp" />
+	</definition>
+	
+			<definition name="pagina-dml.asociados.nuevoAsociadoFromUser" extends="plantilla">
+		<put name="nombre-pantalla" value="Asociado"/>
+		<put name="descripcion-pagina"
+			value="Ingreso y Modificacion de Asociados" type="string" />
+		<put name="contenido" value="/asociados/asociadoUDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.asociados.codigosAnteriores" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Historial De Codigos"/>
+		<put name="descripcion-pagina"
+			value="Muestra el historial de codigos anteriores de un asociado" type="string" />
+		<put name="accion" value="/asociados/codigosAnteriores.do?accion=lista" type="string" />
+		<put name="contenido" value="/asociados/codigosAnteriores.jsp" />
+	</definition>
+	
+			<definition name="pagina-lista.asociados.cuentasBancarias" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cuenta Bancaria"/>
+		<put name="descripcion-pagina"
+			value="Ingreso de cuentas bancarias" type="string" />
+		<put name="contenido" value="/asociados/cuentaBancariaDML.jsp" />
+		<put name="accion" value="/asociados/cuentaBancaria.do?accion=lista" type="string" />
+	</definition>			
+	
+	<definition name="pagina-lista.asociados.reingresoAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Reingreso de Asociado"/>
+		<put name="descripcion-pagina"
+			value="Pagina que se utiliza para el reingreso de asociados" type="string" />
+		<put name="contenido" value="/asociados/reingresoAsociado.jsp" />
+		<put name="accion" value="/asociados/ingresoAsociado.do?accion=cargarDatosReingreso" type="string" />
+	</definition>
+	
+		<definition name="pagina-lista.asociados.busquedaAsociadoInactivo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Asociado Inactivo"/>
+		<put name="descripcion-pagina"
+			value="Busqueda de asociados" type="string" />
+		<put name="accion" value="/asociados/asociado.do?accion=listaInactivo" type="string" />
+		<put name="contenido" value="/asociados/busquedaAsociadoInactivo.jsp" />
+	</definition>
+</tiles-definitions>

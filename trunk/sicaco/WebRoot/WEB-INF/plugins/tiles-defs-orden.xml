@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.orden.cuentaReferencia" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cuentas de Referencia"/>
+		<put name="descripcion-pagina"
+			value="Distintas cuentas de Referencia que poseen con un Proveedor" type="string" />
+		<put name="accion" value="/orden/cuentaReferencia.do?accion=lista" type="string" />
+		<put name="contenido" value="/orden/cuentaReferenciaDML.jsp"  />
+	</definition>
+	
+	<definition name="pagina-dml.orden.cuentaReferencia" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion de Cuentas de Referencia"/>
+		<put name="descripcion-pagina"
+			value="Distintas acciones posibles para una cuenta de Referencia" type="string" />
+		<put name="contenido" value="/orden/cuentaReferenciaDML.jsp"  />
+	</definition>
+	
+	<definition name="pagina-lista.orden.compra" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Ordenes de Compra"/>
+		<put name="descripcion-pagina"
+			value="Lista y creacion de ordenes de compra" type="string" />
+		<put name="accion" value="/orden/ordenCompra.do?accion=lista" type="string" />
+		<put name="contenido" value="/orden/ordenCompraDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.orden.listaMasiva" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Creacion Masiva de Ordenes de Compra"/>
+		<put name="descripcion-pagina"
+			value="Lista y creacion de ordenes de compra en forma Masiva" type="string" />
+		<put name="accion" value="/orden/ordenCompra.do?accion=lista" type="string" />
+		<put name="contenido" value="/orden/donacionMasivaOrdenDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.orden.compra" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion de Ordenes de compra"/>
+		<put name="descripcion-pagina"
+			value="Acciones posibles para las ordenes de compra" type="string" />
+		<put name="contenido" value="/orden/ordenCompraDML.jsp"  />
+	</definition>
+	
+	<definition name="pagina-lista.orden.pago" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Ordenes de Pago"/>
+		<put name="descripcion-pagina"
+			value="Lista y creacion de ordenes de pago" type="string" />
+		<put name="accion" value="/orden/ordenPago.do?accion=Buscar" type="string" />
+		<put name="contenido" value="/orden/quedanDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.orden.pago" extends="plantilla">
+		<put name="nombre-pantalla" value="Ordenes de Pago"/>
+		<put name="descripcion-pagina"
+			value="Acciones posibles para las ordenes de pago" type="string" />
+		<put name="contenido" value="/orden/ordenPagoDML.jsp"  />
+	</definition>
+	
+	
+	
+	<definition name="pagina-lista.orden.detalleOrden" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Seleccion de ordenes de compra"/>
+		<put name="descripcion-pagina"
+			value="Seleccionar detalle de ordenes de compra" type="string" />
+		<put name="accion" value="/orden/detalleOrden.do?accion=fill" type="string" />
+		<put name="contenido" value="" type="string"/>
+	</definition>
+	
+	<definition name="pagina-dml.orden.dmlPago" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Orden de Pago"/>
+		<put name="descripcion-pagina"
+			value="Acciones posibles para las ordenes de pago" type="string" />
+		<put name="contenido" value="/orden/listaOrdenPagoDML.jsp"  />
+	</definition>
+	
+	<definition name="pagina-lista.orden.listaPago" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Ordenes de pago"/>
+		<put name="descripcion-pagina"
+			value="lista de ordenes de pago" type="string" />
+		<put name="accion" value="/orden/listaOrdenPago.do?accion=lista" type="string" />
+		<put name="contenido" value="/orden/listaOrdenPagoDML.jsp"/>
+	</definition>
+		
+		<definition name="pagina-lista.orden.busquedaOrden" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Ordenes de Compra"/>
+		<put name="descripcion-pagina"
+			value="Lista de Ordenes de Compra" type="string" />
+		<put name="accion" value="/orden/ordenCompra.do?accion=buscar" type="string" />
+		<put name="contenido" value="/orden/busquedaOrden.jsp"/>
+	</definition>
+</tiles-definitions>

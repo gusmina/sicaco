@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina.error" extends="plantilla">
+		<put name="nombre-pantalla" value="Error Inesperado" />
+		<put name="descripcion-pagina" value="Detalle de error inesperado" />
+		<put name="contenido" value="/plantilla/error.jsp" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina.seguridad.autenticacion" extends="plantilla">
+		<put name="nombre-pantalla" value="Inicio de Sesi&amp;oacute;n"/>
+		<put name="descripcion-pagina"
+			value="Inicio de sesion" type="string" />
+			<put name="menu" value="" type="string" />
+		<put name="contenido" value="/seguridad/autenticacion.jsp" />
+	</definition>
+	
+	<definition name="pagina.seguridad.inicio" extends="plantilla">
+		<put name="nombre-pantalla" value="Inicio"/>
+		<put name="descripcion-pagina"
+			value="pagina de entrada del usuario" type="string" />
+		<put name="contenido" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.usuario" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Usuario"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los usuarios de la aplicacion" type="string" />
+		<put name="accion" value="/seguridad/usuario.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/personaBusqueda.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.persona" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion Usuarios"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para los usuarios" type="string" />
+		<put name="contenido" value="/seguridad/personaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.persona" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Usuarios"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los usuarios de la aplicacion" type="string" />
+		<put name="accion" value="/seguridad/persona.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/personaBusqueda.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.correo" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion Correo"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para los correos electronicos" type="string" />
+		<put name="contenido" value="/seguridad/correoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.correo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Correo Electronico"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los correos de un Usuario" type="string" />
+		<put name="accion" value="/seguridad/correo.do?accion=email" type="string" />
+		<put name="contenido" value="/seguridad/correoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.perEmergencia" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion Emergencia"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para la persona en caso de emergencia" type="string" />
+		<put name="contenido" value="/seguridad/perEmergenciaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.perEmergencia" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Emergencia"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas las personas a llamar en caso d emergencia" type="string" />
+		<put name="accion" value="/seguridad/perEmergencia.do?accion=emergency" type="string" />
+		<put name="contenido" value="/seguridad/perEmergenciaDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.sesion" extends="plantilla">
+		<put name="nombre-pantalla" value="Accion Inicio de Sesion"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para la tabla Inicio de Sesion" type="string" />
+		<put name="contenido" value="/seguridad/sesionDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.sesion" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Inicio de Sesion"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas los Inicios de sesion" type="string" />
+		<put name="accion" value="/seguridad/sesion.do?accion=session" type="string" />
+		<put name="contenido" value="/seguridad/sesionDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-pwd.seguridad.sesion" extends="plantilla">
+		<put name="nombre-pantalla" value="Datos de ingreso"/>
+		<put name="descripcion-pagina"
+			value="Accion de cambio de contrasenia" type="string" />
+		<put name="contenido" value="/seguridad/contrasenia.jsp" />
+		<put name="menu" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.phone" extends="plantilla">
+		<put name="nombre-pantalla" value="Acciones de Telefonos"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para los telefonos de un usuario" type="string" />
+		<put name="contenido" value="/seguridad/telefonosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.phone" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Telefonos"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todas los telefonos de un Ususario" type="string" />
+		<put name="accion" value="/seguridad/telefonos.do?accion=phone" type="string" />
+		<put name="contenido" value="/seguridad/telefonosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.historial" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Historial de Sesion"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion del historial de sesion de un usuario" type="string" />
+		<put name="accion" value="/seguridad/historialSesion.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/sesionHistorial.jsp"/>
+	</definition>
+	
+	<definition name="pagina-buscar.seguridad.historial" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Historial de Sesion"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion del historial de sesion de un usuario" type="string" />
+		<put name="accion" value="/seguridad/historialSesion.do?accion=buscar" type="string" />
+		<put name="contenido" value="/seguridad/sesionHistorial.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.roles" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Acciones de Roles"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para los Roles" type="string" />
+		<put name="accion" value="/seguridad/roles.do?accion=agrega" type="string" />
+		<put name="contenido" value="/seguridad/rolesDML.jsp" />
+	</definition>
+	
+	
+	
+	<definition name="pagina-lista.seguridad.roles" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Roles"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los roles asignados a un usuario" type="string" />
+		<put name="accion" value="/seguridad/roles.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/rolesDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-dml.seguridad.rolMenu" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Asignacion y control del menu de un rol"/>
+		<put name="descripcion-pagina"
+			value="Maneja todas las acciones que se pueden para los roles con sus menus" type="string" />
+		<put name="accion" value="/seguridad/rolMenu.do?accion=agrega" type="string" />
+		<put name="contenido" value="/seguridad/rolMenuDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.rolMenu" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Menu de Roles"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos los roles que tienen un menu asignado" type="string" />
+		<put name="accion" value="/seguridad/rolMenu.do?accion=dml" type="string" />
+		<put name="contenido" value="/seguridad/rolMenuDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.aipersona" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Activar Desactivar Personas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion y Edicion de todas las personas que se pueden modificar en el sistema" type="string" />
+		<put name="accion" value="/seguridad/activeInactivePersonAction.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/activarDesactivarPersona.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.aipersona.ajax" page="/seguridad/activarDesactivarPersonaForm.jsp"/>
+	<definition name="pagina-lista.inventario.tipoProveedor" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo de Proveedor"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion de todos tipos de Proveedores que tiene CETIA" type="string" />
+		<put name="accion" value="/inventario/tipoProveedor.do?accion=lista" type="string" />
+		<put name="contenido" value="/inventario/tipoProveedorDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.sucursal" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Sucursales"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion, creacion y eliminacion de sucursales" type="string" />
+		<put name="accion" value="/seguridad/sucursal.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/sucursalDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.seguridad.zona" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Zonas"/>
+		<put name="descripcion-pagina"
+			value="Visualizacion, creacion y eliminacion de zonas" type="string" />
+		<put name="accion" value="/seguridad/zona.do?accion=lista" type="string" />
+		<put name="contenido" value="/seguridad/zonaDML.jsp"/>
+	</definition>
+	
+</tiles-definitions>

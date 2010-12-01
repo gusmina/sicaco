@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="InteresAhorrante" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="tipoAhorroId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lineaAhorroId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ascId" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ver_interes" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="etrId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(-1)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  etr.etr_nombre Empresa,
+  lah.lah_nombre linea,
+  tah.tah_nombre tipo,
+  aso.asc_codigo codigo,
+  aso.asc_nombre_nit nombre,
+  (round(mxa.mxa_saldo,2)- round(txa.txa_monto,2)) saldoAnt,
+  round(txa.txa_monto,2) interes,
+  round(mxa.mxa_saldo,2) saldo
+FROM
+  cta_mxa_movimiento_ahorro mxa,
+  cta_txa_transaccionxcuenta_asociado txa,
+  cta_cas_cuenta_asociado cas,
+  cta_asc_asociado aso,
+  cta_cah_cuenta_ahorro cah,
+  cta_tah_tipo_ahorro tah,
+  cta_dpt_departamento_trabajo dpt,
+  cta_etr_empresa_trabajo etr,
+  cta_lah_linea_ahorro lah
+WHERE
+  mxa.txa_id = txa.txa_id and
+  cas.cah_id = mxa.cah_id and
+  cah.cah_id = mxa.cah_id and
+  tah.tah_id = cah.tah_id and
+  dpt.dpt_id = aso.dpt_id and
+  dpt.etr_id = etr.etr_id and
+  tah.lah_id = lah.lah_id and
+  txa.ttr_id = 16 and
+  cas.asc_id = aso.asc_id and
+  date(txa.txa_fecha) = $P{fecha} and
+  round(txa.txa_monto,2) > 0 
+  and if($P{etrId} <> -1,etr.etr_id = $P{etrId},1)
+  and aso.asc_id like $P{ascId}
+  AND if($P{tipoAhorroId} <> -1, tah.`tah_id` = $P{tipoAhorroId},1)
+  AND if($P{lineaAhorroId} <> -1, lah.lah_id = $P{lineaAhorroId},1)
+
+order by empresa, tipo, codigo, nombre, saldo
+;]]>
+	</queryString>
+	<field name="Empresa" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="interes" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="saldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<variable name="interes_1" class="java.math.BigDecimal" resetType="Group" resetGroup="tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{interes}]]></variableExpression>
+	</variable>
+	<variable name="saldoAnt_1" class="java.math.BigDecimal" resetType="Group" resetGroup="tipo" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoAnt}]]></variableExpression>
+	</variable>
+	<variable name="saldo_2" class="java.math.BigDecimal" resetType="Group" resetGroup="linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<variable name="interes_2" class="java.math.BigDecimal" resetType="Group" resetGroup="linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{interes}]]></variableExpression>
+	</variable>
+	<variable name="saldoAnt_2" class="java.math.BigDecimal" resetType="Group" resetGroup="linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoAnt}]]></variableExpression>
+	</variable>
+	<variable name="saldo_3" class="java.math.BigDecimal" resetType="Group" resetGroup="empresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<variable name="interes_3" class="java.math.BigDecimal" resetType="Group" resetGroup="empresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{interes}]]></variableExpression>
+	</variable>
+	<variable name="saldoAnt_3" class="java.math.BigDecimal" resetType="Group" resetGroup="empresa" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldoAnt}]]></variableExpression>
+	</variable>
+	<variable name="interes_4" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{interes}]]></variableExpression>
+	</variable>
+	<group name="empresa">
+		<groupExpression><![CDATA[$F{Empresa}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle radius="1">
+					<reportElement x="0" y="0" width="572" height="20" backcolor="#D2D2D2"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="0" y="5" width="572" height="15"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{Empresa}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="32">
+				<rectangle radius="1">
+					<reportElement x="-1" y="1" width="572" height="17" backcolor="#F0F0F0"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-9" x="3" y="1" width="325" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total "+$F{Empresa}+": "]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="402" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{interes_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="328" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldoAnt_3}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="487" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_3}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="linea">
+		<groupExpression><![CDATA[$F{linea}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="126" y="8" width="393" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement x="-1" y="8" width="572" height="20" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-12" x="17" y="8" width="103" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Serif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[LÍNEA AHORRO:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="126" y="8" width="393" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{linea}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<rectangle>
+					<reportElement x="0" y="0" width="572" height="17"/>
+				</rectangle>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-10" x="4" y="3" width="325" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total Línea " + $F{linea}+": "]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="329" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldoAnt_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="403" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{interes_2}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="488" y="1" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_2}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="tipo">
+		<groupExpression><![CDATA[$F{tipo}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<rectangle radius="1">
+					<reportElement x="0" y="15" width="572" height="17" backcolor="#F0F0F0"/>
+				</rectangle>
+				<staticText>
+					<reportElement key="staticText-7" mode="Transparent" x="483" y="14" width="78" height="17" forecolor="#000000" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Saldo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-6" mode="Transparent" x="319" y="15" width="78" height="17" forecolor="#000000" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Saldo Anterior]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-10" x="0" y="14" width="572" height="1"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-5" mode="Transparent" x="88" y="15" width="234" height="17" forecolor="#000000" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Nombre]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-14" mode="Opaque" x="0" y="0" width="87" height="15" forecolor="#FFFFFF" backcolor="#333333"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[Tipo Ahorro:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="93" y="0" width="411" height="15"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-11" x="572" y="0" width="1" height="14"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-4" mode="Transparent" x="1" y="15" width="92" height="17" forecolor="#000000" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-9" x="-1" y="0" width="1" height="15"/>
+				</line>
+				<staticText>
+					<reportElement key="staticText-7" mode="Transparent" x="405" y="14" width="78" height="17" forecolor="#000000" backcolor="#F0F0F0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Interés Dev.]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="17">
+				<rectangle>
+					<reportElement x="0" y="0" width="572" height="17"/>
+				</rectangle>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="329" y="0" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldoAnt_1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-11" x="1" y="0" width="325" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Serif" size="7" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Total Tipo "+$F{tipo}+": "]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="488" y="0" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="$#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="403" y="0" width="73" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{interes_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="26" width="572" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Cooperativa de empleados de TACA y AEROMAN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" mode="Opaque" x="0" y="15" width="572" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE INTERES CAPITALIZADO POR AHORRANTE]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="31" width="572" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField pattern=" #,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-7" x="321" y="1" width="75" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldoAnt}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-12" x="88" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="0" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-13" x="319" y="0" width="1" height="13"/>
+			</line>
+			<textField pattern=" #,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="404" y="0" width="59" height="11"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{interes}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-5" x="4" y="1" width="83" height="11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-11" x="571" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-14" x="402" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="483" y="0" width="1" height="13"/>
+			</line>
+			<textField pattern="###0.00;(###0.00)">
+				<reportElement x="483" y="0" width="77" height="11"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-6" x="93" y="1" width="225" height="11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="41" splitType="Stretch">
+			<rectangle radius="3">
+				<reportElement x="0" y="0" width="572" height="41" backcolor="#D2D2D2"/>
+			</rectangle>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="2" y="14" width="327" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Serif" size="7" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Total Capitalizado: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="405" y="14" width="73" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{interes_4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

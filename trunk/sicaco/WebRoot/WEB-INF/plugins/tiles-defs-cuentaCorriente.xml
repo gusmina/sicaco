@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	<definition name="pagina-lista.cuentaCorriente.planMes" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Plan Meses"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los distintos Planes de Meses" type="string" />
+		<put name="accion" value="/cuentaCorriente/planMes.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/planMesDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tasaInteres" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tasa Interes"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para las distintas Tasas de Interes" type="string" />
+		<put name="accion" value="/cuentaCorriente/tasaInteres.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/tasaInteresDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.lineaAhorro" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Linea Ahorro"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para las distintas Lineas de Ahorro" type="string" />
+		<put name="accion" value="/cuentaCorriente/lineaAhorro.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/lineaAhorroDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoAhorro" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Ahorro"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los distintos Tipos de Ahorro" type="string" />
+		<put name="accion" value="/cuentaCorriente/tipoAhorro.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/tipoAhorroDML.jsp" />
+	</definition>
+	<definition name="pagina-lista.cuentaCorriente.cuentaAhorro" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cuenta de Ahorro"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento de las Cuentas de Ahorro" type="string" />
+		<put name="accion" value="/cuentaCorriente/cuentaAhorro.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/cuentaAhorro.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.cuentaAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Cuentas del Asociado"/>
+		<put name="descripcion-pagina"
+			value="Busqueda de Cuenta del Asociado" type="string" />
+		<put name="accion" value="/cuentaCorriente/cuentaAsociado.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/busquedaCuentasDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoCuentaBancaria" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipos de Cuenta Bancaria"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para el catalogo de tipos de cuentas bancarias" type="string" />
+		<put name="accion" value="/cuentaCorriente/tipoCuentaBancaria.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/tipoCuentaBancariaDML.jsp" />
+	</definition>
+
+	<definition name="pagina-lista.cuentaCorriente.descuentosExternos" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Descuentos Externos" />
+		<put name="descripcion-pagina" value="Catalogo de descuentos externos" />
+		<put name="contenido" value="/cuentaCorriente/descuentosExternos.jsp" />
+		<put name="accion" value="/cuentaCorriente/descuentosExternos.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.lineaPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Linea Prestamo" />
+		<put name="descripcion-pagina" value="Catalogo de Linea de Prestamo" />
+		<put name="contenido" value="/cuentaCorriente/lineaPrestamo.jsp" />
+		<put name="accion" value="/cuentaCorriente/lineaPrestamo.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoNota" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Nota" />
+		<put name="descripcion-pagina" value="Catalogo de tipos de notas" />
+		<put name="contenido" value="/cuentaCorriente/tipoNota.jsp" />
+		<put name="accion" value="/cuentaCorriente/tipoNota.do?accion=lista" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Prestamo" />
+		<put name="descripcion-pagina" value="Catalogo de Tipo de Prestamo" />
+		<put name="contenido" value="/cuentaCorriente/tipoPrestamo.jsp" />
+		<put name="accion" value="/cuentaCorriente/tipoPrestamo.do?accion=lista" type="string" />
+	</definition>
+	
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoFiador" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Fiador" />
+		<put name="descripcion-pagina" value="Catalogo de tipo Fiador" />
+		<put name="contenido" value="/cuentaCorriente/TipoFiadorDML.jsp" />
+		<put name="accion" value="/cuentaCorriente/tipoFiador.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.tgar.tipogarantia" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Garantia" />
+		<put name="descripcion-pagina" value="Catalogo de tipo Garantia" />
+		<put name="contenido" value="/cuentaCorriente/TipoGarantiaDML.jsp" />
+		<put name="accion" value="/cuentaCorriente/tipoGarantiaDML.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.beneficiarios" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Beneficiarios" />
+		<put name="descripcion-pagina" value="Beneficiarios de las cuentas de un Asociado" />
+		<put name="contenido" value="/cuentaCorriente/beneficiarios.jsp" />
+		<put name="accion" value="/cuentaCorriente/beneficiarios.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.buscarAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Buscar Asociado" />
+		<put name="descripcion-pagina" value="Se utiliza para la busqueda de asociados" />
+		<put name="contenido" value="/cuentaCorriente/busquedaAsociadoCC.jsp" />
+		<put name="accion" value="/cuentaCorriente/buscarAsociado.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.cuentaAportacion" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cuenta de Aportacion"/>
+		<put name="descripcion-pagina"
+			value="Cuenta de Aportacion del Asociado" type="string" />
+		<put name="accion" value="/cuentaCorriente/cuentaAportacion.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/cuentaAportacion.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.fiadorPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Prestamo-Fiadores"/>
+		<put name="descripcion-pagina"
+			value="Ingreso de fiadores para solicitud de prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/fiadorPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/solicitudPrestamoFiador.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.tipoSeguro" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipo Seguro"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para los distintos Tipos de Seguros" type="string" />
+		<put name="accion" value="/cuentaCorriente/tipoSeguro.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/tipoSeguroDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.seguros" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Seguros"/>
+		<put name="descripcion-pagina"
+			value="Lista de los seguros existentes para un Asociado" type="string" />
+		<put name="contenido" value="/cuentaCorriente/segurosDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.chequePrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Cheques del Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Lista de los cheques asociados a un Préstamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/chequePrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/chequePrestamo.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.ingresoSolicitudPrestamo" extends="plantilla">
+		<put name="nombre-pantalla" value="Solicitud De Prestamo" />
+		<put name="descripcion-pagina" value="Se utiliza para mostrar la lista de fiadores y aperturar el prestamo" />
+		<put name="contenido" value="/cuentaCorriente/ingresoSolicitudPrestamo.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.creditoExistente" extends="plantilla">
+		<put name="nombre-pantalla" value="Visualización de Prestamo" />
+		<put name="descripcion-pagina" value="Se utiliza para mostrar la lista de fiadores y aperturar el prestamo" />
+		<put name="contenido" value="/cuentaCorriente/visualizacionPrestamo.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaComercial" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Prestamo-Referencia Comercial"/>
+		<put name="descripcion-pagina"
+			value="Lista de Referencias comerciales de un prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/referenciaComercial.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/solicitudPrestamoReferenciaComercial.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaPersonal" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Prestamo-Referencia Personal"/>
+		<put name="descripcion-pagina"
+			value="Lista de Referencias comerciales de un prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/referenciaPersonal.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/solicitudPrestamoReferenciaPersonal.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.cierreCuenta" extends="plantilla">
+		<put name="nombre-pantalla" value="Cierre de una Cuenta de Ahorro"/>
+		<put name="descripcion-pagina"
+			value="Administra el cierre de cuentas de ahorro" type="string" />
+		<put name="contenido" value="/cuentaCorriente/cierreCuentaAhorroDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.movXPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Movimientos del Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Lista de los movimientos efectuados por un prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/movXPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/movXPrestamoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.comprobacionPrestamoAutomatico" extends="plantilla">
+		<put name="nombre-pantalla" value=""/>
+		<put name="descripcion-pagina"
+			value="Se utiliza para notificarle al usuario de que se redireccionara si el prestamo no es automatico." type="string" />
+		<put name="contenido" value="/cuentaCorriente/comprobacionAutomatico.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.garantiaDML" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Prestamo-Garantias"/>
+		<put name="descripcion-pagina"
+			value="Lista de garantias de prestamo." type="string" />
+		<put name="accion" value="/cuentaCorriente/garantiaPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/garantiaPrestamo.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.desembolsoPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Desembolso del Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Lista de los prestamos para su desembolso" type="string" />
+		<put name="accion" value="/cuentaCorriente/desembolsoPrestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/desembolsoPrestamoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.descargarRepLiqPrestamo" extends="plantilla">
+		<put name="nombre-pantalla" value="Reportes de Desembolsos de Prestamos"/>
+		<put name="descripcion-pagina"
+			value="Pantalla para descargar los reportes de liquidacion de prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/desembolsoPrestamo.do?accion=finalizar" type="string" />		
+		<put name="contenido" value="/cuentaCorriente/descargarRepLiqPrestamoDML.jsp" />		
+	</definition>	
+	
+	<definition name="pagina-lista.cuentaCorriente.parentesco" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Definicion de Parentescos"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento del catalogo de Parentesco" type="string" />
+		<put name="accion" value="/cuentaCorriente/parentesco.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/parentescoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.notaSeguro" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Notas de Seguros"/>
+		<put name="descripcion-pagina"
+			value="Mantenimiento para las distintas Notas de Seguros" type="string" />
+		<put name="accion" value="/cuentaCorriente/notaSeguro.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/notaSeguroDML.jsp" />
+	</definition>
+	
+		<definition name="pagina-lista.cuentaCorriente.buscarPrestamoAsociado" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Prestamos por Asociado"/>
+		<put name="descripcion-pagina"
+			value="Busqueda para los prestamos y solicitudes de un asociado" type="string" />
+		<put name="accion" value="/cuentaCorriente/prestamo.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/busquedaPrestamosXAsociado.jsp" />
+	</definition>
+	
+		<definition name="pagina-dml.cuentaCorriente.visualizacionSolicitud" extends="plantilla">
+		<put name="nombre-pantalla" value="Prestamo-Informacion General"/>
+		<put name="descripcion-pagina"
+			value="Vista para la informacion general de la solicitud de Prestamo" type="string" />
+		<put name="contenido" value="/cuentaCorriente/visualizacionSolicitud.jsp" />
+	</definition>
+	
+			<definition name="pagina-lista.cuentaCorriente.notasPrestamo" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Anotaciones"/>
+		<put name="descripcion-pagina"
+			value="Notas del prestamo" type="string" />
+		<put name="accion" value="/cuentaCorriente/nota.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/notaSolicitud.jsp" />
+	</definition>
+	
+				<definition name="pagina-lista.cuentaCorriente.descuentosCooperativa" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Descuentos En Cooperativa"/>
+		<put name="descripcion-pagina"
+			value="Descuentos realizados por la cooperativa al asociado" type="string" />
+		<put name="accion" value="/cuentaCorriente/descuentosCooperativa.do?accion=lista" type="string" />
+		<put name="contenido" value="/cuentaCorriente/descuentosCooperativa.jsp" />
+	</definition>
+	
+		<definition name="pagina.dml.calculadoraCuotas" extends="plantilla">
+		<put name="nombre-pantalla" value="Calculadora de Cuotas de Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para calcular cuotas del prestamo" type="string" />
+		<put name="contenido" value="/cuentaCorriente/calculadoraPrestamo.jsp" />
+	</definition>
+
+					<definition name="pagina-lista.cuentaCorriente.busquedaFiador" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Busqueda de Fiadores"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para la busqueda de fiadores" type="string" />
+		<put name="accion" value="/cuentaCorriente/fiadorPrestamo.do?accion=buscar" type="string" />
+		<put name="contenido" value="/cuentaCorriente/busquedaFiador.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.listaDeudores" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Deudores Por Fiador"/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para ver los deudores a los que esta asociado un fiador" type="string" />
+		<put name="accion" value="/cuentaCorriente/fiadorPrestamo.do?accion=forwardToListaDeudores" type="string" />
+		<put name="contenido" value="/cuentaCorriente/listaDeudoresDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.respuestaPrestamos" extends="plantilla">
+		<put name="nombre-pantalla" value=""/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para otorgar la respuesta del prestamo" type="string" />
+		<put name="contenido" value="/cuentaCorriente/respuestaPrestamo.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.agregaBen" extends="plantilla-lista">
+		<put name="nombre-pantalla" value=""/>
+		<put name="descripcion-pagina"
+			value="Pantalla que se utiliza para manejar beneficiarios de las cuentas de ahorro y aportacion" type="string" />
+		<put name="contenido" value="/cuentaCorriente/beneficiariosV2.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.cuentaCorriente.cuentasBancarias" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Seleccion de Cuenta Bancaria para Desembolso de Prestamo"/>
+		<put name="descripcion-pagina"
+			value="Seleccion de Cuenta Bancaria para Desembolso de Prestamo" type="string" />
+		<put name="contenido" value="/cuentaCorriente/cuentaBancariaDML.jsp" />
+		<put name="accion" value="/cuentaCorriente/preCuentaBancaria.do?accion=lista" type="string" />
+	</definition>
+	
+	<definition name="pagina-dml.cuentaCorriente.aplicarDescuentosPrestamo" extends="plantilla">
+		<put name="nombre-pantalla" value="Descuentos Aplicados por CETYA DE R.L." />
+		<put name="descripcion-pagina" value="Se utiliza para aplicar descuentos al prestamo" />
+		<put name="contenido" value="/cuentaCorriente/aplicarDescuentosPrestamo.jsp" />
+	</definition>	
+</tiles-definitions>

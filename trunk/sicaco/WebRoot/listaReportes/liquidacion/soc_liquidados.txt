@@ -1,0 +1,5 @@
+reporte: socios_liquidados
+
+Parametros:
+
+ascId: Tipo String

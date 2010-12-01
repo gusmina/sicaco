@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteDeVentaPorPeriodo" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<style name="Title" isDefault="false" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" isDefault="false" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" isDefault="false" fontName="Arial" fontSize="12"/>
+	<style name="Row" isDefault="false" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style isDefault="false" style="Row" backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="FECHA_INI" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FECHA_FIN" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select
+  Codigo,
+  Medida,
+  Nombre,
+  SUM(CantidadT) as CANTIDAD,
+  SUM(CostoTotal) as COSTO,
+  SUM(ValorVenta) as VALOR_VENTA,
+  SUM(Utilidad)as UTILIDAD,
+  SUM(IVA) as IVA,
+  SUM(TOTAL_VENTA) as TOTAL_VENTA,
+  Linea
+
+FROM
+(
+SELECT
+     inv_art_articulo.`ART_CODIGO` AS Codigo,
+     inv_art_articulo.`ART_NOMBRE` AS Nombre,
+/*     fac_fen_factura_encabezado.`PRO_ID` AS Proveedor,*/
+/*     fac_dfa_detalle_factura.`DFA_CANTIDAD` AS Cantidad,*/
+     IFNULL(inv_cnv_conversion.`CNV_FACTOR`,1) AS factor,
+     inv_lin_linea.`LIN_NOMBRE` AS Linea,
+     fac_dfa_detalle_factura.`DFA_EXENTO` AS excento,
+/*     inv_cnv_conversion.`CNV_ID` AS conversionID, */
+     inv_art_articulo.`ART_PRECIO_MINIMO` AS PrecioMin,
+     (fac_dfa_detalle_factura.`DFA_CANTIDAD` * IFNULL(inv_cnv_conversion.`CNV_FACTOR`,1)) AS CantidadT,
+     fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL` AS ValorVenta,
+     (inv_art_articulo.`ART_PRECIO_MINIMO` * (fac_dfa_detalle_factura.`DFA_CANTIDAD` * IFNULL(inv_cnv_conversion.`CNV_FACTOR`,1))) AS CostoTotal,
+     (fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`-(inv_art_articulo.`ART_PRECIO_MINIMO` * (fac_dfa_detalle_factura.`DFA_CANTIDAD` * IFNULL(inv_cnv_conversion.`CNV_FACTOR`,1)))) AS Utilidad,
+     con_rim_retencion_impuesto.`RIM_IMPUESTO` AS impuesto,
+     IF(fac_dfa_detalle_factura.`DFA_EXENTO` = 1,0,(fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`*( con_rim_retencion_impuesto.`RIM_IMPUESTO` / 100))) as IVA,
+	IF(
+		fac_dfa_detalle_factura.`DFA_EXENTO` = 1,
+		fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`,
+		(fac_dfa_detalle_factura.`DFA_PRECIO_TOTAL`*(1+(con_rim_retencion_impuesto.`RIM_IMPUESTO` / 100)))
+	) as TOTAL_VENTA,
+     inv_med_medida.`MED_NOMBRE_MEDIDA` AS Medida
+
+FROM
+         `fac_fen_factura_encabezado` fac_fen_factura_encabezado INNER JOIN `fac_dfa_detalle_factura` fac_dfa_detalle_factura ON fac_fen_factura_encabezado.`FEN_ID` = fac_dfa_detalle_factura.`FEN_ID`
+     LEFT OUTER JOIN `inv_cnv_conversion` inv_cnv_conversion ON fac_dfa_detalle_factura.`CNV_ID` = inv_cnv_conversion.`CNV_ID`
+     INNER JOIN `inv_art_articulo` inv_art_articulo ON fac_dfa_detalle_factura.`ART_CODIGO` = inv_art_articulo.`ART_CODIGO`
+     INNER JOIN `inv_lin_linea` inv_lin_linea ON inv_art_articulo.`LIN_ID` = inv_lin_linea.`LIN_ID`
+     INNER JOIN `inv_med_medida` inv_med_medida ON inv_art_articulo.`MED_ID` = inv_med_medida.`MED_ID`
+     LEFT OUTER JOIN `con_rim_retencion_impuesto` con_rim_retencion_impuesto ON fac_fen_factura_encabezado.`RIM_ID` = con_rim_retencion_impuesto.`RIM_ID`
+WHERE
+     ISNULL(fac_fen_factura_encabezado.`PRO_ID`) AND DATE(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`) BETWEEN
+	         $P{FECHA_INI} AND $P{FECHA_FIN}
+GROUP BY
+      Codigo, excento,factor
+)as miTabla
+
+Group by Codigo, excento]]>
+	</queryString>
+	<field name="Codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Medida" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CANTIDAD" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="COSTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="VALOR_VENTA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UTILIDAD" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="IVA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TOTAL_VENTA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Linea" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="TOTAL_VENTA_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_VENTA}]]></variableExpression>
+	</variable>
+	<variable name="IVA_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{IVA}]]></variableExpression>
+	</variable>
+	<variable name="UTILIDAD_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{UTILIDAD}]]></variableExpression>
+	</variable>
+	<variable name="VALOR_VENTA_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR_VENTA}]]></variableExpression>
+	</variable>
+	<variable name="CANTIDAD_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
+	</variable>
+	<variable name="COSTO_1" class="java.math.BigDecimal" resetType="Group" resetGroup="Linea" calculation="Sum">
+		<variableExpression><![CDATA[$F{COSTO}]]></variableExpression>
+	</variable>
+	<variable name="CantidadTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANTIDAD}]]></variableExpression>
+	</variable>
+	<variable name="CostoTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{COSTO}]]></variableExpression>
+	</variable>
+	<variable name="UtilidadTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{UTILIDAD}]]></variableExpression>
+	</variable>
+	<variable name="ValorVentaTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR_VENTA}]]></variableExpression>
+	</variable>
+	<variable name="IvaTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{IVA}]]></variableExpression>
+	</variable>
+	<variable name="TotalVentaTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL_VENTA}]]></variableExpression>
+	</variable>
+	<group name="Linea">
+		<groupExpression><![CDATA[$F{Linea}]]></groupExpression>
+		<groupHeader>
+			<band height="15">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+					<textField>
+						<reportElement style="SubTitle" x="16" y="0" width="397" height="13" forecolor="#000000"/>
+						<textElement>
+							<font size="10" isBold="true" isItalic="true"/>
+						</textElement>
+						<textFieldExpression class="java.lang.String"><![CDATA[$F{Linea}]]></textFieldExpression>
+					</textField>
+					<line>
+						<reportElement key="line-15" x="0" y="0" width="1" height="15"/>
+					</line>
+					<line>
+						<reportElement key="line-15" x="554" y="0" width="1" height="15"/>
+					</line>
+					<line>
+						<reportElement key="line-29" mode="Opaque" x="0" y="14" width="554" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+					</line>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="35">
+				<line>
+					<reportElement key="line-29" mode="Opaque" x="0" y="0" width="554" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="398" y="2" width="54" height="12"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALOR_VENTA_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement x="344" y="20" width="51" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{UTILIDAD_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-19" x="118" y="1" width="119" height="13"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Sub Total Grupo]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField-24" x="496" y="20" width="58" height="12"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTAL_VENTA_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="237" y="1" width="45" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CANTIDAD_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-7" x="283" y="19" width="60" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{COSTO_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-29" mode="Opaque" x="237" y="34" width="320" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<line>
+					<reportElement key="line-28" mode="Opaque" x="238" y="14" width="319" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<textField pattern="#,##0.00">
+					<reportElement x="344" y="3" width="51" height="11"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{UTILIDAD_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-6" x="237" y="19" width="45" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CANTIDAD_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-20" x="8" y="20" width="71" height="13"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Sub Total Línea]]></text>
+				</staticText>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField" x="455" y="2" width="39" height="12"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{IVA_1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="81" y="20" width="155" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{Linea}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField-22" x="399" y="20" width="54" height="12"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALOR_VENTA_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement key="textField" x="283" y="1" width="60" height="15"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{COSTO_1}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
+					<reportElement key="textField-23" x="454" y="20" width="41" height="12"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{IVA_1}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-27" mode="Opaque" x="237" y="32" width="320" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+				</line>
+				<textField pattern="#,##0.00">
+					<reportElement x="496" y="2" width="55" height="14"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTAL_VENTA_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-18" x="448" y="19" width="45" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" mode="Opaque" x="83" y="1" width="349" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA de R.L.]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField" x="235" y="44" width="62" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a" isBlankWhenNull="false">
+				<reportElement key="textField-4" x="494" y="36" width="61" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-16" x="99" y="60" width="333" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Valores Expresados en Dólares de los Estados Unidos de América]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-3" x="494" y="19" width="61" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-2" x="333" y="43" width="62" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-14" x="132" y="44" width="102" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Movimientos desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-13" mode="Opaque" x="77" y="19" width="349" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Reporte de Venta y Costo de Venta por Periodo Consolidado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-17" x="448" y="36" width="45" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Hora   :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-15" x="295" y="44" width="36" height="17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-12" mode="Opaque" x="452" y="3" width="40" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" mode="Opaque" x="62" y="3" width="138" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" mode="Opaque" x="4" y="3" width="58" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[Código Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" mode="Opaque" x="200" y="3" width="36" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Unidad]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" stretchType="RelativeToBandHeight" x="1" y="0" width="1" height="27" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-7" mode="Opaque" x="237" y="3" width="45" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" mode="Opaque" x="282" y="3" width="60" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Costo Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" mode="Opaque" x="342" y="3" width="52" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Margen
+Utilidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" mode="Opaque" x="395" y="3" width="57" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Valor Venta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" mode="Opaque" x="492" y="3" width="62" height="22" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total Venta]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-6" stretchType="RelativeToBandHeight" mode="Opaque" x="491" y="3" width="1" height="22" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-7" stretchType="RelativeToBandHeight" mode="Opaque" x="394" y="3" width="1" height="22" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-8" stretchType="RelativeToBandHeight" mode="Opaque" x="341" y="3" width="1" height="22" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToBandHeight" mode="Opaque" x="282" y="3" width="1" height="22" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-10" isPrintRepeatedValues="false" x="1" y="27" width="555" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="2" y="0" width="553" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" mode="Opaque" x="452" y="3" width="1" height="22" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-14" stretchType="RelativeToBandHeight" x="555" y="0" width="1" height="27" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-3" stretchType="RelativeToBandHeight" x="200" y="1" width="1" height="25" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-4" stretchType="RelativeToBandHeight" x="236" y="2" width="1" height="24" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-2" stretchType="RelativeToBandHeight" mode="Opaque" x="62" y="1" width="1" height="25" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="1" y="0" width="61" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="62" y="0" width="137" height="14"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="237" y="0" width="46" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="201" y="0" width="36" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Medida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="344" y="0" width="48" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{UTILIDAD}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="397" y="0" width="54" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALOR_VENTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="455" y="0" width="36" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{IVA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="283" y="0" width="58" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{COSTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="494" y="0" width="55" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_VENTA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-16" x="61" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-17" x="199" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-18" x="235" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-19" x="281" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-20" x="341" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-21" x="394" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-22" x="452" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-23" x="491" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-24" x="554" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement key="line-15" x="0" y="0" width="1" height="15"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" forecolor="#000000"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-14" x="272" y="0" width="49" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_FIN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-12" positionType="Float" mode="Opaque" x="440" y="0" width="74" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-20" x="178" y="0" width="51" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{FECHA_INI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-21" positionType="Float" mode="Opaque" x="0" y="0" width="180" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Reporte de Venta por Periodo Consolidado]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-19" positionType="Float" mode="Opaque" x="516" y="0" width="35" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}+""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-22" x="230" y="0" width="42" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-30" mode="Transparent" x="359" y="14" width="58" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<textField pattern="$#,##0.00">
+				<reportElement x="209" y="25" width="65" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{UtilidadTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-27" mode="Transparent" x="133" y="14" width="77" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Costo Total]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="72" y="25" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CantidadTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-29" mode="Transparent" x="274" y="14" width="85" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Valor Venta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-25" x="229" y="0" width="101" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[*** T O T A L E S ***]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-33" mode="Opaque" x="73" y="45" width="430" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-32" mode="Opaque" x="73" y="42" width="430" height="1" forecolor="#333333" backcolor="#FFFFFF"/>
+			</line>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="274" y="25" width="84" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ValorVentaTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="358" y="28" width="59" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{IvaTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-31" mode="Transparent" x="417" y="14" width="85" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total Venta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-26" mode="Transparent" x="72" y="14" width="61" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-28" mode="Transparent" x="210" y="14" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Margen Utilidad]]></text>
+			</staticText>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="133" y="25" width="76" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CostoTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="false">
+				<reportElement key="textField" x="420" y="28" width="83" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TotalVentaTotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

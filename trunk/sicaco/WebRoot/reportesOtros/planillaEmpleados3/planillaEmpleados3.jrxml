@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="planillaEmpleados3"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="612"
+		 pageHeight="792"
+		 columnWidth="612"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<style 
+		name="Titulo"
+		isDefault="false"
+		forecolor="#333333"
+		hAlign="Center"
+		vAlign="Middle"
+		fontSize="14"
+		isBold="true"
+	>
+	</style>
+
+	<parameter name="EMPRESA" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="CUENTA" isForPrompting="true" class="java.lang.Integer"/>
+	<parameter name="DIVISOR" isForPrompting="true" class="java.math.BigDecimal"/>
+	<queryString><![CDATA[SELECT DISTINCT
+     UCASE(TRIM(cta_pxt_persona_externa.`PXT_TRABAJO`)) AS EMPRESA_NOMBRE,
+     cta_pxt_persona_externa.`PXT_CODIGO_EMPLEADO` AS CODIGO_EMPLEADO,
+     IF($P{CUENTA}=3,(SELECT    SUM(IF(pre.`pre_cuota` IS NULL,0,pre.`pre_cuota`))
+     FROM
+       `cta_pxt_persona_externa` p   INNER JOIN `cta_cas_cuenta_asociado` cas
+       ON p.`PXT_ID` = cas.`PXT_ID`
+       INNER JOIN `cta_pre_prestamo` pre ON cas.`pre_id` = pre.`pre_id`
+    WHERE
+        cas.`EST_ID`=13 AND
+	pre.`pre_saldo_actual_t` > 0 AND  
+	p.`PXT_CODIGO_EMPLEADO`=cta_pxt_persona_externa.`PXT_CODIGO_EMPLEADO`),
+	0.0) AS DESCUENTO
+     
+FROM
+     `cta_pxt_persona_externa` cta_pxt_persona_externa 
+     INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado 
+     ON cta_pxt_persona_externa.`PXT_ID` = cta_cas_cuenta_asociado.`PXT_ID`
+     
+WHERE cta_pxt_persona_externa.`PXT_CODIGO_EMPLEADO` IS NOT NULL
+	AND 
+	IF($P{EMPRESA}=-1,1=1,
+	UCASE(TRIM(cta_pxt_persona_externa.`PXT_TRABAJO`)) =  
+	UCASE(TRIM((SELECT E.ETR_NOMBRE
+	FROM CTA_ETR_EMPRESA_TRABAJO E
+	WHERE E.ETR_ID = $P{EMPRESA}))))]]></queryString>
+
+	<field name="EMPRESA_NOMBRE" class="java.lang.String"/>
+	<field name="CODIGO_EMPLEADO" class="java.lang.String"/>
+	<field name="DESCUENTO" class="java.math.BigDecimal"/>
+
+	<variable name="OTROS" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<initialValueExpression><![CDATA[new BigDecimal(0.0)]]></initialValueExpression>
+	</variable>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="18"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="100"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CODIGO_EMPLEADO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="100"
+						y="0"
+						width="100"
+						height="18"
+						key="textField-1"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO}.divide($P{DIVISOR})]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

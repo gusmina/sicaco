@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "tiles-config_1_1.dtd">
+
+<tiles-definitions>
+	<!-- Plantilla basica -->
+	<definition name="plantilla" path="/plantilla/plantilla.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="plantilla-lista" path="/plantilla/plantilla-lista.jsp">
+		<put name="titulo" value="SICACO" />
+		<put name="nombre-pantalla" value="Nombre"/>
+		<put name="accion" value="" type="string" />
+		<put name="descripcion-pagina"
+			value="Descripci&amp;oacute;n de la p&amp;aacute;gina" type="string" />
+		<put name="scripts" value="" type="string" />
+		<put name="estilos" value="" type="string" />
+		<put name="sub-encabezado"
+			value="/plantilla/sub-encabezado.jsp" />
+		<put name="menu" value="/plantilla/menu.jsp" />
+		<put name="contenido" value="" type="string" />
+		<put name="factura-bottom" value="" type="string" />
+		<put name="pie-pagina" value="/plantilla/pie-pagina.jsp" />
+		<put name="accion" value="" type="string" />
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.facturaUso" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Tipos de Uso de la Factura"/>
+		<put name="descripcion-pagina"
+			value="Tipos de uso existentes para las facturas" type="string" />
+		<put name="accion" value="/facturacion/facturaUso.do?accion=lista" type="string" />
+		<put name="contenido" value="/facturacion/facturaUsoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-factura.facturacion.encabezadoFactura" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Factura"/>
+		<put name="descripcion-pagina"
+			value="Se crean las facturas" type="string" />
+		<put name="accion" value="/facturacion/encabezadoFactura.do?accion=lista" type="string" />
+		<put name="contenido" value="/facturacion/encabezado.jsp" />
+	</definition>
+	
+	<definition name="pagina-dml-facturacion.detalle" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Detalle"/>
+		<put name="descripcion-pagina"
+			value="Maneja las acciones de detalle" type="string" />
+		<put name="accion" value="/facturacion/detalleFactura.do?accion=ingresoDetalle" type="string" />
+		<put name="contenido" value="/facturacion/detalleDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-sugerido.facturacion.encabezadoFactura" extends="plantilla">
+		<put name="nombre-pantalla" value="Nuevo precio sugerido"/>
+		<put name="descripcion-pagina"
+			value="Maneja el cambio de precio sugerido" type="string" />
+		<put name="contenido" value="/facturacion/sugeridoDML.jsp" />
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.listaFacturas" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Facturas"/>
+		<put name="descripcion-pagina"
+			value="Lista de facturas" type="string" />
+		<put name="accion" value="/facturacion/listaFacturas.do?accion=lista" type="string" />
+		<put name="contenido" value="/facturacion/listaFacturaDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.mantClientes" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Mantenimiento de Clientes"/>
+		<put name="descripcion-pagina"
+			value="Maneja las acciones de los clientes" type="string" />
+		<put name="accion" value="/facturacion/cliente.do?accion=lista" type="string" />
+		<put name="contenido" value="/facturacion/listaClienteDML.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.facturaManual" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Factura y Crédito Fiscal Manual"/>
+		<put name="descripcion-pagina"
+			value="Factura y Crédito Fiscal Manual" type="string" />
+		<put name="accion" value="/facturacion/facturaManual.do?accion=lista" type="string" />
+		<put name="contenido" value="/facturacion/facturaManual.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.ventas" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Ventas Manuales"/>
+		<put name="descripcion-pagina"
+			value="Factura y Crédito Fiscal Manual" type="string" />
+		<put name="accion" value="/facturacion/facturaManual.do?accion=ventas" type="string" />
+		<put name="contenido" value="/facturacion/busquedaManual.jsp"/>
+	</definition>
+	
+	<definition name="pagina-lista.facturacion.compras" extends="plantilla-lista">
+		<put name="nombre-pantalla" value="Lista de Compras Manuales"/>
+		<put name="descripcion-pagina"
+			value="Factura y Crédito Fiscal Manual" type="string" />
+		<put name="accion" value="/facturacion/facturaManual.do?accion=compras" type="string" />
+		<put name="contenido" value="/facturacion/busquedaManual.jsp"/>
+	</definition>
+	
+</tiles-definitions>

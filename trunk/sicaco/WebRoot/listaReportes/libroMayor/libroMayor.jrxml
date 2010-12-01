@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libroMayor" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="40" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="mes" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(4)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(2010)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mesA" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.lang.String">
+		<defaultValueExpression><![CDATA["AL 30 DE ABRIL DE 2010"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+  q.cuenta cuenta,
+  cue.cue_nombre nombre,
+  q.saldoAnt saldoAnt,
+  q.cargos cargos,
+  q.abonos abonos,
+  if(mult='A',saldoAnt+abonos-cargos,saldoAnt+cargos-abonos) as saldo
+from (
+	SELECT
+	ifnull(
+  (SELECT
+	  sac.sac_saldo_a_la_fecha
+	FROM
+	  con_sac_saldos_anteriores_cuenta sac,
+	  con_cue_cuenta cue
+	where
+	  cue.cue_id = sac.cue_id and
+	  month(sac.sac_fecha) <= $P{mesA} and
+	  year(sac.sac_fecha) <= $P{anio} and
+	  cue.cue_codigo_cuenta = substring(cue2.cue_codigo_cuenta,1,3)
+	order by
+	  sac_fecha desc
+	limit 1),0.00) saldoAnt,
+	   if((substring(cue2.cue_codigo_cuenta,1,1)= 1 or substring(cue2.cue_codigo_cuenta,1,1)= 4),'C','A') as mult,
+	   substring(cue2.cue_codigo_cuenta,1,3) as cuenta,    sum(dpa.dpa_valor_debe) as cargos,    sum(dpa.dpa_valor_haber) as abonos
+	FROM
+	  con_dpa_detalle_partida dpa,
+	  con_pco_partida_contable pco,
+	  con_cue_cuenta cue2
+	Where
+	  dpa.pco_id = pco.pco_id and
+	  year(pco.pco_fecha_ingreso_partida) = $P{anio} and
+	  month(pco.pco_fecha_ingreso_partida) =$P{mes} and
+	  cue2.cue_id = dpa.cue_id
+	group by
+		 substring(cue_codigo_cuenta,1,3)
+	UNION
+	(
+Select *
+From(
+Select * from (
+SELECT
+     sac.sac_saldo_a_la_fecha saldoAnt,
+	   'A' as mult,
+	   cue.cue_codigo_cuenta cuenta,
+	   0.00 as cargos,
+	   0.00 as abonos
+	FROM
+	  con_sac_saldos_anteriores_cuenta sac,
+	  con_cue_cuenta cue
+	where
+	  cue.cue_id = sac.cue_id and
+	  length(cue.cue_codigo_cuenta) = 3 and
+	  year(sac.sac_fecha) <= $P{anio} and
+	  month(sac.sac_fecha) <= $P{mesA}
+  Order by
+sac.sac_fecha desc, cuenta
+) as qwer
+Group by cuenta
+) as qwer2
+
+where qwer2.cuenta
+    not in
+	  (
+		select
+		   substring(cue2.cue_codigo_cuenta,1,3) as cuenta
+		FROM
+		  con_dpa_detalle_partida dpa,
+		  con_pco_partida_contable pco,
+		  con_cue_cuenta cue2
+		Where
+		  dpa.pco_id = pco.pco_id and
+		  year(pco.pco_fecha_ingreso_partida) = $P{anio} and
+		  month(pco.pco_fecha_ingreso_partida) = $P{mes} and
+		  cue2.cue_id = dpa.cue_id
+		group by
+			 substring(cue_codigo_cuenta,1,3)
+	   )
+)
+	) as q, con_cue_cuenta cue
+  where
+  q.cuenta = cue.cue_codigo_cuenta
+
+  order by cuenta]]>
+	</queryString>
+	<field name="cuenta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldoAnt" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cargos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="abonos" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="saldo" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="cargos_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargos}]]></variableExpression>
+	</variable>
+	<variable name="abonos_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{abonos}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="89" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement x="0" y="54" width="550" height="35"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="25" width="550" height="18" forecolor="#000000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["LIBRO MAYOR"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="552" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="552" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="2" y="3" width="49" height="29"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CODIGO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="3" width="197" height="29"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["TITULO DE LAS CUENTAS"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="248" y="3" width="73" height="29"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALDO ANTERIOR"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="328" y="17" width="73" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CARGOS"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="401" y="17" width="72" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ABONOS"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="477" y="3" width="73" height="29"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["SALDO A LA FECHA"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="34" width="550" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="2" y="32" width="550" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="328" y="3" width="145" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["M O V I M I E N T O S"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="49" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="0" width="197" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="248" y="0" width="73" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldoAnt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="327" y="0" width="73" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cargos}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="400" y="0" width="73" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{abonos}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="477" y="1" width="73" height="14" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean(
+    $F{saldoAnt}.doubleValue() != 0.00 || 
+    $F{cargos}.doubleValue() != 0.00 ||
+    $F{abonos}.doubleValue() != 0.00 ||
+    $F{saldo}.doubleValue() != 0.00
+) ]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="28">
+			<line>
+				<reportElement x="-16" y="0" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="313" y="11" width="72" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{cargos_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,###,##0.00;( #,###,##0.00)">
+				<reportElement x="385" y="11" width="72" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{abonos_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="310" y="25" width="73" height="1"/>
+			</line>
+			<line>
+				<reportElement x="310" y="27" width="73" height="1"/>
+			</line>
+			<line>
+				<reportElement x="384" y="25" width="73" height="1"/>
+			</line>
+			<line>
+				<reportElement x="384" y="27" width="73" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

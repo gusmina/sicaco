@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+	<data-sources />
+	<form-beans>
+		<form-bean name="basicForm"
+			type="com.cetia.sicaco.struts.BasicForm" />
+		<form-bean name="personaForm"
+			type="com.cetia.sicaco.seguridad.struts.form.PersonaForm" />
+		<form-bean name="correoForm"
+			type="com.cetia.sicaco.seguridad.struts.form.CorreoForm" />
+		<form-bean name="autenticacionForm"
+			type="com.cetia.sicaco.seguridad.struts.form.AutenticacionForm" />
+		<form-bean name="perEmergenciaForm"
+			type="com.cetia.sicaco.seguridad.struts.form.PerEmergenciaForm" />
+		<form-bean name="sesionForm"
+			type="com.cetia.sicaco.seguridad.struts.form.SesionForm" />
+		<form-bean name="telefonosForm"
+			type="com.cetia.sicaco.seguridad.struts.form.TelefonosForm" />
+		<form-bean name="historialSesionForm"
+			type="com.cetia.sicaco.seguridad.struts.form.HistorialSesionForm" />
+		<form-bean name="rolesForm"
+			type="com.cetia.sicaco.seguridad.struts.form.RolesForm" />
+		<form-bean name="rolMenuForm"
+			type="com.cetia.sicaco.seguridad.struts.form.RolMenuForm" />
+		<form-bean name="activeInactivePersonForm"
+			type="com.cetia.sicaco.seguridad.struts.form.ActiveInactivePersonForm" />
+		<form-bean name="sucursalForm"
+			type="com.cetia.sicaco.seguridad.struts.form.SucursalForm" />
+		<form-bean name="zonaForm"
+			type="com.cetia.sicaco.seguridad.struts.form.ZonaForm" />
+
+
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+
+	<global-forwards>
+		<forward name="redirectLista" redirect="true"
+			path="/persona.do?accion=lista" module="/seguridad" />
+		<forward name="redirectInicio" redirect="true"
+			path="pagina.seguridad.inicio" />
+			<forward name="redirectListaAsoc"
+				path="/asociado.do?accion=lista" module="/asociados" />
+	</global-forwards>
+
+
+
+	<action-mappings>
+
+
+		<action attribute="personaForm" input="redirectInvalidData"
+			name="personaForm" parameter="accion" path="/persona" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.PersonaAction">
+			<forward name="phone" path="/telefonos.do"
+				module="/seguridad" />
+			<forward name="lista" path="pagina-lista.seguridad.persona"
+				module="/seguridad" />
+			<forward name="correo" path="/correo.do"
+				module="/seguridad" />
+			<forward name="asc" path="/cetia_seguridad/asociado.do"
+				redirect="true" />
+			<forward name="sesionLista"
+				path="/sesion.do?accion=listaPersonaSesion" redirect="true"
+				module="/seguridad" />
+			<forward name="redirectInvalidData"
+				path="/persona.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="emergencia" path="/perEmergencia.do"
+				module="/seguridad" />
+			<forward name="sesion" path="/sesion.do?accion=lista"
+				redirect="true" module="/seguridad" />
+			<forward name="dml" path="pagina-dml.seguridad.persona"
+				module="/seguridad" />
+			<forward name="error" path="pagina-lista.seguridad.persona" />
+		</action>
+
+		<action attribute="personaForm" input="redirectInvalidData"
+			name="personaForm" validate="true" parameter="accion"
+			path="/personaAccion" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.PersonaAction">
+			<forward name="redirectInvalidData" redirect="true"
+				path="/persona.do?accion=redirectInvalidData" />
+			<forward name="error" path="pagina-dml.seguridad.persona" />
+			<forward name="sesion" redirect="true"
+				path="/sesion.do?accion=lista" module="/seguridad" />
+			<forward name="sesionLista" redirect="true"
+				path="/sesion.do?accion=listaPersonaSesion" module="/seguridad" />
+
+
+
+			<forward name="lista" path="pagina-lista.seguridad.persona"
+				module="/seguridad" />
+			<forward name="dml" path="pagina-dml.seguridad.persona"
+				module="/seguridad" />
+
+
+
+		</action>
+		<action
+      attribute="correoForm"
+      input="redirectInvalidData"
+      name="correoForm"
+      parameter="accion"
+      path="/correo"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.CorreoAction">
+      <forward
+        name="dml"
+        path="pagina-dml.seguridad.correo"
+        module="/seguridad" />
+      <forward
+        name="error"
+        path="pagina-lista.seguridad.correo"
+        module="/seguridad" />
+      <forward
+        name="redirectListaAsociados"
+        path="/asociado.do?accion=lista"
+        module="/asociados" />
+      <forward
+        name="lista"
+        path="pagina-lista.seguridad.correo"
+        module="/seguridad" />
+      <forward name="redirectInvalidData" path="/invalidMail.do?accion=redirectInvalidData" />
+    </action>
+		<action attribute="correoForm" input="redirectInvalidData"
+			name="correoForm" parameter="accion" path="/correoAccion"
+			scope="request" validate="true"
+			type="com.cetia.sicaco.seguridad.struts.action.CorreoAction">
+			<forward name="redirectInvalidData" redirect="true"
+				path="/correo.do?accion=redirectInvalidData" />
+			<forward name="lista" path="pagina-lista.seguridad.correo"
+				module="/seguridad" />
+			<forward name="error" path="pagina-dml.seguridad.correo"
+				module="/seguridad" />
+			<forward name="dml" path="pagina-dml.seguridad.correo"
+				module="/seguridad" />
+
+		</action>
+		<action attribute="autenticacionForm" input="error"
+			name="autenticacionForm" parameter="accion" path="/autenticacion"
+			scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.AutenticacionAction">
+			<forward name="error" path="pagina.seguridad.autenticacion" />
+			<forward name="forwardToCliente"
+				path="/switch.do?page=/iniciocliente.do&amp;prefix=/cliente" />
+			<forward name="forwardToContrasenia"
+				path="/sesion.do?accion=forwardToContrasenia" redirect="true" />
+			<forward name="entrar" path="pagina.seguridad.inicio" />
+			<forward name="cargar"
+				path="pagina.seguridad.autenticacion" />
+		</action>
+		<action path="/cerrarSesion"
+			type="com.cetia.sicaco.seguridad.struts.action.CerrarSesionAction">
+			<forward name="inicioSesion"
+				path="/autenticacion.do?accion=cargar" />
+		</action>
+		<action
+      attribute="perEmergenciaForm"
+      input="redirectInvalidData"
+      name="perEmergenciaForm"
+      parameter="accion"
+      path="/perEmergencia"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.PerEmergenciaAction">
+      <forward name="dml" path="pagina-dml.seguridad.perEmergencia" />
+      <forward name="error" path="pagina-lista.seguridad.perEmergencia" />
+      <forward name="lista" path="pagina-lista.seguridad.perEmergencia" />
+      <forward
+        name="redirectInvalidData"
+        path="/invalidEmergencia.do?accion=redirectInvalidData"
+        redirect="true" />
+    </action>
+		<action attribute="perEmergenciaForm"
+			input="redirectInvalidData" name="perEmergenciaForm"
+			parameter="accion" validate="true" path="/perEmergenciaAccion"
+			scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.PerEmergenciaAction">
+			<forward name="redirectInvalidData" redirect="true"
+				path="/perEmergenciaAccion.do?accion=redirectInvalidData" />
+			<forward name="lista"
+				path="pagina-lista.seguridad.perEmergencia" />
+			<forward name="dml"
+				path="pagina-dml.seguridad.perEmergencia" />
+			<forward name="error"
+				path="pagina-dml.seguridad.perEmergencia" />
+				<forward name="redirectListaAsoc"
+				path="/asociado.do?accion=lista" module="/asociados" />
+		</action>
+
+
+
+		<action
+      attribute="sesionForm"
+      input="redirectInvalidData"
+      name="sesionForm"
+      parameter="accion"
+      path="/sesion"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.SesionAction">
+      <forward name="dml" path="pagina-dml.seguridad.sesion" />
+      <forward name="pwd" path="pagina-pwd.seguridad.sesion" />
+      <forward
+        name="historial"
+        path="/historialSesion.do"
+        module="/seguridad" />
+      <forward name="error" path="pagina-lista.seguridad.sesion" />
+      <forward
+        name="forwardToShowUsers"
+        path="/persona.do?accion=lista"
+        redirect="true" />
+      <forward
+        name="roles"
+        path="/roles.do"
+        module="/seguridad" />
+      <forward name="forwardToCliente" path="/switch.do?page=/iniciocliente.do&amp;prefix=/cliente" />
+      <forward name="lista" path="pagina-lista.seguridad.sesion" />
+      <forward name="redirectInvalidData" path="/invalidSesion.do?accion=redirectInvalidData" />
+      <forward name="entrar" path="pagina.seguridad.inicio" />
+    </action>
+		<action attribute="sesionForm" 
+				name="sesionForm" 
+				parameter="accion" 
+				path="/invalidSesion"
+				scope="request"
+				validate="false"
+				type="com.cetia.sicaco.seguridad.struts.action.SesionAction">
+			
+			<forward name="lista" path="pagina-lista.seguridad.sesion" />
+		</action>
+		<action attribute="telefonosForm" input="redirectInvalidData"
+			name="telefonosForm" parameter="accion" path="/telefonos"
+			scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.TelefonosAction">
+			<forward name="lista" path="pagina-lista.seguridad.phone" />
+			<forward name="redirectInvalidData"
+				path="/telefonos.do?accion=redirectInvalidData" redirect="true" />
+			<forward name="dml" path="pagina-dml.seguridad.phone" />
+			<forward name="error" path="pagina-lista.seguridad.phone" />
+		</action>
+		<action
+      attribute="telefonosForm"
+      input="redirectInvalidData"
+      name="telefonosForm"
+      parameter="accion"
+      path="/telefonosAccion"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.TelefonosAction">
+      <forward name="dml" path="pagina-dml.seguridad.phone" />
+      <forward name="error" path="pagina-dml.seguridad.phone" />
+      <forward name="lista" path="pagina-lista.seguridad.phone" />
+      <forward name="redirectInvalidData" path="/invalidTelefono.do?accion=redirectInvalidData" />
+    </action>
+		<action attribute="historialSesionForm"
+			input="pagina-lista.seguridad.historial" name="historialSesionForm"
+			parameter="accion" path="/historialSesion" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.HistorialSesionAction">
+			<forward name="lista"
+				path="pagina-lista.seguridad.historial" />
+			<forward name="buscar"
+				path="pagina-buscar.seguridad.historial" />
+			<forward name="error"
+				path="pagina-lista.seguridad.historial" />
+		</action>
+		<action attribute="rolesForm" input="redirectInvalidData"
+			name="rolesForm" parameter="accion" path="/roles" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.seguridad.struts.action.RolesAction">
+			<forward name="lista" path="pagina-lista.seguridad.roles" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/roles.do?accion=redirectInvalidData" />
+			<forward name="dml" path="pagina-dml.seguridad.roles" />
+			<forward name="error" path="pagina-lista.seguridad.roles" />
+		</action>
+
+		<action attribute="rolesForm" input="redirectInvalidData"
+			name="rolesForm" parameter="accion" path="/rolesAccion"
+			validate="true" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.RolesAction">
+			<forward name="lista" path="pagina-lista.seguridad.roles" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/roles.do?accion=redirectInvalidData" />
+			<forward name="dml" path="pagina-dml.seguridad.roles" />
+			<forward name="error" path="pagina-dml.seguridad.roles" />
+		</action>
+
+		<action attribute="rolMenuForm"
+			input="pagina-lista.seguridad.rolMenu" name="rolMenuForm"
+			parameter="accion" path="/rolMenu" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.RolMenuAction">
+			<forward name="lista" path="pagina-lista.seguridad.rolMenu" />
+			<forward name="dml" path="pagina-dml.seguridad.rolMenu" />
+			<forward name="error" path="pagina-lista.seguridad.rolMenu" />
+		</action>
+		<action attribute="rolMenuForm"
+			input="pagina-dml.seguridad.rolMenu" name="rolMenuForm"
+			parameter="accion" path="/rolMenuAccion" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.RolMenuAction">
+			<forward name="lista" path="pagina-lista.seguridad.rolMenu" />
+			<forward name="dml" path="pagina-dml.seguridad.rolMenu" />
+			<forward name="error" path="pagina-dml.seguridad.rolMenu" />
+		</action>
+
+		<action attribute="activeInactivePersonForm"
+			input="redirectInvalidData" name="activeInactivePersonForm"
+			parameter="accion" validate="true" path="/activeInactivePersonAction"
+			scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.ActiveInactivePersonAction">
+			<forward name="redirectInvalidData" redirect="true"
+				path="/activeInactivePersonAction.do?accion=redirectInvalidData" />
+			<forward name="lista" path="pagina-lista.aipersona" />
+			<forward name="form" path="pagina-lista.aipersona.ajax" />
+		</action>
+		<action attribute="sucursalForm" input="redirectInvalidData"
+			name="sucursalForm" parameter="accion" validate="true"
+			path="/sucursal" scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.SucursalAction">
+			<forward name="lista"
+				path="pagina-lista.seguridad.sucursal" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/sucursal.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="zonaForm" input="redirectInvalidData"
+			name="zonaForm" parameter="accion" validate="true" path="/zona"
+			scope="request"
+			type="com.cetia.sicaco.seguridad.struts.action.ZonaAction">
+			<forward name="lista" path="pagina-lista.seguridad.zona" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/zona.do?accion=redirectInvalidData" />
+		</action>
+
+		<action path="/switch"
+			type="org.apache.struts.actions.SwitchAction" />
+    <action
+      attribute="telefonosForm"
+      name="telefonosForm"
+      parameter="accion"
+      path="/invalidTelefono"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.TelefonosAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.seguridad.phone" />
+    </action>
+    <action
+      attribute="correoForm"
+      name="correoForm"
+      parameter="accion"
+      path="/invalidMail"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.CorreoAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.seguridad.correo" />
+    </action>
+    <action
+      attribute="perEmergenciaForm"
+      name="perEmergenciaForm"
+      parameter="accion"
+      path="/invalidEmergencia"
+      scope="request"
+      type="com.cetia.sicaco.seguridad.struts.action.PerEmergenciaAction"
+      validate="false">
+      <forward name="lista" path="pagina-lista.seguridad.perEmergencia" />
+    </action>
+
+	</action-mappings>
+
+
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+
+</struts-config>
+

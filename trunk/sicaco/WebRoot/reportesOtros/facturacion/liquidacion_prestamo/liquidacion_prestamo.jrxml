@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion_prestamo" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="556" leftMargin="36" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="PRE_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cta_pre_prestamo.`PRE_MONTO_SOLICITADO` AS PRE_MONTO_SOLICITADO,
+     cta_pre_prestamo.`PRE_CUOTA` AS PRE_CUOTA,
+     cta_asc_asociado.`ASC_CODIGO_ASOCIADO` AS ASC_CODIGO_ASOCIADO,
+     sec_per_persona.`PER_PRIMER_NOMBRE` AS PER_PRIMER_NOMBRE,
+     sec_per_persona.`PER_SEGUNDO_NOMBRE` AS PER_SEGUNDO_NOMBRE,
+     sec_per_persona.`PER_TERCER_NOMBRE` AS PER_TERCER_NOMBRE,
+     sec_per_persona.`PER_PRIMER_APELLIDO` AS PER_PRIMER_APELLIDO,
+     sec_per_persona.`PER_SEGUNDO_APELLIDO` AS PER_SEGUNDO_APELLIDO,
+     sec_per_persona.`PER_APELLIDO_CASADA` AS PER_APELLIDO_CASADA,
+     cta_lpr_linea_prestamo.`LPR_NOMBRE` AS LPR_NOMBRE,
+     cta_plm_plan_meses.`plm_duracion` AS PLM_DURACION,
+     cta_tin_tasa_interes2.`tin_tasa` AS TIN_TASA,
+     cta_pre_prestamo.`PRE_OTRAS_DEDUCCIONES` AS PRE_OTRAS_DEDUCCIONES,
+     cta_pre_prestamo.`PRE_APORTACIONES` AS PRE_APORTACIONES,
+     cta_pre_prestamo.`PRE_IVA_DEDUCCIONES` AS PRE_IVA_DEDUCCIONES,
+     cta_pre_prestamo.`PRE_LIQUIDO_A_RECIBIR` AS PRE_LIQUIDO_A_RECIBIR,
+     (cta_pre_prestamo.`PRE_MONTO_SOLICITADO`- cta_pre_prestamo.`PRE_LIQUIDO_A_RECIBIR`) AS TOTAL_DEDUCCIONES
+FROM
+     `cta_pre_prestamo` cta_pre_prestamo INNER JOIN `cta_cas_cuenta_asociado` cta_cas_cuenta_asociado ON cta_pre_prestamo.`PRE_ID` = cta_cas_cuenta_asociado.`pre_id`
+     INNER JOIN `cta_asc_asociado` cta_asc_asociado ON cta_cas_cuenta_asociado.`ASC_ID` = cta_asc_asociado.`ASC_ID`
+     INNER JOIN `sec_per_persona` sec_per_persona ON cta_asc_asociado.`PER_ID` = sec_per_persona.`PER_ID`
+     INNER JOIN `cta_tpr_tipo_prestamo` cta_tpr_tipo_prestamo ON cta_pre_prestamo.`TPR_ID` = cta_tpr_tipo_prestamo.`TPR_ID`
+     INNER JOIN `cta_tin_tasa_interes` cta_tin_tasa_interes2 ON cta_tpr_tipo_prestamo.`TIN_ID` = cta_tin_tasa_interes2.`tin_id`
+     INNER JOIN `cta_lpr_linea_prestamo` cta_lpr_linea_prestamo ON cta_tpr_tipo_prestamo.`LPR_ID` = cta_lpr_linea_prestamo.`LPR_ID`
+     INNER JOIN `cta_plm_plan_meses` cta_plm_plan_meses ON cta_tpr_tipo_prestamo.`PLM_ID` = cta_plm_plan_meses.`plm_id`
+WHERE
+     cta_pre_prestamo.`PRE_ID` = $P{PRE_ID}]]>
+	</queryString>
+	<field name="PRE_MONTO_SOLICITADO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRE_CUOTA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ASC_CODIGO_ASOCIADO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_PRIMER_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_SEGUNDO_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_TERCER_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_PRIMER_APELLIDO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_SEGUNDO_APELLIDO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PER_APELLIDO_CASADA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="LPR_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PLM_DURACION" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="TIN_TASA" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRE_OTRAS_DEDUCCIONES" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRE_APORTACIONES" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRE_IVA_DEDUCCIONES" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="PRE_LIQUIDO_A_RECIBIR" class="java.math.BigDecimal"/>
+	<field name="TOTAL_DEDUCCIONES" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="238" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="43" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL PRÉSTAMO SOLICITADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="69" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="89" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="109" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Línea Préstamo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="109" width="45" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Plazo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="109" width="30" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Tasa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="129" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Monto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="149" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cuota Mensual:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="90" y="149" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_CUOTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="129" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_MONTO_SOLICITADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="69" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ASC_CODIGO_ASOCIADO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="89" width="465" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PER_PRIMER_NOMBRE}+" "+$F{PER_SEGUNDO_NOMBRE}+" "+
+$F{PER_TERCER_NOMBRE}+" "+$F{PER_PRIMER_APELLIDO}+" "+
+$F{PER_SEGUNDO_APELLIDO}+" "+$F{PER_APELLIDO_CASADA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="109" width="135" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LPR_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="439" y="109" width="35" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TIN_TASA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="109" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PLM_DURACION}.toString()+" MESES"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="481" y="109" width="12" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[%]]></text>
+			</staticText>
+			<textField pattern="##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="90" y="129" width="365" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="245" y="69" width="90" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Referencia:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="335" y="69" width="100" height="13"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{PRE_ID}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="356" y="225" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_IVA_DEDUCCIONES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="224" width="150" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[IVA:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="456" y="184" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_APORTACIONES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="184" width="150" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[APORTACIONES:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="456" y="204" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_OTRAS_DEDUCCIONES}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="164" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DEDUCCIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="204" width="150" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[OTRAS DEDUCCIONES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="556" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="556" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="21" width="556" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[COOPERATIVA DE EMPLEADOS DE TACA INTERNATIONAL AIRLINES  Y AEROMAN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="184" height="43"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PRE_ID">
+					<subreportParameterExpression><![CDATA[$P{PRE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/liquidacion_prestamo_subreport2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="148">
+			<textField>
+				<reportElement x="214" y="128" width="133" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Revisado"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="416" y="127" width="133" height="1"/>
+			</line>
+			<line>
+				<reportElement x="214" y="71" width="133" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="198" y="58" width="16" height="14" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<text><![CDATA[F:
+]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="32" y="32" width="523" height="17"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="113" width="16" height="14" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<text><![CDATA[F:
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="22" y="128" width="133" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Elaborado"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="22" y="128" width="133" height="1"/>
+			</line>
+			<line>
+				<reportElement x="214" y="129" width="133" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="32" width="32" height="17"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[el día]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="115" width="16" height="14" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<text><![CDATA[F:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="72" width="133" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Firma del Asociado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="555" height="17"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[He recibido a mi entera satisfacción, lo arriba descrito, en fe de lo cual firmo en la ciudad de Antiguo Cuscatlán]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="128" width="133" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Procesado"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="113" width="16" height="14" isRemoveLineWhenBlank="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<text><![CDATA[F:
+]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<elementGroup/>
+			<elementGroup/>
+			<staticText>
+				<reportElement x="0" y="10" width="120" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TOTAL DEDUCCIONES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="150" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[LIQUIDO A RECIBIR:]]></text>
+			</staticText>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="40" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PRE_LIQUIDO_A_RECIBIR}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="10" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_DEDUCCIONES}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="125" y="54" width="330" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

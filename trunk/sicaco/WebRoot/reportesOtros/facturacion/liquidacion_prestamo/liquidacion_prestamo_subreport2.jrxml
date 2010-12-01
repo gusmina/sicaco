@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="liquidacion_prestamo_subreport2" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<parameter name="PRE_ID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	dxp.dxp_id as ID,
+	'PRESTAMO' as TIPO_CUENTA,
+	lpr.lpr_nombre as NOMBRE,
+	(dxp.dxp_monto-dxp.dxp_interes_pagado)  as DXP_MONTO,
+	dxp.dxp_interes_pagado as DXP_INTERES_PAGADO
+FROM cta_dxp_descuentos_prestamo dxp, cta_pre_prestamo pre, cta_tpr_tipo_prestamo tpr,cta_lpr_linea_prestamo lpr
+WHERE dxp.pre_id=$P{PRE_ID} and dxp.pre_id_2 IS NOT NULL
+AND dxp.pre_id_2=pre.pre_id and pre.tpr_id=tpr.tpr_id and tpr.lpr_id=lpr.lpr_id
+
+UNION
+
+SELECT 
+	dxp.dxp_id as ID,
+	'SEGURO' as TIPO_CUENTA,
+	tis.tis_nombre as NOMBRE,
+	dxp.dxp_monto as DXP_MONTO,
+	dxp.dxp_interes_pagado as DXP_INTERES_PAGADO
+FROM cta_dxp_descuentos_prestamo dxp, cta_seg_seguros seg, cta_tis_tipo_seguro tis
+WHERE dxp.pre_id=$P{PRE_ID} AND dxp.seg_id IS NOT NULL
+AND dxp.seg_id=seg.seg_id AND seg.tis_id=tis.tis_id
+
+UNION
+
+SELECT
+	dxp.dxp_id as ID, 
+	'AHORRO' as TIPO_CUENTA,
+	tah.tah_nombre as NOMBRE,
+	dxp.dxp_monto as DXP_MONTO,
+	dxp.dxp_interes_pagado as DXP_INTERES_PAGADO
+FROM cta_dxp_descuentos_prestamo dxp, cta_cah_cuenta_ahorro cah, 
+cta_tah_tipo_ahorro tah
+WHERE dxp.pre_id=$P{PRE_ID} AND dxp.cah_id IS NOT NULL
+AND dxp.cah_id=cah.cah_id AND cah.tah_id=tah.tah_id
+
+UNION
+
+SELECT
+	1 as ID,
+	'OTRAS RETENCIONES' as TIPO_CUENTA, 
+	'' as NOMBRE,
+	IFNULL(SUM(RXP_MONTO),0.00) as DXP_MONTO,
+	0.00 as INTERES
+FROM cta_rxp_retencion_prestamo rxp
+WHERE rxp.pre_id = $P{PRE_ID}]]>
+	</queryString>
+	<field name="TIPO_CUENTA" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DXP_MONTO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="DXP_INTERES_PAGADO" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="150" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_CUENTA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="0" width="100" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DXP_MONTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="455" y="14" width="100" height="13" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($F{TIPO_CUENTA}.equals("PRESTAMO"))]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{DXP_INTERES_PAGADO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="14" width="150" height="13" isRemoveLineWhenBlank="true">
+					<printWhenExpression><![CDATA[new Boolean($F{TIPO_CUENTA}.equals("PRESTAMO"))]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[INTERESES CORRIENTES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="0" width="200" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="10" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="10"/>
+				<subreportParameter name="PRE_ID">
+					<subreportParameterExpression><![CDATA[$P{PRE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "/liquidacion_prestamo_subreport3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

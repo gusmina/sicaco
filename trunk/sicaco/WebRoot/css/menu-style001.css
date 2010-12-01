@@ -1,0 +1,63 @@
+@CHARSET "UTF-8";
+/*Parametros generales del menu*/
+#menu-v li {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid black;
+	width: 100px;
+	background-color: blue;
+	color: white;
+}
+
+/*Resaltado sobre los menus*/
+#menu-v li a:hover {
+	color: white;
+	font-style: normal;
+	font-weight: bolder;
+	font-size: 13px;
+}
+/*Visualizacion normal de los menus*/
+#menu-v li a {
+	color: white;
+	font-style: normal;
+}
+
+/*Resaltado sobre las opciones*/
+.hover {
+	color: black;
+	background: white;
+}
+
+/*Posicion de los items del menu*/
+#menu-v li ul {
+	margin: 0px;
+	padding: 0px;
+}
+
+/*Estilo de los items*/
+#menu-v li ul li {
+	border: 1px solid black;
+	width: 100px;
+	color: black;
+	background-color: yellow;
+	margin: 0px;
+	padding: 0xp;
+}
+
+/*Estilo de los link de los items*/
+#menu-v li ul li a {
+	color: black;
+}
+
+/*Estilo de los link en mouseover*/
+#menu-v li ul li a:hover {
+	color: black;
+}
+
+/*Posicion del menu*/
+#menu-v {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+}

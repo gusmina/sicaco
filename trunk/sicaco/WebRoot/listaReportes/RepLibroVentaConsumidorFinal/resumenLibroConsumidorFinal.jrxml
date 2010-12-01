@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resumenLibroConsumidorFinal" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ANIO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["2009"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MES" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["10"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+	sec_suc_sucursal.`SUC_ID` AS ID_SUCURSAL,
+	sec_suc_sucursal.`SUC_NOMBRE` AS NOMBRE_SUCURSAL,
+        'Ventas Consumidor Final' AS TIPO_FACTURACION,
+	SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`) AS VENTAS_EXENTAS,
+    SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` - 
+	fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS` - 
+	fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS VENTAS_GRAVADAS,
+    SUM(fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS IVA
+FROM
+      `sec_suc_sucursal` sec_suc_sucursal,
+	`ctr_rfc_repositorio_facturas` ctr_rfc_repositorio_facturas,
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE fac_fen_factura_encabezado.`FUS_ID` IN(2,4) 
+      AND sec_suc_sucursal.`SUC_ID` = ctr_rfc_repositorio_facturas.`SUC_ID`
+      AND MONTH(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{MES},SIGNED)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{ANIO},SIGNED)
+      AND ctr_rfc_repositorio_facturas.`TIPO_FACT_CONT` IN ('CO')
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA` IN ('CO')
+      AND fac_fen_factura_encabezado.`FEN_SERIE_FACTURA`= ctr_rfc_repositorio_facturas.`CFC_SERIE`
+      AND (fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA` BETWEEN 
+		ctr_rfc_repositorio_facturas.`RFC_CORR_INI` AND
+		ctr_rfc_repositorio_facturas.`RFC_CORR_FIN`)
+
+GROUP BY  sec_suc_sucursal.`SUC_ID`,TIPO_FACTURACION
+
+union 
+
+SELECT DISTINCT
+	sec_suc_sucursal.`SUC_ID` AS ID_SUCURSAL,
+	sec_suc_sucursal.`SUC_NOMBRE` AS NOMBRE_SUCURSAL,
+        'Ventas Credito Fiscal' AS TIPO_FACTURACION,
+	SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`) AS VENTAS_EXENTAS,
+    SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` - 
+	fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS` - 
+	fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS VENTAS_GRAVADAS,
+    SUM(fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS IVA
+FROM
+      `sec_suc_sucursal` sec_suc_sucursal,
+	`ctr_rfc_repositorio_facturas` ctr_rfc_repositorio_facturas,
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE fac_fen_factura_encabezado.`FUS_ID` IN(2,4) 
+      AND sec_suc_sucursal.`SUC_ID` = ctr_rfc_repositorio_facturas.`SUC_ID`
+      AND MONTH(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{MES},SIGNED)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{ANIO},SIGNED)
+      AND ctr_rfc_repositorio_facturas.`TIPO_FACT_CONT` IN ('CR')
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA` IN ('CR')
+      AND fac_fen_factura_encabezado.`FEN_SERIE_FACTURA`= ctr_rfc_repositorio_facturas.`CFC_SERIE`
+      AND (fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA` BETWEEN 
+		ctr_rfc_repositorio_facturas.`RFC_CORR_INI` AND
+		ctr_rfc_repositorio_facturas.`RFC_CORR_FIN`)
+
+GROUP BY  sec_suc_sucursal.`SUC_ID`,TIPO_FACTURACION
+
+UNION
+
+SELECT DISTINCT
+	sec_suc_sucursal.`SUC_ID` AS ID_SUCURSAL,
+	sec_suc_sucursal.`SUC_NOMBRE` AS NOMBRE_SUCURSAL,
+        'Ventas a Contribuyentes' AS TIPO_FACTURACION,
+	SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS`) AS VENTAS_EXENTAS,
+    SUM(fac_fen_factura_encabezado.`FEN_TOTAL_VENTA` - 
+	fac_fen_factura_encabezado.`FEN_TOTAL_VENTAS_EXENTAS` - 
+	fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS VENTAS_GRAVADAS,
+    SUM(fac_fen_factura_encabezado.`FEN_IVA_RETENIDO`) AS IVA
+FROM
+      `sec_suc_sucursal` sec_suc_sucursal,
+	`ctr_rfc_repositorio_facturas` ctr_rfc_repositorio_facturas,
+     `fac_fen_factura_encabezado` fac_fen_factura_encabezado
+
+WHERE fac_fen_factura_encabezado.`FUS_ID` IN(2,4) 
+      AND sec_suc_sucursal.`SUC_ID` = ctr_rfc_repositorio_facturas.`SUC_ID`
+      AND MONTH(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{MES},SIGNED)
+      AND YEAR(fac_fen_factura_encabezado.`FEN_FECHA_FACTURA`)=CONVERT($P{ANIO},SIGNED)
+      AND ctr_rfc_repositorio_facturas.`TIPO_FACT_CONT` IN ('VC')
+      AND fac_fen_factura_encabezado.`FEN_TIPO_FACTURA` IN ('VC')
+      AND fac_fen_factura_encabezado.`FEN_SERIE_FACTURA`= ctr_rfc_repositorio_facturas.`CFC_SERIE`
+      AND (fac_fen_factura_encabezado.`FEN_NUMERO_FACTURA` BETWEEN 
+		ctr_rfc_repositorio_facturas.`RFC_CORR_INI` AND
+		ctr_rfc_repositorio_facturas.`RFC_CORR_FIN`)
+
+GROUP BY  sec_suc_sucursal.`SUC_ID`,TIPO_FACTURACION
+
+
+ORDER BY ID_SUCURSAL,TIPO_FACTURACION]]>
+	</queryString>
+	<field name="ID_SUCURSAL" class="java.lang.Integer"/>
+	<field name="NOMBRE_SUCURSAL" class="java.lang.String"/>
+	<field name="TIPO_FACTURACION" class="java.lang.String"/>
+	<field name="VENTAS_EXENTAS" class="java.math.BigDecimal"/>
+	<field name="VENTAS_GRAVADAS" class="java.math.BigDecimal"/>
+	<field name="IVA" class="java.math.BigDecimal"/>
+	<variable name="SUM_VENTAS_EXENTAS_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENTAS_EXENTAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VENTAS_GRAVADAS_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VENTAS_GRAVADAS}]]></variableExpression>
+	</variable>
+	<variable name="SUM_IVA_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{IVA}]]></variableExpression>
+	</variable>
+	<variable name="SUM_VENTAS_TOTALES" class="java.lang.Double" resetType="Column">
+		<variableExpression><![CDATA[new Double($F{VENTAS_EXENTAS}.doubleValue()+$F{VENTAS_GRAVADAS}.doubleValue()+$F{IVA}.doubleValue())]]></variableExpression>
+		<initialValueExpression><![CDATA[new Double(0)]]></initialValueExpression>
+	</variable>
+	<variable name="SUM_SUM_VENTAS_TOTALES_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{SUM_VENTAS_TOTALES}]]></variableExpression>
+	</variable>
+	<group name="NAME_SUCURSAL">
+		<groupExpression><![CDATA[$F{NOMBRE_SUCURSAL}]]></groupExpression>
+		<groupHeader>
+			<band height="14" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="1" y="0" width="164" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE_SUCURSAL}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="165" y="0" width="80" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Ventas
+Exentas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="245" y="0" width="88" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Ventas
+Gravadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="333" y="0" width="59" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="392" y="0" width="87" height="29"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VENTAS
+TOTALES]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="165" y="29" width="314" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="1" y="0" width="164" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TIPO_FACTURACION}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="165" y="0" width="80" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VENTAS_EXENTAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="245" y="0" width="88" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VENTAS_GRAVADAS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="0" width="59" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{IVA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="392" y="0" width="87" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_VENTAS_TOTALES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="30" splitType="Stretch">
+			<line>
+				<reportElement key="line-2" positionType="FixRelativeToBottom" x="165" y="1" width="314" height="1" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-3" positionType="FixRelativeToBottom" x="165" y="1" width="314" height="1" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-4" positionType="FixRelativeToBottom" x="165" y="4" width="314" height="1" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="165" y="4" width="80" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_VENTAS_EXENTAS_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="245" y="4" width="88" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_VENTAS_GRAVADAS_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="333" y="4" width="59" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{SUM_IVA_1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="392" y="4" width="87" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{SUM_SUM_VENTAS_TOTALES_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-5" x="1" y="0" width="156" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

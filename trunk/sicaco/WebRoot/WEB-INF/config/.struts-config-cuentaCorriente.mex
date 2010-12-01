@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowViewLayout Version="1.2">
+  <StrutsActivity path="/planMes.do" location="30,195" dimension="335,92" />
+  <StrutsActivity path="/parentesco.do" location="2150,1950" dimension="120,81" />
+  <StrutsActivity path="/tasaInteres.do" location="495,199" dimension="351,88" />
+  <StrutsActivity path="/lineaAhorro.do" location="976,199" dimension="355,88" />
+  <StrutsActivity path="/tipoAhorro.do" location="1461,199" dimension="349,88" />
+  <StrutsActivity path="/cuentaAhorro.do" location="1940,199" dimension="363,88" />
+  <StrutsActivity path="/cuentaAportacion.do" location="107,865" dimension="150,100" />
+  <StrutsActivity path="/tipoCuentaBancaria.do" location="2433,199" dimension="392,88" />
+  <StrutsActivity path="/cuentaAsociado.do" location="2475,540" dimension="375,88" />
+  <StrutsActivity path="/beneficiarios.do" location="615,480" dimension="150,100" />
+  <StrutsActivity path="/tipoPrestamo.do" location="950,550" dimension="425,88" />
+  <StrutsActivity path="/tipoFiador.do" location="1250,750" dimension="404,88" />
+  <StrutsActivity path="/tipoGarantiaAction.do" location="1250,950" dimension="419,88" />
+  <StrutsActivity path="/descuentosExternos.do" location="375,495" dimension="226,76" />
+  <StrutsActivity path="/lineaPrestamo.do" location="600,675" dimension="136,88" />
+  <StrutsActivity path="/tipoNota.do" location="405,735" dimension="106,88" />
+  <StrutsActivity path="/verTipoNota.do" location="270,855" dimension="150,91" />
+  <StrutsActivity path="/forwardErrorPage.do" location="585,975" dimension="150,54" />
+  <StrutsActivity path="/buscarAsociado.do" location="1905,720" dimension="391,100" />
+  <StrutsActivity path="/prestamo.do" location="1250,1250" dimension="401,88" />
+  <StrutsActivity path="/fiadorPrestamo.do" location="50,1450" dimension="310,88" />
+  <StrutsActivity path="/tipoSeguro.do" location="1850,950" dimension="271,88" />
+  <StrutsActivity path="/seguros.do" location="1890,1215" dimension="256,88" />
+  <StrutsActivity path="/chequePrestamo.do" location="645,1455" dimension="299,88" />
+  <StrutsActivity path="/referenciaPersonal.do" location="50,1650" dimension="456,88" />
+  <StrutsActivity path="/referenciaComercial.do" location="650,1650" dimension="463,88" />
+  <StrutsActivity path="/movXPrestamo.do" location="1850,1750" dimension="484,104" />
+  <StrutsActivity path="/garantiaPrestamo.do" location="2415,1770" dimension="196,100" />
+  <StrutsActivity path="/desembolsoPrestamo.do" location="1550,2050" dimension="530,104" />
+  <StrutsActivity path="/notaSeguro.do" location="650,2150" dimension="465,104" />
+  <StrutsActivity path="/fiadorPrestamoInvalido.do" location="-225,1230" dimension="211,100" />
+  <StrutsActivity path="/invalidGarantiaPrestamo.do" location="2760,1770" dimension="450,92" />
+  <StrutsActivity path="/invalidDescuentosExternos.do" location="1250,1450" dimension="463,92" />
+  <StrutsActivity path="/nota.do" location="2020,2413" dimension="150,100" />
+  <StrutsActivity path="/invalidLineaPrestamo.do" location="1170,405" dimension="150,100" />
+  <StrutsActivity path="/invalidNotaPrestamo.do" location="2052,2557" dimension="150,100" />
+  <StrutsActivity path="/descuentosCooperativa.do" location="541,2473" dimension="150,100" />
+  <StrutsActivity path="/agregaBen.do" location="950,2450" dimension="352,88" />
+  <StrutsActivity path="/preCuentaBancaria.do" location="2450,2450" dimension="511,104" />
+  <StrutsActivity path="toAsociados;6" location="50,1050" dimension="191,75" />
+  <StrutsActivity path="toAsociadosB;6" location="300,1150" dimension="280,75" />
+  <StrutsActivity path="forwardToPrestamo;6" location="2150,550" dimension="256,78" />
+  <StrutsActivity path="toPrestamosList;6" location="-27,2459" dimension="150,100" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.planMes" location="90,345" dimension="207,49" />
+  <StrutsActivity path="redirectInvalidData" location="1663,0" dimension="118,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.parentesco" location="2055,1875" dimension="241,51" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tasaInteres" location="555,345" dimension="221,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.lineaAhorro" location="1050,330" dimension="223,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoAhorro" location="1526,400" dimension="218,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.cuentaAhorro" location="1850,1550" dimension="306,53" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.cierreCuenta" location="1550,1650" dimension="250,51" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.cuentaAportacion" location="950,1150" dimension="296,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoCuentaBancaria" location="2498,400" dimension="261,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.cuentaAsociado" location="2535,728" dimension="254,75" />
+  <StrutsActivity path="/asociado.do" location="650,1050" dimension="116,75" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.beneficiarios" location="1550,550" dimension="271,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoPrestamo" location="870,750" dimension="274,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoFiador" location="435,885" dimension="253,49" />
+  <StrutsActivity path="pagina-lista.tgar.tipogarantia" location="1335,1095" dimension="197,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.descuentosExternos" location="30,510" dimension="267,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.lineaPrestamo" location="810,450" dimension="271,76" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoNota" location="105,765" dimension="206,49" />
+  <StrutsActivity path="pagina.error" location="870,975" dimension="88,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.buscarAsociado" location="650,1250" dimension="311,75" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.ingresoSolicitudPrestamo" location="1170,1755" dimension="341,49" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.visualizacionSolicitud" location="650,2350" dimension="314,50" />
+  <StrutsActivity path="pagina.dml.calculadoraCuotas" location="2450,1250" dimension="205,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.buscarPrestamoAsociado" location="1250,2250" dimension="353,78" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.respuestaPrestamos" location="2450,2350" dimension="318,50" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.creditoExistente" location="50,2350" dimension="286,50" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.comprobacionPrestamoAutomatico" location="2150,1450" dimension="393,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.listaDeudores" location="2450,1650" dimension="277,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.fiadorPrestamo" location="75,1275" dimension="243,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.busquedaFiador" location="2450,1550" dimension="288,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.tipoSeguro" location="1850,1150" dimension="222,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.seguros" location="1920,1320" dimension="208,45" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.chequePrestamo" location="1850,1450" dimension="250,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaPersonal" location="350,2050" dimension="410,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaComercial" location="950,2050" dimension="417,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.movXPrestamo" location="50,1850" dimension="317,53" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.garantiaDML" location="2355,1965" dimension="268,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.desembolsoPrestamo" location="50,2150" dimension="359,53" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.notaSeguro" location="2150,2150" dimension="294,53" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.notasPrestamo" location="2450,950" dimension="285,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.descuentosCooperativa" location="2450,1050" dimension="332,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.agregaBen" location="1250,1650" dimension="222,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.cuentasBancarias" location="50,2650" dimension="333,53" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.prestamoVista" location="1550,1950" dimension="278,50" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.parentezco" location="650,1850" dimension="241,51" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.solicitudPrestamoInfoGeneral" location="950,1950" dimension="363,49" />
+  <StrutsActivity path="pagina-lista.cuentaCorriente.busquedaCuentaAportacion" location="1970,400" dimension="302,49" />
+  <StrutsActivity path="plantilla-lista.cuentaCorriente.cuentaAportacion" location="1550,650" dimension="302,49" />
+  <StrutsActivity path="pagina-dml.cuentaCorriente.cuentaAhorro" location="50,1350" dimension="271,49" />
+  <StrutsActivity path="pagina,dml.calculadoraCuotas" location="2450,1150" dimension="205,50" />
+  <StrutsActivity path="pagina-lista,cuentaCorriente.busquedaFiador" location="2450,1350" dimension="288,50" />
+  <StrutsActivity path="pagina-lista.asociados.cuentasBancarias" location="1550,2550" dimension="294,53" />
+  <StrutsTransition id="redirectInvalidData,null,/chequePrestamo.do,2" routingType="1">
+    <Bendpoints>
+      <Point rDim1="-27,1326" rDim2="901,-149" />
+      <Point rDim1="-132,1341" rDim2="796,-134" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoFiador.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1670,49" />
+      <AbsolutePoint location="1670,100" />
+      <AbsolutePoint location="1452,100" />
+      <AbsolutePoint location="1452,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/forwardErrorPage.do,null,pagina.error,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="735,1002" />
+      <AbsolutePoint location="870,1002" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/descuentosExternos.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1752,0" />
+      <AbsolutePoint location="1752,-129" />
+      <AbsolutePoint location="474,-129" />
+      <AbsolutePoint location="474,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/parentesco.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1781,2" />
+      <AbsolutePoint location="3285,2" />
+      <AbsolutePoint location="3285,2029" />
+      <AbsolutePoint location="2270,2029" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/preCuentaBancaria.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,2502" />
+      <AbsolutePoint location="2705,2502" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,nuevoAhorro,/cuentaAhorro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2662,540" />
+      <AbsolutePoint location="2662,464" />
+      <AbsolutePoint location="1955,464" />
+      <AbsolutePoint location="1955,287" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/seguros.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,1259" />
+      <AbsolutePoint location="2018,1259" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/seguros.do,notas,/notaSeguro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1890,1258" />
+      <AbsolutePoint location="1837,1258" />
+      <AbsolutePoint location="1837,2021" />
+      <AbsolutePoint location="868,2021" />
+      <AbsolutePoint location="868,2150" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoFiador.do,redirectInvalidData,/tipoFiador.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="3,-59" rDim2="3,-59" />
+      <Point rDim1="378,-59" rDim2="378,-59" />
+      <Point rDim1="378,1" rDim2="378,1" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,lista,pagina-lista.cuentaCorriente.buscarPrestamoAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1250,1294" />
+      <AbsolutePoint location="1128,1294" />
+      <AbsolutePoint location="1128,1819" />
+      <AbsolutePoint location="1426,1819" />
+      <AbsolutePoint location="1426,2250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoCuentaBancaria.do,redirectInvalidData,/tipoCuentaBancaria.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2659,199" />
+      <AbsolutePoint location="2659,124" />
+      <AbsolutePoint location="2985,124" />
+      <AbsolutePoint location="2985,243" />
+      <AbsolutePoint location="2825,243" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/seguros.do,redirectInvalidData,/seguros.do,1" routingType="1">
+    <Bendpoints>
+      <Point rDim1="152,-64" rDim2="152,-64" />
+    </Bendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/preCuentaBancaria.do,toPrestamosAprobados,/prestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2775,2450" />
+      <AbsolutePoint location="2775,2171" />
+      <AbsolutePoint location="2644,2171" />
+      <AbsolutePoint location="2644,1757" />
+      <AbsolutePoint location="2471,1757" />
+      <AbsolutePoint location="2471,1714" />
+      <AbsolutePoint location="1999,1714" />
+      <AbsolutePoint location="1999,1610" />
+      <AbsolutePoint location="1750,1610" />
+      <AbsolutePoint location="1750,1310" />
+      <AbsolutePoint location="1651,1310" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/beneficiarios.do,regresarA,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="668,580" />
+      <AbsolutePoint location="668,631" />
+      <AbsolutePoint location="831,631" />
+      <AbsolutePoint location="831,1073" />
+      <AbsolutePoint location="766,1073" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cuentaAhorro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1774,49" />
+      <AbsolutePoint location="1774,64" />
+      <AbsolutePoint location="2099,64" />
+      <AbsolutePoint location="2099,199" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,nuevoSeguro,/seguros.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2834,628" />
+      <AbsolutePoint location="2834,1235" />
+      <AbsolutePoint location="2146,1235" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/parentesco.do,redirectInvalidData,/parentesco.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2228,1950" />
+      <AbsolutePoint location="2228,1943" />
+      <AbsolutePoint location="2317,1943" />
+      <AbsolutePoint location="2317,1990" />
+      <AbsolutePoint location="2270,1990" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fiadorPrestamoInvalido.do,lista,pagina-lista.cuentaCorriente.fiadorPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="-14,1290" />
+      <AbsolutePoint location="75,1290" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,cierreDeCuentas,pagina-dml.cuentaCorriente.cierreCuenta,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1940,243" />
+      <AbsolutePoint location="1873,243" />
+      <AbsolutePoint location="1873,785" />
+      <AbsolutePoint location="1780,785" />
+      <AbsolutePoint location="1780,1650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,agregaBen,/agregaBen.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2850,606" />
+      <AbsolutePoint location="2975,606" />
+      <AbsolutePoint location="2975,1610" />
+      <AbsolutePoint location="2382,1610" />
+      <AbsolutePoint location="2382,1896" />
+      <AbsolutePoint location="3049,1896" />
+      <AbsolutePoint location="3049,2692" />
+      <AbsolutePoint location="1104,2692" />
+      <AbsolutePoint location="1104,2538" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAportacion.do,regresar,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="257,957" />
+      <AbsolutePoint location="1193,957" />
+      <AbsolutePoint location="1193,706" />
+      <AbsolutePoint location="2632,706" />
+      <AbsolutePoint location="2632,628" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoGarantiaAction.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,0" />
+      <AbsolutePoint location="1722,-99" />
+      <AbsolutePoint location="-298,-99" />
+      <AbsolutePoint location="-298,1036" />
+      <AbsolutePoint location="1250,1036" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/lineaPrestamo.do,redirectInvalidData,/invalidLineaPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="608,675" />
+      <AbsolutePoint location="608,443" />
+      <AbsolutePoint location="1170,443" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoCuentaBancaria.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1774,0" />
+      <AbsolutePoint location="1774,-135" />
+      <AbsolutePoint location="2629,-135" />
+      <AbsolutePoint location="2629,199" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,busquedaAsociados,/buscarAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2498,628" />
+      <AbsolutePoint location="2498,770" />
+      <AbsolutePoint location="2296,770" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/descuentosExternos.do,redirectInvalidData,/invalidDescuentosExternos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="375,562" />
+      <AbsolutePoint location="13,562" />
+      <AbsolutePoint location="13,1447" />
+      <AbsolutePoint location="1481,1447" />
+      <AbsolutePoint location="1481,1450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,verSolicitud,pagina-dml.cuentaCorriente.visualizacionSolicitud,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1420,1338" />
+      <AbsolutePoint location="1420,1415" />
+      <AbsolutePoint location="-120,1415" />
+      <AbsolutePoint location="-120,2299" />
+      <AbsolutePoint location="807,2299" />
+      <AbsolutePoint location="807,2350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/beneficiarios.do,redirectInvalidData,/beneficiarios.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="708,480" />
+      <AbsolutePoint location="708,465" />
+      <AbsolutePoint location="769,465" />
+      <AbsolutePoint location="769,523" />
+      <AbsolutePoint location="765,523" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,nuevaSolicitudCredito,pagina-dml.cuentaCorriente.ingresoSolicitudPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1250,1311" />
+      <AbsolutePoint location="1248,1311" />
+      <AbsolutePoint location="1248,1755" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/descuentosCooperativa.do,lista,pagina-lista.cuentaCorriente.descuentosCooperativa,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="691,2553" />
+      <AbsolutePoint location="1439,2553" />
+      <AbsolutePoint location="1439,2389" />
+      <AbsolutePoint location="2336,2389" />
+      <AbsolutePoint location="2336,2295" />
+      <AbsolutePoint location="2752,2295" />
+      <AbsolutePoint location="2752,1100" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/verTipoNota.do,verLista,pagina-lista.cuentaCorriente.tipoNota,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="296,855" />
+      <AbsolutePoint location="296,814" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoSeguro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,994" />
+      <AbsolutePoint location="1985,994" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoPrestamo.do,lista,pagina-lista.cuentaCorriente.tipoPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1129,638" />
+      <AbsolutePoint location="1129,750" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/chequePrestamo.do,lista,pagina-lista.cuentaCorriente.chequePrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="794,1455" />
+      <AbsolutePoint location="794,1357" />
+      <AbsolutePoint location="1913,1357" />
+      <AbsolutePoint location="1913,1450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/beneficiarios.do,lista,pagina-lista.cuentaCorriente.beneficiarios,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="765,565" />
+      <AbsolutePoint location="915,565" />
+      <AbsolutePoint location="915,735" />
+      <AbsolutePoint location="1390,735" />
+      <AbsolutePoint location="1390,574" />
+      <AbsolutePoint location="1550,574" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/desembolsoPrestamo.do,lista,pagina-lista.cuentaCorriente.desembolsoPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1815,2154" />
+      <AbsolutePoint location="1815,2365" />
+      <AbsolutePoint location="1039,2365" />
+      <AbsolutePoint location="1039,2269" />
+      <AbsolutePoint location="229,2269" />
+      <AbsolutePoint location="229,2203" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,addBeneAport,/agregaBen.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2121,199" />
+      <AbsolutePoint location="2121,-23" />
+      <AbsolutePoint location="-256,-23" />
+      <AbsolutePoint location="-256,2452" />
+      <AbsolutePoint location="950,2452" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/lineaAhorro.do,lista,pagina-lista.cuentaCorriente.lineaAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1153,287" />
+      <AbsolutePoint location="1153,330" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/seguros.do,regresar,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2146,1275" />
+      <AbsolutePoint location="2165,1275" />
+      <AbsolutePoint location="2165,870" />
+      <AbsolutePoint location="2465,870" />
+      <AbsolutePoint location="2465,614" />
+      <AbsolutePoint location="2475,614" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,nuevoPrestamo,/prestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2475,584" />
+      <AbsolutePoint location="2421,584" />
+      <AbsolutePoint location="2421,1065" />
+      <AbsolutePoint location="1547,1065" />
+      <AbsolutePoint location="1547,1250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoSeguro.do,redirectInvalidData,/tipoSeguro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1985,950" />
+      <AbsolutePoint location="1985,876" />
+      <AbsolutePoint location="2128,876" />
+      <AbsolutePoint location="2128,993" />
+      <AbsolutePoint location="2121,993" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tasaInteres.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1692,49" />
+      <AbsolutePoint location="1692,124" />
+      <AbsolutePoint location="700,124" />
+      <AbsolutePoint location="700,199" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/notaSeguro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,2202" />
+      <AbsolutePoint location="882,2202" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/movXPrestamo.do,lista,pagina-lista.cuentaCorriente.movXPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1850,1841" />
+      <AbsolutePoint location="208,1841" />
+      <AbsolutePoint location="208,1850" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/garantiaPrestamo.do,redirectInvalidData,/invalidGarantiaPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2611,1820" />
+      <AbsolutePoint location="2760,1820" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/garantiaPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,1820" />
+      <AbsolutePoint location="2513,1820" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/lineaAhorro.do,redirectInvalidData,/lineaAhorro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1183,199" />
+      <AbsolutePoint location="1183,64" />
+      <AbsolutePoint location="1360,64" />
+      <AbsolutePoint location="1360,243" />
+      <AbsolutePoint location="1331,243" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cuentaAsociado.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1781,42" />
+      <AbsolutePoint location="2832,42" />
+      <AbsolutePoint location="2832,540" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/lineaAhorro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1692,0" />
+      <AbsolutePoint location="1692,-75" />
+      <AbsolutePoint location="1153,-75" />
+      <AbsolutePoint location="1153,199" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAportacion.do,beneficiariosLista,/beneficiarios.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="107,885" />
+      <AbsolutePoint location="-60,885" />
+      <AbsolutePoint location="-60,595" />
+      <AbsolutePoint location="690,595" />
+      <AbsolutePoint location="690,580" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/desembolsoPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,2102" />
+      <AbsolutePoint location="1815,2102" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,redirectInvalidData,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2692,540" />
+      <AbsolutePoint location="2692,464" />
+      <AbsolutePoint location="2925,464" />
+      <AbsolutePoint location="2925,584" />
+      <AbsolutePoint location="2850,584" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tasaInteres.do,redirectInvalidData,/tasaInteres.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="670,199" />
+      <AbsolutePoint location="670,64" />
+      <AbsolutePoint location="861,64" />
+      <AbsolutePoint location="861,243" />
+      <AbsolutePoint location="846,243" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,lista,pagina-lista.cuentaCorriente.cuentaAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2121,287" />
+      <AbsolutePoint location="2121,375" />
+      <AbsolutePoint location="3105,375" />
+      <AbsolutePoint location="3105,1514" />
+      <AbsolutePoint location="2003,1514" />
+      <AbsolutePoint location="2003,1550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/descuentosExternos.do,lista,pagina-lista.cuentaCorriente.descuentosExternos,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="375,533" />
+      <AbsolutePoint location="297,533" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,aCheques,/chequePrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1398,1338" />
+      <AbsolutePoint location="1398,1380" />
+      <AbsolutePoint location="816,1380" />
+      <AbsolutePoint location="816,1455" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fiadorPrestamo.do,forwardToBusqueda,pagina-lista.cuentaCorriente.busquedaFiador,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,1504" />
+      <AbsolutePoint location="-70,1504" />
+      <AbsolutePoint location="-70,1933" />
+      <AbsolutePoint location="2734,1933" />
+      <AbsolutePoint location="2734,1600" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/fiadorPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1663,2" />
+      <AbsolutePoint location="7,2" />
+      <AbsolutePoint location="7,1476" />
+      <AbsolutePoint location="50,1476" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/agregaBen.do,lista,pagina-lista.cuentaCorriente.agregaBen,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1160,2450" />
+      <AbsolutePoint location="1160,2232" />
+      <AbsolutePoint location="1526,2232" />
+      <AbsolutePoint location="1526,1674" />
+      <AbsolutePoint location="1472,1674" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/cuentaAportacion.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1670,0" />
+      <AbsolutePoint location="1670,-45" />
+      <AbsolutePoint location="-120,-45" />
+      <AbsolutePoint location="-120,915" />
+      <AbsolutePoint location="107,915" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,regresar,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2151,287" />
+      <AbsolutePoint location="2151,345" />
+      <AbsolutePoint location="2483,345" />
+      <AbsolutePoint location="2483,540" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/agregaBen.do,regresar,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1126,2538" />
+      <AbsolutePoint location="1126,2732" />
+      <AbsolutePoint location="3345,2732" />
+      <AbsolutePoint location="3345,665" />
+      <AbsolutePoint location="2684,665" />
+      <AbsolutePoint location="2684,628" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/buscarAsociado.do,lista,pagina-lista.cuentaCorriente.buscarAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2187,820" />
+      <AbsolutePoint location="2187,1087" />
+      <AbsolutePoint location="937,1087" />
+      <AbsolutePoint location="937,1250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/notaSeguro.do,regresar,/seguros.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="650,2210" />
+      <AbsolutePoint location="-7,2210" />
+      <AbsolutePoint location="-7,1236" />
+      <AbsolutePoint location="1890,1236" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidGarantiaPrestamo.do,lista,pagina-lista.cuentaCorriente.garantiaDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2985,1862" />
+      <AbsolutePoint location="2985,1989" />
+      <AbsolutePoint location="2623,1989" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoGarantiaAction.do,redirectInvalidData,/tipoGarantiaAction.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1661,950" />
+      <AbsolutePoint location="1661,757" />
+      <AbsolutePoint location="1734,757" />
+      <AbsolutePoint location="1734,994" />
+      <AbsolutePoint location="1669,994" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/notaSeguro.do,redirectInvalidData,/notaSeguro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="882,2150" />
+      <AbsolutePoint location="882,2136" />
+      <AbsolutePoint location="1313,2136" />
+      <AbsolutePoint location="1313,2210" />
+      <AbsolutePoint location="1115,2210" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/notaSeguro.do,lista,pagina-lista.cuentaCorriente.notaSeguro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1115,2188" />
+      <AbsolutePoint location="2150,2188" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/garantiaPrestamo.do,lista,pagina-lista.cuentaCorriente.garantiaDML,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2513,1870" />
+      <AbsolutePoint location="2513,1965" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,nuevaAportacion,/cuentaAportacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2520,628" />
+      <AbsolutePoint location="2520,845" />
+      <AbsolutePoint location="182,845" />
+      <AbsolutePoint location="182,865" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,49" />
+      <AbsolutePoint location="1722,160" />
+      <AbsolutePoint location="1338,160" />
+      <AbsolutePoint location="1338,550" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/beneficiarios.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1663,42" />
+      <AbsolutePoint location="1424,42" />
+      <AbsolutePoint location="1424,533" />
+      <AbsolutePoint location="765,533" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAsociado.do,lista,pagina-lista.cuentaCorriente.cuentaAsociado,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2662,628" />
+      <AbsolutePoint location="2662,728" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoPrestamo.do,redirectInvalidData,/tipoPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1360,550" />
+      <AbsolutePoint location="1360,420" />
+      <AbsolutePoint location="1476,420" />
+      <AbsolutePoint location="1476,614" />
+      <AbsolutePoint location="1375,614" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/tipoAhorro.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1752,49" />
+      <AbsolutePoint location="1752,199" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidDescuentosExternos.do,lista,pagina-lista.cuentaCorriente.descuentosExternos,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1481,1542" />
+      <AbsolutePoint location="1481,1745" />
+      <AbsolutePoint location="-284,1745" />
+      <AbsolutePoint location="-284,534" />
+      <AbsolutePoint location="30,534" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/planMes.do,lista,pagina-lista.cuentaCorriente.planMes,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="197,287" />
+      <AbsolutePoint location="197,345" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAportacion.do,lista,pagina-lista.cuentaCorriente.cuentaAportacion,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="172,865" />
+      <AbsolutePoint location="172,830" />
+      <AbsolutePoint location="1098,830" />
+      <AbsolutePoint location="1098,1150" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAportacion.do,redirectInvalidData,/cuentaAportacion.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="196,865" />
+      <AbsolutePoint location="196,858" />
+      <AbsolutePoint location="266,858" />
+      <AbsolutePoint location="266,915" />
+      <AbsolutePoint location="257,915" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/garantiaPrestamo.do,forwardToDescuentosExternos,/descuentosExternos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2535,1770" />
+      <AbsolutePoint location="2535,1722" />
+      <AbsolutePoint location="3169,1722" />
+      <AbsolutePoint location="3169,146" />
+      <AbsolutePoint location="488,146" />
+      <AbsolutePoint location="488,495" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="toAsociados;6,null,/asociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="241,1087" />
+      <AbsolutePoint location="650,1087" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToRpe,/referenciaPersonal.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1250,1277" />
+      <AbsolutePoint location="1036,1277" />
+      <AbsolutePoint location="1036,1565" />
+      <AbsolutePoint location="278,1565" />
+      <AbsolutePoint location="278,1650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/beneficiarios.do,regresar,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="751,580" />
+      <AbsolutePoint location="751,930" />
+      <AbsolutePoint location="2804,930" />
+      <AbsolutePoint location="2804,628" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAportacion.do,addBeneAport,/agregaBen.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="107,945" />
+      <AbsolutePoint location="-330,945" />
+      <AbsolutePoint location="-330,2114" />
+      <AbsolutePoint location="1130,2114" />
+      <AbsolutePoint location="1130,2450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,redirectInvalidData,/cuentaAhorro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2151,199" />
+      <AbsolutePoint location="2151,124" />
+      <AbsolutePoint location="2348,124" />
+      <AbsolutePoint location="2348,243" />
+      <AbsolutePoint location="2303,243" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToGxp,/garantiaPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1651,1288" />
+      <AbsolutePoint location="1815,1288" />
+      <AbsolutePoint location="1815,1716" />
+      <AbsolutePoint location="2513,1716" />
+      <AbsolutePoint location="2513,1770" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tasaInteres.do,lista,pagina-lista.cuentaCorriente.tasaInteres,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="670,287" />
+      <AbsolutePoint location="670,345" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoSeguro.do,lista,pagina-lista.cuentaCorriente.tipoSeguro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1985,1038" />
+      <AbsolutePoint location="1985,1150" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fiadorPrestamo.do,lista,pagina-lista.cuentaCorriente.fiadorPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="336,1450" />
+      <AbsolutePoint location="336,1299" />
+      <AbsolutePoint location="318,1299" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoFiador.do,lista,pagina-lista.cuentaCorriente.tipoFiador,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1452,838" />
+      <AbsolutePoint location="1452,900" />
+      <AbsolutePoint location="688,900" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="forwardToPrestamo;6,null,/prestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2287,550" />
+      <AbsolutePoint location="2287,302" />
+      <AbsolutePoint location="791,302" />
+      <AbsolutePoint location="791,1110" />
+      <AbsolutePoint location="1290,1110" />
+      <AbsolutePoint location="1290,1250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/movXPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,1802" />
+      <AbsolutePoint location="2092,1802" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/lineaPrestamo.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1781,24" />
+      <AbsolutePoint location="3027,24" />
+      <AbsolutePoint location="3027,717" />
+      <AbsolutePoint location="736,717" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/chequePrestamo.do,redirectInvalidData,/chequePrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="772,1455" />
+      <AbsolutePoint location="772,1386" />
+      <AbsolutePoint location="437,1386" />
+      <AbsolutePoint location="437,1587" />
+      <AbsolutePoint location="1205,1587" />
+      <AbsolutePoint location="1205,1499" />
+      <AbsolutePoint location="944,1499" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidNotaPrestamo.do,lista,pagina-lista.cuentaCorriente.notasPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2052,2607" />
+      <AbsolutePoint location="-242,2607" />
+      <AbsolutePoint location="-242,86" />
+      <AbsolutePoint location="3065,86" />
+      <AbsolutePoint location="3065,975" />
+      <AbsolutePoint location="2735,975" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="toPrestamosList;6,null,/prestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="43,2459" />
+      <AbsolutePoint location="43,1437" />
+      <AbsolutePoint location="1450,1437" />
+      <AbsolutePoint location="1450,1338" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/nota.do,redirectInvalidData,/invalidNotaPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2095,2513" />
+      <AbsolutePoint location="2095,2557" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToCalculadora,pagina.dml.calculadoraCuotas,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1481,1338" />
+      <AbsolutePoint location="1481,1380" />
+      <AbsolutePoint location="2225,1380" />
+      <AbsolutePoint location="2225,1275" />
+      <AbsolutePoint location="2450,1275" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToVerificacion,pagina-dml.cuentaCorriente.comprobacionPrestamoAutomatico,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1577,1250" />
+      <AbsolutePoint location="1577,1115" />
+      <AbsolutePoint location="2346,1115" />
+      <AbsolutePoint location="2346,1450" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/descuentosExternos.do,forwardToCuentas,/cuentaAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="488,571" />
+      <AbsolutePoint location="488,665" />
+      <AbsolutePoint location="1506,665" />
+      <AbsolutePoint location="1506,494" />
+      <AbsolutePoint location="2632,494" />
+      <AbsolutePoint location="2632,540" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToDxp,/descuentosExternos.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1651,1258" />
+      <AbsolutePoint location="1758,1258" />
+      <AbsolutePoint location="1758,870" />
+      <AbsolutePoint location="526,870" />
+      <AbsolutePoint location="526,571" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/invalidLineaPrestamo.do,verLista,pagina-lista.cuentaCorriente.lineaPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1170,465" />
+      <AbsolutePoint location="1081,465" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToNxp,/nota.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1272,1250" />
+      <AbsolutePoint location="1272,1134" />
+      <AbsolutePoint location="630,1134" />
+      <AbsolutePoint location="630,1977" />
+      <AbsolutePoint location="-70,1977" />
+      <AbsolutePoint location="-70,2434" />
+      <AbsolutePoint location="2020,2434" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/referenciaPersonal.do,lista,pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaPersonal,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="382,1738" />
+      <AbsolutePoint location="382,2050" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,respuesta,pagina-lista.cuentaCorriente.respuestaPrestamos,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1480,1338" />
+      <AbsolutePoint location="1480,1415" />
+      <AbsolutePoint location="3225,1415" />
+      <AbsolutePoint location="3225,2375" />
+      <AbsolutePoint location="2768,2375" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToRco,/referenciaComercial.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1651,1335" />
+      <AbsolutePoint location="1728,1335" />
+      <AbsolutePoint location="1728,1618" />
+      <AbsolutePoint location="881,1618" />
+      <AbsolutePoint location="881,1650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/referenciaComercial.do,lista,pagina-lista.cuentaCorriente.solicitudPrestamoReferenciaComercial,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="906,1738" />
+      <AbsolutePoint location="906,2074" />
+      <AbsolutePoint location="950,2074" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/nota.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,2463" />
+      <AbsolutePoint location="2095,2463" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fiadorPrestamo.do,dml,pagina-lista.cuentaCorriente.listaDeudores,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="205,1538" />
+      <AbsolutePoint location="205,1640" />
+      <AbsolutePoint location="2588,1640" />
+      <AbsolutePoint location="2588,1650" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/fiadorPrestamo.do,redirectInvalidData,/fiadorPrestamoInvalido.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,1494" />
+      <AbsolutePoint location="-198,1494" />
+      <AbsolutePoint location="-198,1330" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/cuentaAhorro.do,beneficiariosLista,/beneficiarios.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2077,199" />
+      <AbsolutePoint location="2077,182" />
+      <AbsolutePoint location="921,182" />
+      <AbsolutePoint location="921,420" />
+      <AbsolutePoint location="690,420" />
+      <AbsolutePoint location="690,480" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/nota.do,lista,pagina-lista.cuentaCorriente.notasPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2095,2413" />
+      <AbsolutePoint location="2095,2099" />
+      <AbsolutePoint location="2672,2099" />
+      <AbsolutePoint location="2672,1757" />
+      <AbsolutePoint location="2885,1757" />
+      <AbsolutePoint location="2885,989" />
+      <AbsolutePoint location="2735,989" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/lineaPrestamo.do,verLista,pagina-lista.cuentaCorriente.lineaPrestamo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="736,706" />
+      <AbsolutePoint location="855,706" />
+      <AbsolutePoint location="855,526" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/seguros.do,lista,pagina-lista.cuentaCorriente.seguros,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2018,1303" />
+      <AbsolutePoint location="2018,1320" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/preCuentaBancaria.do,lista,pagina-lista.cuentaCorriente.cuentasBancarias,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2705,2554" />
+      <AbsolutePoint location="2705,2792" />
+      <AbsolutePoint location="216,2792" />
+      <AbsolutePoint location="216,2703" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoGarantiaAction.do,lista,pagina-lista.tgar.tipogarantia,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1459,1038" />
+      <AbsolutePoint location="1459,1095" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,forwardToFxp,/fiadorPrestamo.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1320,1250" />
+      <AbsolutePoint location="1320,1065" />
+      <AbsolutePoint location="915,1065" />
+      <AbsolutePoint location="915,1165" />
+      <AbsolutePoint location="600,1165" />
+      <AbsolutePoint location="600,1494" />
+      <AbsolutePoint location="360,1494" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/parentesco.do,lista,pagina-lista.cuentaCorriente.parentesco,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2210,1950" />
+      <AbsolutePoint location="2210,1926" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/planMes.do,redirectInvalidData,/planMes.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="227,195" />
+      <AbsolutePoint location="227,124" />
+      <AbsolutePoint location="420,124" />
+      <AbsolutePoint location="420,241" />
+      <AbsolutePoint location="365,241" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoNota.do,verLista,pagina-lista.cuentaCorriente.tipoNota,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="405,780" />
+      <AbsolutePoint location="311,780" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoAhorro.do,redirectInvalidData,/tipoAhorro.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1774,199" />
+      <AbsolutePoint location="1774,124" />
+      <AbsolutePoint location="1920,124" />
+      <AbsolutePoint location="1920,265" />
+      <AbsolutePoint location="1810,265" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/prestamo.do,creditoExistente,pagina-dml.cuentaCorriente.creditoExistente,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1250,1337" />
+      <AbsolutePoint location="-176,1337" />
+      <AbsolutePoint location="-176,2375" />
+      <AbsolutePoint location="50,2375" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoCuentaBancaria.do,lista,pagina-lista.cuentaCorriente.tipoCuentaBancaria,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2629,287" />
+      <AbsolutePoint location="2629,400" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/tipoAhorro.do,lista,pagina-lista.cuentaCorriente.tipoAhorro,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1635,287" />
+      <AbsolutePoint location="1635,400" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/planMes.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1663,24" />
+      <AbsolutePoint location="197,24" />
+      <AbsolutePoint location="197,195" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="redirectInvalidData,null,/agregaBen.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="1722,24" />
+      <AbsolutePoint location="1722,2494" />
+      <AbsolutePoint location="1126,2494" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="toAsociadosB;6,null,/buscarAsociado.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="580,1222" />
+      <AbsolutePoint location="1807,1222" />
+      <AbsolutePoint location="1807,771" />
+      <AbsolutePoint location="1905,771" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+</FlowViewLayout>
+

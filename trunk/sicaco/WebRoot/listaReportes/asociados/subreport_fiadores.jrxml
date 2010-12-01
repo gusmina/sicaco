@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreport_fiadores" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="PRE_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     cta_asc_asociado.`ASC_CODIGO_ASOCIADO` AS CODIGO,
+     CONCAT_WS(' ',sec_per_persona.`PER_PRIMER_NOMBRE`, IFNULL(sec_per_persona.`PER_SEGUNDO_NOMBRE`,' '),
+     	   	sec_per_persona.`PER_PRIMER_APELLIDO`, 
+		IFNULL(sec_per_persona.`PER_SEGUNDO_APELLIDO`,' ')) AS NOMBRE,
+     sec_per_persona.`PER_DUI` AS DUI
+     
+FROM
+     `cta_asc_asociado` cta_asc_asociado 
+     INNER JOIN `cta_fxp_fiador_prestamo` cta_fxp_fiador_prestamo 
+	ON cta_asc_asociado.`ASC_ID` = cta_fxp_fiador_prestamo.`asc_id`
+     INNER JOIN `sec_per_persona` sec_per_persona 
+	ON cta_asc_asociado.`PER_ID` = sec_per_persona.`PER_ID`
+WHERE 	 	
+	cta_fxp_fiador_prestamo.`pre_id`=$P{PRE_ID}
+
+UNION
+
+SELECT
+     IFNULL(cta_pxt_persona_externa.`PXT_CODIGO_EMPLEADO`,'-Persona Externa-') AS CODIGO,
+     CONCAT_WS(' ',cta_pxt_persona_externa.`PXT_NOMBRES`, cta_pxt_persona_externa.`PXT_PRIMER_APELLIDO`,
+		IFNULL(cta_pxt_persona_externa.`PXT_SEGUNDO_APELLIDO`,' ')) AS NOMBRE,
+     cta_pxt_persona_externa.`PXT_DUI` AS DUI     
+
+FROM
+    `cta_fxp_fiador_prestamo` cta_fxp_fiador_prestamo 
+     INNER JOIN `cta_pxt_persona_externa` cta_pxt_persona_externa 
+	ON cta_fxp_fiador_prestamo.`pxt_id` = cta_pxt_persona_externa.`PXT_ID`
+WHERE cta_fxp_fiador_prestamo.`pre_id`=$P{PRE_ID}
+
+ORDER BY CODIGO DESC]]>
+	</queryString>
+	<field name="CODIGO" class="java.lang.String"/>
+	<field name="NOMBRE" class="java.lang.String"/>
+	<field name="DUI" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-2" mode="Opaque" x="171" y="7" width="219" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[NOMBRE FIADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" mode="Opaque" x="4" y="7" width="96" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" mode="Opaque" x="101" y="7" width="69" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[DUI]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" stretchType="RelativeToBandHeight" x="0" y="4" width="1" height="19" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-2" stretchType="RelativeToBandHeight" mode="Opaque" x="100" y="4" width="1" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-3" stretchType="RelativeToBandHeight" x="389" y="4" width="1" height="16" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-4" stretchType="RelativeToBandHeight" x="169" y="3" width="1" height="17" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+			</line>
+			<line>
+				<reportElement key="line-7" isPrintRepeatedValues="false" x="0" y="22" width="480" height="1" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
+			</line>
+			<line>
+				<reportElement key="line-8" x="1" y="4" width="479" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-9" stretchType="RelativeToBandHeight" x="480" y="4" width="1" height="19" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-7" mode="Opaque" x="392" y="7" width="86" height="13" forecolor="#FFFFFF" backcolor="#666666"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[FIRMA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="101" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="172" y="0" width="219" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="101" y="0" width="70" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DUI}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-10" stretchType="RelativeToBandHeight" x="0" y="0" width="1" height="18" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-11" stretchType="RelativeToBandHeight" x="100" y="0" width="1" height="18" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-12" stretchType="RelativeToBandHeight" x="170" y="0" width="1" height="18" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-13" stretchType="RelativeToBandHeight" x="391" y="0" width="1" height="18" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+			<line>
+				<reportElement key="line-15" stretchType="RelativeToBandHeight" x="480" y="0" width="1" height="18" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch">
+			<line>
+				<reportElement key="line-16" x="0" y="0" width="480" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

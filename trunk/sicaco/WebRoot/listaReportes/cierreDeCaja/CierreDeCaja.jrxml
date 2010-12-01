@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CierreDeCaja" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="saldoAntFondosOficina" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[new Double (3000.00)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="solicitadoPor" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["Sofia Flores"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sucursal" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["CETYA Santa Elena"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="autoriza" class="java.lang.String"/>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sucId" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     con_lof_liquidacion_oficina.`cue_nombre` AS con_lof_liquidacion_oficina_cue_nombre,
+     con_lof_liquidacion_oficina.`valor_depositado` AS con_lof_liquidacion_oficina_valor_depositado,
+     con_lof_liquidacion_oficina.`fecha` AS con_lof_liquidacion_oficina_fecha,
+     con_lof_liquidacion_oficina.`suc_id` AS con_lof_liquidacion_oficina_suc_id
+FROM
+     `con_lof_liquidacion_oficina` con_lof_liquidacion_oficina
+WHERE
+     DATE(con_lof_liquidacion_oficina.`fecha`) = $P{fecha}
+	and con_lof_liquidacion_oficina.`suc_id`= $P{sucId}]]>
+	</queryString>
+	<field name="con_lof_liquidacion_oficina_cue_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="con_lof_liquidacion_oficina_valor_depositado" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="con_lof_liquidacion_oficina_fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="con_lof_liquidacion_oficina_suc_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<sortField name="con_lof_liquidacion_oficina_cue_nombre"/>
+	<variable name="valor_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{con_lof_liquidacion_oficina_valor_depositado}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="148" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="25"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CETYA DE R.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="66" width="36" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="66" width="41" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Sucursal:  ]]></text>
+			</staticText>
+			<textField pattern="dd / MM / yyyy" isBlankWhenNull="false">
+				<reportElement x="76" y="66" width="147" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="411" y="66" width="124" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{sucursal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="26" width="555" height="12" forecolor="#666666"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Cooperativa de empleados de TACA y AEROMAN]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="117" y="88" width="201" height="20" forecolor="#333333"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Saldo anterior a liquidación de fondos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="107" width="201" height="20" forecolor="#333333"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Saldo actual en fondos de oficina:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="$ #,##0.00" isBlankWhenNull="true">
+				<reportElement x="370" y="88" width="99" height="20" forecolor="#333333"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[new Double ($P{saldoAntFondosOficina}.doubleValue() + $V{valor_1}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="$ #,##0.00">
+				<reportElement x="370" y="107" width="99" height="20" forecolor="#333333"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{saldoAntFondosOficina}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="42" width="555" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Liquidación de Fondos de Oficina]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="39" y="1" width="475" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="352" y="2" width="161" height="19" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[VALOR DEPOSITADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="40" y="2" width="311" height="19" backcolor="#F0F0F0"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[BANCO Y CUENTA AFECTADA ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="350" y="1" width="1" height="20"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="39" y="0" width="475" height="20"/>
+			</rectangle>
+			<line>
+				<reportElement x="350" y="0" width="1" height="20"/>
+			</line>
+			<textField pattern="$ #,##0.00">
+				<reportElement x="364" y="0" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{con_lof_liquidacion_oficina_valor_depositado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="0" width="263" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{con_lof_liquidacion_oficina_cue_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="44" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Solicitado por:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="99" y="44" width="176" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{solicitadoPor}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="39" y="0" width="475" height="20" backcolor="#FCFCFC"/>
+			</rectangle>
+			<line>
+				<reportElement x="350" y="0" width="1" height="20"/>
+			</line>
+			<textField evaluationTime="Report" pattern="$ #,##0.00">
+				<reportElement x="364" y="0" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$V{valor_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="0" width="133" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="false" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+				</textElement>
+				<text><![CDATA[Total a remesar:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="352" y="44" width="203" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{autoriza}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="44" width="60" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Autorizado por:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

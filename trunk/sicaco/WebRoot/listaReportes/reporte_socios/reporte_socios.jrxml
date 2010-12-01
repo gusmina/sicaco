@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_socios" pageWidth="612" pageHeight="792" columnWidth="552" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="etrId" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     cta_asc_asociado.`ASC_CODIGO_ASOCIADO` AS cta_asc_asociado_ASC_CODIGO,
+     cta_asc_asociado.`ASC_CODIGO` AS CODIGO,
+     (case when sec_per_persona.`PER_GENERO`=''then 'NO ESPECIFICADO'when sec_per_persona.`PER_GENERO`='F'then 'MUJERES'when sec_per_persona.`PER_GENERO`='M'then 'HOMBRES'end)as genero,
+     concat(sec_per_persona.`PER_PRIMER_NOMBRE`,' ',sec_per_persona.`PER_SEGUNDO_NOMBRE`,' ',sec_per_persona.`PER_TERCER_NOMBRE`,' ',sec_per_persona.`PER_PRIMER_APELLIDO`,' ',sec_per_persona.`PER_SEGUNDO_APELLIDO`)as nombre,
+     cta_etr_empresa_trabajo.`ETR_NOMBRE` AS cta_etr_empresa_trabajo_ETR_NOMBRE
+FROM
+     `sec_per_persona` sec_per_persona INNER JOIN `cta_asc_asociado` cta_asc_asociado ON sec_per_persona.`PER_ID` = cta_asc_asociado.`PER_ID`
+     INNER JOIN `cta_dpt_departamento_trabajo` cta_dpt_departamento_trabajo ON cta_asc_asociado.`DPT_ID` = cta_dpt_departamento_trabajo.`DPT_ID`
+     INNER JOIN `cta_etr_empresa_trabajo` cta_etr_empresa_trabajo ON cta_dpt_departamento_trabajo.`ETR_ID` = cta_etr_empresa_trabajo.`ETR_ID`
+WHERE
+     cta_asc_asociado.`EST_ID_2` = 0 and cta_etr_empresa_trabajo.`ETR_ID` like $P{etrId}
+ORDER BY
+	cta_etr_empresa_trabajo.`ETR_ID`,
+     sec_per_persona.`PER_GENERO` DESC,
+     cta_asc_asociado.`ASC_CODIGO` ASC]]>
+	</queryString>
+	<field name="cta_asc_asociado_ASC_CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CODIGO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="genero" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cta_etr_empresa_trabajo_ETR_NOMBRE" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="SUM_cta_asc_asociado_ASC_CODIGO_1" class="java.lang.Integer" resetType="Group" resetGroup="SEXO" calculation="Count">
+		<variableExpression><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></variableExpression>
+	</variable>
+	<variable name="cta_asc_asociado_ASC_CODIGO_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></variableExpression>
+	</variable>
+	<group name="Empresa">
+		<groupExpression><![CDATA[$F{cta_etr_empresa_trabajo_ETR_NOMBRE}]]></groupExpression>
+		<groupHeader>
+			<band height="51">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="33" width="552" height="18" forecolor="#FFFFFF" backcolor="#666666"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["            "+$F{cta_etr_empresa_trabajo_ETR_NOMBRE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="SEXO">
+		<groupExpression><![CDATA[$F{genero}]]></groupExpression>
+		<groupHeader>
+			<band height="44" splitType="Stretch">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" mode="Opaque" x="0" y="0" width="200" height="16" backcolor="#CCCCCC"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{genero}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-1" x="0" y="27" width="100" height="13"/>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CÓDIGO ASC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-2" x="200" y="27" width="100" height="13"/>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[NOMBRE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-1" x="100" y="27" width="100" height="13"/>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CÓDIGO EMP]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22" splitType="Stretch">
+				<elementGroup>
+					<elementGroup>
+						<elementGroup>
+							<elementGroup/>
+						</elementGroup>
+					</elementGroup>
+				</elementGroup>
+				<textField>
+					<reportElement x="0" y="5" width="512" height="13"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["SUBTOTAL"+" "+$F{cta_etr_empresa_trabajo_ETR_NOMBRE}+": "+$V{SUM_cta_asc_asociado_ASC_CODIGO_1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" x="8" y="5" width="544" height="23"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REPORTE ASOCIADOS INSAFOCOP]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="452" y="28" width="100" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="28" width="76" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Fecha: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="3" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cta_asc_asociado_ASC_CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="200" y="3" width="226" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="450" y="14" width="100" height="1"/>
+			</line>
+			<staticText>
+				<reportElement key="staticText-1" x="427" y="2" width="21" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[F.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="100" y="3" width="100" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{CODIGO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="319" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Página "+ $V{PAGE_NUMBER}+". "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="132" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="0" y="64" width="550" height="20" forecolor="#FFFFFF" backcolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["        Total asociados: "+$V{cta_asc_asociado_ASC_CODIGO_1}+"          "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

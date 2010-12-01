@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<data-sources />
+	<form-beans>
+		<form-bean name="parametrosForm"
+			type="com.cetia.sicaco.control.struts.form.ParametrosForm" />
+		<form-bean name="empresaForm"
+			type="com.cetia.sicaco.control.struts.form.EmpresaForm" />
+		<form-bean name="reposFactForm"
+			type="com.cetia.sicaco.control.struts.form.ReposFactForm" />
+		<form-bean name="controlFacturaForm"
+			type="com.cetia.sicaco.control.struts.form.ControlFacturaForm" />
+		<form-bean name="usuarioRepositorioForm"
+			type="com.cetia.sicaco.control.struts.form.UsuarioRepositorioForm" />
+		<form-bean name="testEmailForm"
+			type="com.cetia.sicaco.control.struts.form.TestEmailForm" />
+		<form-bean name="verComentariosForm"
+			type="com.cetia.sicaco.cliente.struts.form.VerComentariosForm" />
+    <form-bean name="bancosForm" type="com.cetia.sicaco.control.struts.form.BancosForm" />
+    <form-bean name="paisForm" type="com.cetia.sicaco.control.struts.form.PaisForm" />
+    <form-bean name="controlChequeForm" type="com.cetia.sicaco.control.struts.form.ControlChequeForm" />
+    <form-bean name="repositorioChequeForm" type="com.cetia.sicaco.control.struts.form.RepositorioChequeForm" />
+    <form-bean name="peticionesCompraForm" type="com.cetia.sicaco.cliente.struts.form.PeticionesCompraForm" />
+	</form-beans>
+
+	<global-exceptions>
+		<exception
+			handler="com.cetia.sicaco.struts.CustomExceptionHandler" key=""
+			path="pagina.error" type="java.lang.Exception" />
+	</global-exceptions>
+	<global-forwards />
+	<action-mappings>
+		<action attribute="parametrosForm" name="parametrosForm"
+			parameter="accion" path="/parametros" scope="request"
+			type="com.cetia.sicaco.control.struts.action.ParametrosAction">
+			<forward name="lista"
+				path="pagina-lista.control.parametros" />
+
+			<forward name="dml" path="pagina-dml.control.parametros" />
+
+		</action>
+		<action attribute="empresaForm" input="redirectInvalidData"
+			name="empresaForm" parameter="accion" path="/empresa" scope="request"
+			type="com.cetia.sicaco.control.struts.action.EmpresaAction">
+			<forward name="lista" path="pagina-lista.control.empresa" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/empresa.do?accion=redirectInvalidData" />
+		</action>
+		<action attribute="reposFactForm" input="redirectInvalidData"
+			name="reposFactForm" parameter="accion" path="/reposFact"
+			scope="request" validate="true"
+			type="com.cetia.sicaco.control.struts.action.ReposFactAction">
+			<forward name="lista" path="pagina-lista.control.reposFact" />
+			<forward name="dml" path="pagina-dml.control.reposFact" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/reposFact.do?accion=redirectInvalidData" />
+		</action>
+
+		<action attribute="controlFacturaForm"
+			input="redirectInvalidData" name="controlFacturaForm"
+			parameter="accion" path="/controlFactura" scope="request"
+			validate="true"
+			type="com.cetia.sicaco.control.struts.action.ControlFacturaAction">
+			<forward name="lista"
+				path="pagina-lista.control.controlFactura" />
+			<forward name="redirectInvalidData" redirect="true"
+				path="/controlFactura.do?accion=redirectInvalidData" />
+			<forward name="dml"
+				path="pagina-dml.control.controlFactura" />
+		</action>
+		<action attribute="usuarioRepositorioForm"
+			input="pagina-dml.control.usuarioRepositorio"
+			name="usuarioRepositorioForm" parameter="accion"
+			path="/usuarioRepositorio" scope="request"
+			type="com.cetia.sicaco.control.struts.action.UsuarioRepositorioAction">
+			<forward name="lista"
+				path="pagina-lista.control.usuarioRepositorio" />
+			<forward name="dml"
+				path="pagina-dml.control.usuarioRepositorio" />
+			<forward name="error"
+				path="pagina-dml.control.usuarioRepositorio" />
+		</action>
+		<action attribute="testEmailForm" input="/testEmail.jsp"
+			name="testEmailForm" parameter="accion" path="/testEmail"
+			scope="request"
+			type="com.cetia.sicaco.control.struts.action.TestEmailAction">
+			<forward name="page" path="/testEmail.jsp"
+				module="/control" />
+		</action>
+		<action attribute="verComentariosForm" input="fwdValidate"
+			name="verComentariosForm" parameter="accion" path="/verComentarios"
+			scope="request"
+			type="com.cetia.sicaco.cliente.struts.action.VerComentariosAction">
+			<forward name="verLista" path="pagina.verComentarios" />
+			<forward name="fwdValidate" path="pagina.verComentarios" />
+		</action>
+		<action forward="pagina.verComentarios"
+			path="/verComentariosdos" />
+			
+    <action
+      attribute="peticionesCompraForm"
+      name="peticionesCompraForm"
+      parameter="accion"
+      path="/peticionesCompra"
+      scope="request"
+      type="com.cetia.sicaco.cliente.struts.action.PeticionesCompraAction"
+      validate="false">
+      <forward name="lista" path="pagina.peticionesCompra" />
+      <forward name="dml" path="pagina-dml.orden.compra" />
+      <forward name="ordenes" path="/ordenCompra.do?accion=buscar" module="/orden"/>
+    </action>
+					
+    <action
+      attribute="bancosForm"
+      input="redirectInvalidData"
+      name="bancosForm"
+      parameter="accion"
+      path="/bancos"
+      scope="request"
+      validate="true"
+      type="com.cetia.sicaco.control.struts.action.BancosAction">
+      <forward name="lista" path="pagina-lista.control.bancos" />
+      <forward name="redirectInvalidData" redirect="true"
+				path="/bancos.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="paisForm"
+      input="redirectInvalidData"
+      name="paisForm"
+      parameter="accion"
+      path="/pais"
+      scope="request"
+      type="com.cetia.sicaco.control.struts.action.PaisAction">
+      <forward name="lista" path="pagina-lista.control.pais" />
+      <forward name="redirectInvalidData" redirect="true"
+				path="/pais.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="controlChequeForm"
+      input="redirectInvalidData"
+      name="controlChequeForm"
+      parameter="accion"
+      path="/controlCheque"
+      scope="request"
+      validate="true"
+      type="com.cetia.sicaco.control.struts.action.ControlChequeAction">
+      <forward name="lista" path="pagina-lista.control.controlCheque" />
+      <forward name="redirectInvalidData" path="/invalidControlCheque.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="controlChequeForm"
+      name="controlChequeForm"
+      parameter="accion"
+      path="/invalidControlCheque"
+      scope="request"
+      validate="false"
+      type="com.cetia.sicaco.control.struts.action.ControlChequeAction">
+      <forward name="lista" path="pagina-lista.control.controlCheque" />
+    </action>
+    <action
+      attribute="repositorioChequeForm"
+      input="redirectInvalidData"
+      name="repositorioChequeForm"
+      parameter="accion"
+      path="/repositorioCheque"
+      scope="request"
+      validate="true"
+      type="com.cetia.sicaco.control.struts.action.RepositorioChequeAction">
+      <forward name="lista" path="pagina-lista.control.repositorioCheque" />
+      <forward name="redirectInvalidData" path="/invalidRepositorioCheque.do?accion=redirectInvalidData" />
+    </action>
+    <action
+      attribute="repositorioChequeForm"
+      name="repositorioChequeForm"
+      parameter="accion"
+      path="/invalidRepositorioCheque"
+      scope="request"
+      validate="false"
+      type="com.cetia.sicaco.control.struts.action.RepositorioChequeAction">
+      <forward name="lista" path="pagina-lista.control.repositorioCheque" />
+    </action>
+
+	</action-mappings>
+	<controller>
+		<set-property property="processorClass"
+			value="com.cetia.sicaco.struts.SecurityProcessor" />
+		<set-property property="inputForward" value="true" />
+
+	</controller>
+
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ApplicationResources" />
+	<message-resources
+		parameter="com.cetia.sicaco.struts.ErrorsResources" key="errors" />
+    <message-resources
+    	parameter="com.cetia.sicaco.struts.ApplicationResourcesCliente" key="cliente"/>		
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config"
+			value="/WEB-INF/plugins/tiles-defs.xml,/WEB-INF/plugins/tiles-defs-control.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parse-validate"
+			value="true" />
+	</plug-in>
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validators-files/validator-rules.xml,/WEB-INF/validators-files/validation.xml" />
+	</plug-in>
+
+
+	<plug-in className="net.sf.navigator.menu.MenuPlugIn">
+		<set-property property="menuConfig"
+			value="/WEB-INF/plugins/menu-config.xml" />
+	</plug-in>
+
+
+</struts-config>
+

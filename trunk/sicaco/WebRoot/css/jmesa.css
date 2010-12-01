@@ -1,0 +1,260 @@
+.jmesa {
+    margin: 0;
+    padding: 0;
+}
+
+.jmesa caption {
+    caption-side: top;
+    color: #444444;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.jmesa .table {
+    border: 1px solid silver;
+    padding: 2px;
+}
+
+.toolbar table {
+    margin-right: auto;
+    margin-left: 0px;
+}
+
+.jmesa .toolbar td {
+    padding: 0px 1px 0px 1px;
+}
+
+.jmesa .toolbar select {
+    font-size: 11px;
+    border: solid 1px #c4c3c2;
+}
+
+.jmesa .toolbar img {
+    border:0px;
+}
+
+.jmesa .filter td {
+	padding: 2px 2px 3px 2px;
+}
+
+.jmesa .filter .dynFilter {
+    position: relative;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #c0c0c0;
+    background-color: #efebe7;
+    height: 15px;
+    white-space: nowrap;
+}
+
+.jmesa .filter #dynFilterDiv {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    padding: 0;
+    margin: 0;
+    height: 17px;
+    border: 1px solid #c0c0c0;
+    background-color: #e1ebf4;
+}
+
+.jmesa .filter #dynFilterInput {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    border-style: none;
+    background-color: #e1ebf4;
+}
+
+.jmesa .filter #dynFilterDroplistDiv {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    padding: 0;
+    margin: 0;
+    height: 17px;
+    background-color: #e1ebf4;
+}
+
+.jmesa .filter #dynFilterDroplist {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #c0c0c0;
+    background-color: #e1ebf4;
+}
+
+.jmesa .header td {
+	
+	background: url(/cetia/imagenes/tema/barra_superior_tabla.jpg);    
+	background-repeat: repeat-x;
+	white-space: nowrap;
+    background-color: #729fcf;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 3px 4px 3px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-color: white;
+}
+
+.jmesa .odd a,.jmesa .even a {
+    color: black;
+}
+
+.jmesa .odd td,.jmesa .even td {
+    font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 11px;
+    padding: 2px 3px 2px 3px;
+}
+
+.jmesa .odd td {
+    border: 1px solid #ffffff;
+}
+
+.jmesa .even td {
+    border: 1px solid #e3e3e3;
+}
+
+.jmesa .odd {
+    background-color: #ffffff;
+}
+
+.jmesa .even {
+    background-color: #e3e3e3;
+}
+
+.jmesa .highlight td {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    padding: 3px 4px 3px 4px;
+    background-color: #fdecae;
+}
+
+.jmesa .highlight a {
+    color: black;
+}
+
+.jmesa .statusBar td {
+    font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 11px;
+    border-top: 1px solid silver;
+    background-color: #efebe7;
+    padding: 2px;
+}
+
+.jmesa .dropShadow {
+    padding: 10px 14px 14px 10px;
+}
+
+.jmesa .wsColumn {
+    position: relative;
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    height: 15px;
+}
+
+.jmesa .wsColumn #wsColumnDiv {
+    position: absolute;
+    top: -2px;
+    left: -1px;
+}
+
+.jmesa .wsColumn #wsColumnInput {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 11px;
+    border: solid;
+    border-width: 1px;
+    border-color: #605a54;
+    background-color: #ededed;
+    padding-left: 1px;
+    height: 15px;
+}
+
+.jmesa a.linkMail, .jmesa a.linkMail { padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkMail { background: url(../imagenes/opcionesTabla/email.png) 0 0 no-repeat; }
+
+.jmesa a.linkPhone, .jmesa a.linkPhone { padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkPhone{ background: url(../imagenes/opcionesTabla/telephone.png) 0 0 no-repeat; }
+
+.jmesa a.linkEstadoCuenta, .jmesa a.linkEstadoCuenta{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkEstadoCuenta{ background: url(../imagenes/opcionesTabla/chart_bar.png) 0 0 no-repeat; }
+
+.jmesa a.linkCuentaBancaria, .jmesa a.linkCuentaBancaria{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkCuentaBancaria{ background: url(../imagenes/opcionesTabla/coins.png) 0 0 no-repeat; }
+
+.jmesa a.linkTransacciones, .jmesa a.linkTransacciones{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkTransacciones{ background: url(../imagenes/opcionesTabla/money.png) 0 0 no-repeat; }
+
+.jmesa a.linkDependientes, .jmesa a.linkDependientes{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkDependientes{ background: url(../imagenes/opcionesTabla/user.png) 0 0 no-repeat; }
+
+.jmesa a.linkBeneficiarios, .jmesa a.linkBeneficiarios{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkBeneficiarios{ background: url(../imagenes/opcionesTabla/group.png) 0 0 no-repeat; }
+
+.jmesa a.linkIngresoCooperativa, .jmesa a.linkIngresoCooperativa{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkIngresoCooperativa{ background: url(../imagenes/opcionesTabla/house.png) 0 0 no-repeat; }
+
+.jmesa a.linkEmergencia, .jmesa a.linkEmergencia{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkEmergencia{ background: url(../imagenes/opcionesTabla/pill.png) 0 0 no-repeat; }
+
+.jmesa a.linkSesion, .jmesa a.linkSesion{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkSesion{ background: url(../imagenes/opcionesTabla/folder_user.png) 0 0 no-repeat; }
+
+.jmesa a.linkAsoc, .jmesa a.linkAsoc{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkAsoc{ background: url(../imagenes/opcionesTabla/page_user.gif) 0 0 no-repeat; }
+
+.jmesa a.linkActivar, .jmesa a.linkActivar{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkActivar{ background: url(../imagenes/opcionesTabla/accept.png) 0 0 no-repeat; }
+
+.jmesa a.linkInActivar, .jmesa a.linkInActivar{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkInActivar{ background: url(../imagenes/opcionesTabla/delete.png) 0 0 no-repeat; }
+
+.jmesa a.linkEliminar, .jmesa a.linkEliminar{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkEliminar{ background: url(../imagenes/opcionesTabla/cross.png) 0 0 no-repeat; }
+
+.jmesa a.linkEditar, .jmesa a.linkEditar{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkEditar{ background: url(../imagenes/opcionesTabla/page_edit.png) 0 0 no-repeat; }
+
+.jmesa a.linkCapacidad, .jmesa a.linkCapacidad{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkCapacidad{ background: url(../imagenes/opcionesTabla/package.png) 0 0 no-repeat; }
+
+.jmesa a.linkNivel, .jmesa a.linkNivel{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkNivel{ background: url(../imagenes/opcionesTabla/nivel.png) 0 0 no-repeat; }
+
+.jmesa a.linkExistencia, .jmesa a.linkExistencia{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkExistencia{ background: url(../imagenes/opcionesTabla/lorry.png) 0 0 no-repeat; }
+
+.jmesa a.linkMovimientoBod, .jmesa a.linkMovimientoBod{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkMovimientoBod{ background: url(../imagenes/opcionesTabla/package_go.png) 0 0 no-repeat; }
+
+.jmesa a.linkCalculadora, .jmesa a.linkCalculadora{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkCalculadora{ background: url(../imagenes/opcionesTabla/package_go.png) 0 0 no-repeat; }
+
+.jmesa a.linkNota, .jmesa a.linkNota{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkNota{ background: url(../imagenes/opcionesTabla/text_signature.png) 0 0 no-repeat; }
+
+.jmesa a.linkUnion, .jmesa a.linkUnion{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkUnion{ background: url(../imagenes/opcionesTabla/arrow_join.png) 0 0 no-repeat; }
+
+.jmesa a.linkPrinter, .jmesa a.linkPrinter{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkPrinter{ background: url(../imagenes/opcionesTabla/printer.png) 0 0 no-repeat; }
+
+.jmesa a.linkMovimientos, .jmesa a.linkMovimientos{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkMovimientos{ background: url(../imagenes/opcionesTabla/arrow_switch.png) 0 0 no-repeat; }
+
+.jmesa a.linkProyeccion, .jmesa a.linkProyeccion{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkProyeccion{ background: url(../imagenes/opcionesTabla/table_go.png) 0 0 no-repeat; }
+
+.jmesa a.linkDescuentos, .jmesa a.linkDescuentos{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkDescuentos{ background: url(../imagenes/opcionesTabla/calculator.png) 0 0 no-repeat; }
+
+.jmesa a.linkDesembolso, .jmesa a.linkDesembolso{ padding: 1px 0 1px 18px; display: inline; height: 16px; width: 18px}
+.jmesa a.linkDesembolso{ background: url(../imagenes/opcionesTabla/dolar.png) 0 0 no-repeat; }
