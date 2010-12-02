@@ -112,7 +112,7 @@ order by fecha desc
       cue_codigo_cuenta
      )
 ) as q
-    order by cuenta, fecha, numPar, abonos, id]]>
+    order by cuenta, fecha, numPar,id, abonos]]>
 	</queryString>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>

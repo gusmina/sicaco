@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
-	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_CORE"/>
-	<classpathentry kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_EXTRAS"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jstl.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java-5.1.5-bin.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/standard.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1-javadoc.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/iText-2.1.0.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/core-renderer-R8pre1.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/itext-paulo-155.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jexcel-2.6.6.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jmesa-2.3.1.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/servlet-api-2.4.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.3.1.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-log4j12-1.3.1.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/tagsoup-1.1.3.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jmesa-2.2.7.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/struts-menu-2.4.3.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/velocity-1.4.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/velocity-tools-view-1.0.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/antlr-2.7.6.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-beanutils-1.7.0.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-collections-3.0.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-fileupload.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-lang-2.2.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-validator.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jakarta-oro.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/struts.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/mail.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/commons-digester-1.8.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jdom.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/activation.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/jasperreports-3.5.2.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/poi-3.2-FINAL-20081019.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_CORE"/>
+	<classpathentry exported="true" kind="con" path="melibrary.com.genuitec.eclipse.hibernate.MYECLIPSE_HIBERNATE3_EXTRAS"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jstl.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/mysql-connector-java-5.1.5-bin.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/standard.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-email-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/iText-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/core-renderer-R8pre1.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/itext-paulo-155.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jexcel-2.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jmesa-2.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/servlet-api-2.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/slf4j-log4j12-1.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/tagsoup-1.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jmesa-2.2.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/struts-menu-2.4.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/velocity-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/velocity-tools-view-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/antlr-2.7.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-beanutils-1.7.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-collections-3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-fileupload.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-lang-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-validator.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jakarta-oro.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/struts.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/mail.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/commons-digester-1.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jdom.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/activation.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/jasperreports-3.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebRoot/WEB-INF/lib/poi-3.2-FINAL-20081019.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
