@@ -1,0 +1,1 @@
+ore ore wa atena no santo ta
